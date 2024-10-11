@@ -3,12 +3,11 @@ import java.io.FileReader;
 import java.io.IOException;
 
 
-
 public class User {
-    String name;
-    String hospitalId;
-    String password;
-    String domain;
+    protected String name;
+    protected String hospitalId;
+    protected String password;
+    protected String domain;
     
 
     public User(String name, String hospitalId, String password, String domain) {
