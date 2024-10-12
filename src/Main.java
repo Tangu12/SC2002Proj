@@ -5,5 +5,8 @@ public class Main {
     	Scanner sc = new Scanner(System.in);
 
     	User.displayLoginInterface();
+        //User.homepage();
+        //User.changePassword();
+        User.changePassword("D001", "James123");
     }
 }
