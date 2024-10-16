@@ -1,5 +1,3 @@
-
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -13,7 +11,7 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook; 
 
 public class Schedule {
-	private static final String FILE_NAME = "C:/Users/steve/Documents/SC2002(OOP)/codes/GroupProject/appointments.xlsx";
+	private static final String FILE_NAME = "/Users/justintangu/Desktop/Java Programming/SC2002Proj/program_files/appointments.xlsx";
 	private int columnWidth = 20; 
 	
 	public void createAppointmentSlot(Appointment app) { //for staff to add slots
