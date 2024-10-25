@@ -4,9 +4,8 @@ public class Main {
     public static void main(String[] args) {
     	Scanner sc = new Scanner(System.in);
 
-    	User.displayLoginInterface();
-        //User.homepage();
-        //User.changePassword();
+    	User.displayLoginInterface(); // return domain of user?
+        //User.homePage();
         User.changePassword("D001", "James123");
     }
 }

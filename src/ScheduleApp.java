@@ -28,7 +28,7 @@ public class ScheduleApp {
 				case 1:
 					System.out.println("Enter Appointment ID: ");
 					String appID = sc.nextLine();
-					System.out.println("Enter Date and Time for the Appointment Slot: (dd-MM-yyyy HH:mm:ss)");
+					System.out.println("Enter Date and Time for the Appointment Slot: (dd-MM-yyyy HH:mm:ss)"); // Maybe this can be in terms of 30min intervals?
 					String time = sc.nextLine();
 					System.out.println("Enter the Doctor ID: ");
 					String docID = sc.nextLine();

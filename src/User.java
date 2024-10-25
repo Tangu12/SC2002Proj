@@ -55,13 +55,16 @@ public class User {
 		
 		if(!successfulLogin) {
 			System.out.println("Wrong Password!");
-		}
+			}
 		}
 		
 		while(!successfulLogin);
 		// Login Success
+		// Check the User's domain from the xlxs file and Create the specific User type object (Patient, Doctor..)
+		// if domain == "Patient", call Patient constructor
 		System.out.print("Login Successful...");
 	}
+
 
 
 	/*
@@ -86,6 +89,21 @@ public class User {
 	* 5. etc.
 	*
 	* */
+
+	public void homePage(User current_user) {
+        if (current_user.getDomain().equals("Patient")) {
+			// display Patient log in page
+        }
+		else if (current_user.getDomain().equals("Doctor")) {
+			// display Doctor log in page
+		}
+		else if (current_user.getDomain().equals("Pharmacist")) {
+			// display Pharmacist log in page
+		}
+		else if (current_user.getDomain().equals("Administrator")) {
+			// display Administrator log in page
+		}
+	}
 
 
 
