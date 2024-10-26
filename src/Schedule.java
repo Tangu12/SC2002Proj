@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Schedule {
-	private static final String FILE_NAME = "C:/Users/steve/Documents/SC2002(OOP)/codes/GroupProject/appointments.csv";
+	private static final String FILE_NAME = "program_files/appointments.csv";
 	private int columnWidth = 20; 
 	
 	public void createAppointmentSlot() {
