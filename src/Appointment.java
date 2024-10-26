@@ -1,5 +1,3 @@
-
-
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -13,7 +11,8 @@ enum purpose {
 enum status {
 	Confirmed,
 	Cancelled,
-	Completed
+	Completed,
+	Pending
 }
 
 enum paymentStatus{

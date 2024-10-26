@@ -1,5 +1,3 @@
-
-
 import java.util.Scanner;
 
 public class ScheduleApp {
@@ -11,7 +9,7 @@ public class ScheduleApp {
 		int choice;
 		do {
 			System.out.println("Choose the number of function:\n"
-					+ "(1) Create Appointment Slots (for staff later)\n"
+					+ "(1) Create Appointment Slots for today (for staff later)\n"
 					+ "(2) Schedule Appointment\n"
 					+ "(3) Reschedule Appointment\n"
 					+ "(4) Cancel Appointment\n"
@@ -26,20 +24,16 @@ public class ScheduleApp {
 			sc.nextLine();
 			switch(choice) {
 				case 1:
-					System.out.println("Enter Appointment ID: ");
-					String appID = sc.nextLine();
-					System.out.println("Enter Date and Time for the Appointment Slot: (dd-MM-yyyy HH:mm:ss)");
-					String time = sc.nextLine();
-					System.out.println("Enter the Doctor ID: ");
-					String docID = sc.nextLine();
-					System.out.println("Enter the Doctor's Name: ");
-					String docName = sc.nextLine();
-					Appointment app = new Appointment(appID, time, docID, docName);
-					schedule.createAppointmentSlot(app);
+					schedule.createAppointmentSlot();
+					System.out.println("Appointment Slots are successfully created!!");
 					break;
 				case 2:
 					System.out.println("Enter the Appointment ID you want to book: ");
 					String appID1 = sc.nextLine();
+					if(!schedule.checkAppIDExist(appID1)) {
+						System.out.println("Only enter available Appointment IDs");
+						break;
+					}
 					System.out.println("Enter your Patient ID: ");
 					String patID = sc.nextLine();
 					System.out.println("Enter your Name: ");
@@ -60,8 +54,16 @@ public class ScheduleApp {
 				case 3:
 					System.out.println("Enter the Appointment ID that you want to change: ");
 					String orgAppID = sc.nextLine();
+					if(!schedule.checkAppIDExist(orgAppID)) {
+						System.out.println("Only enter available Appointment IDs");
+						break;
+					}
 					System.out.println("Enter the new Appointment ID: ");
 					String newAppID = sc.nextLine();
+					if(!schedule.checkAppIDExist(newAppID)) {
+						System.out.println("Only enter available Appointment IDs");
+						break;
+					}
 					System.out.println("Enter your patient ID: ");
 					String patID4 = sc.nextLine();
 					schedule.rescheduleAppointment(orgAppID, newAppID, patID4);
@@ -69,6 +71,10 @@ public class ScheduleApp {
 				case 4:
 					System.out.println("Enter the Appointment ID that you want to cancel: ");
 					String appID2 = sc.nextLine();
+					if(!schedule.checkAppIDExist(appID2)) {
+						System.out.println("Only enter available Appointment IDs");
+						break;
+					}
 					System.out.println("Enter your Patient ID: ");
 					String patID1 = sc.nextLine();
 					schedule.cancelAppointment(appID2, patID1);
@@ -89,21 +95,31 @@ public class ScheduleApp {
 				case 8:
 					System.out.println("Enter the appointment ID: ");
 					String appID3 = sc.nextLine();
+					if(!schedule.checkAppIDExist(appID3)) {
+						System.out.println("Only enter available Appointment IDs");
+						break;
+					}
 					System.out.println("Choose number of the Appointment status to change\n"
 							+ "(1) Confirmed\n"
 							+ "(2) Cancelled\n"
-							+ "(3) Completed\n");
+							+ "(3) Completed\n"
+							+ "(4) Pending");
 					int statusChoice = sc.nextInt();
 					status stat;
 					if(statusChoice == 1) stat = status.Confirmed;
 					else if (statusChoice == 2) stat = status.Cancelled;
 					else if (statusChoice == 3) stat = status.Completed;
+					else if (statusChoice == 4) stat = status.Pending;
 					else break;
 					schedule.changeAppointmentStatus(appID3, stat);
 					break;
 				case 9:
 					System.out.println("Enter the appointment ID: ");
 					String appID4 = sc.nextLine();
+					if(!schedule.checkAppIDExist(appID4)) {
+						System.out.println("Only enter available Appointment IDs");
+						break;
+					}
 					System.out.println("Choose number of the payment status to change\n"
 							+ "(1) Prepaid\n"
 							+ "(2) Pending\n"
@@ -123,6 +139,10 @@ public class ScheduleApp {
 				case 10:
 					System.out.println("Enter the appointment ID: ");
 					String appID5 = sc.nextLine();
+					if(!schedule.checkAppIDExist(appID5)) {
+						System.out.println("Only enter available Appointment IDs");
+						break;
+					}
 					System.out.println("Enter the cost: ");
 					double cost = sc.nextDouble();
 					schedule.addChangeCost(appID5, cost);
