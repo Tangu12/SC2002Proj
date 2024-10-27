@@ -2,15 +2,12 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
-
-
 public class User {
     String name;
     String hospitalId;
     String password;
     String domain;
     
-
     public User(String name, String hospitalId, String password, String domain) {
         this.name = name;
         this.hospitalId = hospitalId;
@@ -62,6 +59,8 @@ public class User {
 		while(!successfulLogin);
 		// Login Success
 		System.out.print("Login Successful...");
+		
+		
 	}
     
     
