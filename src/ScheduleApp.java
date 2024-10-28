@@ -5,7 +5,7 @@ public class ScheduleApp {
 	public static void main(String[] args) {
 		Scanner sc = new Scanner(System.in);
 		Schedule schedule = new Schedule();
-		System.out.println("Welcom to Schedule App\n");
+		System.out.println("Welcome to Schedule App\n");
 		int choice;
 		do {
 			System.out.println("Choose the number of function:\n"

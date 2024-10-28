@@ -14,6 +14,7 @@ public class Pharmacist extends User {
                 + "(6) Pharmacist Placeholder6\n"
                 + "(7) Exit");
         choice = InputScanner.sc.nextInt();
+        InputScanner.sc.nextLine();
 
         switch(choice) {
 

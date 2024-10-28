@@ -179,7 +179,7 @@ public class Schedule {
 		overwriteCSV(data);
 	}
 	
-	public void viewScheduledAppointments(String patID) {
+	public void viewScheduledAppointments(String hospitalID) {
 		System.out.println("+" + "-".repeat(columnWidth) + "+" 
                 + "-".repeat(columnWidth) + "+" 
                 + "-".repeat(columnWidth) + "+" 
@@ -209,7 +209,7 @@ public class Schedule {
         
         List<String[]> data = getAllRows();
         for(String[] row : data) {
-        	if((row[0].equals("FALSE") || row[0].equals("false")) && row[5].equals(patID) && (row[8].equals("Pending") || row[8].equals("Confirmed"))) {
+        	if((row[0].equals("FALSE") || row[0].equals("false")) && row[5].equals(hospitalID) && (row[8].equals("Pending") || row[8].equals("Confirmed"))) {
         		System.out.println("|" + formatCell(row[1], columnWidth)
         				+ "|" + formatCell(row[2], columnWidth)
                 		+ "|" + formatCell(row[3], columnWidth)
@@ -231,7 +231,7 @@ public class Schedule {
 	}
 	
 	
-	public void viewAppointmentOutcomeRecords(String patID) {
+	public void viewAppointmentOutcomeRecords(String hospitalID) {
 		System.out.println("+" + "-".repeat(columnWidth) + "+" 
                 + "-".repeat(columnWidth) + "+" 
                 + "-".repeat(columnWidth) + "+" 
@@ -267,7 +267,7 @@ public class Schedule {
         
         List<String[]> data = getAllRows();
         for(String[] row : data) {
-        	if((row[0].equals("FALSE") || row[0].equals("false")) && row[5].equals(patID) && row[8].equals("Completed")) {
+        	if((row[0].equals("FALSE") || row[0].equals("false")) && row[5].equals(hospitalID) && row[8].equals("Completed")) {
         		System.out.println("|" + formatCell(row[1], columnWidth)
         				+ "|" + formatCell(row[2], columnWidth)
                 		+ "|" + formatCell(row[3], columnWidth)
@@ -353,12 +353,18 @@ public class Schedule {
 	public boolean checkAppIDExist(String appID){
 		List<String[]> data = getAllRows();
 		for(String[] row : data) {
+			System.out.println(appID);
+			System.out.println(row[1]);
+			System.out.println(row[1].equals(appID));
 			if(row[1].equals(appID)) return true;
 		}
 		return false;
 	}
+
+
+
 	
-	private List<String[]> getAllRows() {
+	public List<String[]> getAllRows() {
 		List<String[]> data = new ArrayList<>();
 
         //Read the CSV file
