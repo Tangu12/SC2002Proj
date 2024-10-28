@@ -1,6 +1,6 @@
 public class Doctor extends User {
-    public Doctor(String name, String hospitalId, String password, String domain) {
-        super(name, hospitalId, password, domain);
+    public Doctor(String name, String hospitalId, domain domain) {
+        super(name, hospitalId, domain);
     }
 
     public void homePage() {
