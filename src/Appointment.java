@@ -128,4 +128,8 @@ public class Appointment {
 	public void setPaymentStatus(paymentStatus paymentStatus) {
 		this.paymentStatus = paymentStatus;
 	}
+	
+	public void setAvail(boolean avail) {
+		this.availability = avail;
+	}
 }
