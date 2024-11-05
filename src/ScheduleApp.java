@@ -24,7 +24,7 @@ public class ScheduleApp {
 			sc.nextLine();
 			switch(choice) {
 				case 1:
-					schedule.createAppointmentSlot();
+					//schedule.createAppointmentSlot();
 					System.out.println("Appointment Slots are successfully created!!");
 					break;
 				case 2:

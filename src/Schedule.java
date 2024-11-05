@@ -9,6 +9,8 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
@@ -16,7 +18,25 @@ public class Schedule {
 	private static final String FILE_NAME = "program_files/appointments.csv";
 	private int columnWidth = 20; 
 	
-	public void createAppointmentSlot() {
+	public void createAppointmentSlot(String docID, String docName, int plusDay) {
+		int startTime, endTime;
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
+		DateTimeFormatter formatterForID = DateTimeFormatter.ofPattern("yyyyMMddHHmm");
+		DateTimeFormatter formatterForInput = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+		LocalDate updateDate = LocalDate.now().plusDays(plusDay);
+		printAppointmentOfaDayForDoc(updateDate.format(formatterForInput), docID);
+		do {
+			System.out.println("Please enter when your shift starts: (0 -> 23) (-1 to return)");
+			startTime = InputScanner.sc.nextInt();
+			if(startTime == -1) return;
+			System.out.println("Please enter when your shift ends: (0 -> 24) (-1 to return)");
+			endTime = InputScanner.sc.nextInt();
+			if(endTime == -1) return;
+			if(startTime < 0 && endTime < 0 && startTime >= 24 && endTime> 24 && startTime >= endTime) 
+				System.out.println("Please only enter available time and endTime must be greater than startTime");
+		} while(startTime < 0 && endTime < 0 && startTime >= 24 && endTime> 24 && startTime >= endTime);
+		InputScanner.sc.nextLine();
+		
 		try {
 			File appointmentFile = new File(FILE_NAME);
 			if (appointmentFile.createNewFile()) {
@@ -25,22 +45,20 @@ public class Schedule {
 				headerWriter.close();
 			}
 			BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_NAME,true));
-			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
-			DateTimeFormatter formatterForID = DateTimeFormatter.ofPattern("yyyyMMddHHmm");
-			LocalDate now = LocalDateTime.now().toLocalDate();
-			for(int i = 9; i <= 21; i++) {
-				LocalDateTime firstSlot = LocalDateTime.of(now, LocalTime.of(i, 0, 0));
-				String newFirstSlot = String.valueOf(true) + "," + "A" + firstSlot.format(formatterForID) + "," + firstSlot.format(formatter) + ", , , , , , , , "; //add space to avoid null data when retrieve data
-				writer.write(String.join(",", newFirstSlot) + "\n");
-				LocalDateTime secondSlot = LocalDateTime.of(now, LocalTime.of(i, 30, 0));
-				String newSecondSlot = String.valueOf(true) + "," + "A" + secondSlot.format(formatterForID) + "," + secondSlot.format(formatter) + ", , , , , , , , "; //add space to avoid null data when retrieve data
-				writer.write(String.join(",", newSecondSlot) + "\n");
+			for(int i = startTime; i < endTime; i++) {
+				LocalDateTime firstSlot = LocalDateTime.of(updateDate, LocalTime.of(i, 0, 0));
+				String newFirstSlot = String.valueOf(true) + "," + "A" + firstSlot.format(formatterForID) + docID + "," + firstSlot.format(formatter) + "," + docID + "," + docName + ", , , , , , , , "; //add space to avoid null data when retrieve data
+				if(!checkAppIDExist("A" + firstSlot.format(formatterForID) + docID)) writer.write(String.join(",", newFirstSlot) + "\n");
+				LocalDateTime secondSlot = LocalDateTime.of(updateDate, LocalTime.of(i, 30, 0));
+				String newSecondSlot = String.valueOf(true) + "," + "A" + secondSlot.format(formatterForID) + docID + "," + secondSlot.format(formatter) + "," + docID + "," + docName +", , , , , , , , "; //add space to avoid null data when retrieve data
+				if(!checkAppIDExist("A" + secondSlot.format(formatterForID) + docID)) writer.write(String.join(",", newSecondSlot) + "\n");
 			}
 	        writer.close();
 		} catch(IOException e) {
 			System.out.println("An error occurred.");
 	        e.printStackTrace();
 		}
+		sortFile();
 	}
 	
 	public void scheduleAppointment(String appTime, String doctorID, String doctorName, String patID, String patName, String purpose) {
@@ -528,17 +546,74 @@ public class Schedule {
 	public boolean checkAppIDExist(String appID){
 		List<String[]> data = getAllRows();
 		for(String[] row : data) {
-			// to check if apptID works
-//			System.out.println(appID);
-//			System.out.println(row[1]);
-//			System.out.println(row[1].equals(appID));
 			if(row[1].equals(appID)) return true;
 		}
 		return false;
 	}
-
-
-
+	
+	public void printAppointmentOfaDayForDoc(String date, String docID) {
+		
+		System.out.println("Below is the schedule for the day");
+		System.out.println("+" + "-".repeat(columnWidth) + "+" 
+                + "-".repeat(columnWidth) + "+" 
+                + "-".repeat(columnWidth) + "+" 
+                + "-".repeat(columnWidth) + "+"
+                + "-".repeat(columnWidth) + "+"
+                + "-".repeat(columnWidth) + "+"
+                + "-".repeat(columnWidth) + "+"
+                + "-".repeat(columnWidth) + "+");
+        
+        System.out.println("|" + formatCell("Appointment ID", columnWidth)
+        		+ "|" + formatCell("App Date and Time", columnWidth)
+        		+ "|" + formatCell("Doctor ID", columnWidth)
+        		+ "|" + formatCell("Doctor Name", columnWidth)
+        		+ "|" + formatCell("Patient ID", columnWidth)
+        		+ "|" + formatCell("Patient Name", columnWidth)
+        		+ "|" + formatCell("Purpose Of App", columnWidth)
+        		+ "|" + formatCell("Status Of App", columnWidth) + "|");
+        
+        System.out.println("+" + "-".repeat(columnWidth) + "+" 
+                + "-".repeat(columnWidth) + "+" 
+                + "-".repeat(columnWidth) + "+" 
+                + "-".repeat(columnWidth) + "+"
+                + "-".repeat(columnWidth) + "+"
+                + "-".repeat(columnWidth) + "+"
+                + "-".repeat(columnWidth) + "+"
+                + "-".repeat(columnWidth) + "+");
+		List<String[]> data = getAllRows();
+			for(String[] row : data) {
+				if(row[2].startsWith(date) && row[3].equals(docID)) {
+					System.out.println("|" + formatCell(row[1], columnWidth)
+					+ "|" + formatCell(row[2], columnWidth)
+		        		+ "|" + formatCell(row[3], columnWidth)
+		        		+ "|" + formatCell(row[4], columnWidth)
+		        		+ "|" + formatCell(row[5], columnWidth)
+		        		+ "|" + formatCell(row[6], columnWidth)
+		        		+ "|" + formatCell(row[7], columnWidth)
+		        		+ "|" + formatCell(row[8], columnWidth) + "|");
+				System.out.println("+" + "-".repeat(columnWidth) + "+" 
+		            	+ "-".repeat(columnWidth) + "+" 
+		            	+ "-".repeat(columnWidth) + "+" 
+		            	+ "-".repeat(columnWidth) + "+"
+		            	+ "-".repeat(columnWidth) + "+"
+		            	+ "-".repeat(columnWidth) + "+"
+		            	+ "-".repeat(columnWidth) + "+"
+		            	+ "-".repeat(columnWidth) + "+");
+				}
+			}
+	}
+	
+	public void sortFile() {
+		List<String[]> data = getAllRows();
+		// Sort data based on the value of row[2]
+		Collections.sort(data.subList(1, data.size()), new Comparator<String[]>() {
+		    @Override
+		    public int compare(String[] row1, String[] row2) {
+		        return row1[2].compareTo(row2[2]);
+		    }
+		});
+		overwriteCSV(data);
+	}
 	
 	public List<String[]> getAllRows() {
 		List<String[]> data = new ArrayList<>();
@@ -551,7 +626,8 @@ public class Schedule {
                 data.add(values);
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
+        		System.out.println("File is not created yet!!");
         }
 		return data;
 	}

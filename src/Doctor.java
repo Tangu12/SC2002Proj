@@ -1,7 +1,7 @@
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
-import java.util.Scanner;
 
 public class Doctor extends User {
     public Doctor(String name, String hospitalId, domain domain) {
@@ -20,7 +20,8 @@ public class Doctor extends User {
                     + "(3) Set your Unavailable Appointment Slots\n"
                     + "(4) View Appointment Outcome Records\n"
                     + "(5) Change the Appointment Status\n"
-                    + "(6) Exit");
+                    + "(6) Add your shift\n"
+                    + "(7) Exit");
 
             try {
                 choice = InputScanner.sc.nextInt();
@@ -69,18 +70,63 @@ public class Doctor extends User {
                         schedule.changeAppointmentStatus(appID, stat);
                         break;
                     case 6:
-                        System.out.println("Thank you for using our service!!");
+	                    	do {
+	                			System.out.println("Please enter your choice to update your shift for upcoming week: \n"
+	                					+ "(1) " + LocalDate.now() + "\n"
+	                					+ "(2) " + LocalDate.now().plusDays(1) + "\n"
+	                					+ "(3) " + LocalDate.now().plusDays(2) + "\n"
+	                					+ "(4) " + LocalDate.now().plusDays(3) + "\n"
+	                					+ "(5) " + LocalDate.now().plusDays(4) + "\n"
+	                					+ "(6) " + LocalDate.now().plusDays(5) + "\n"
+	                					+ "(7) " + LocalDate.now().plusDays(6) + "\n"
+	                					+ "(8) Exit");
+	                			choice = InputScanner.sc.nextInt();
+	                			
+	                			switch(choice) {
+	                				case 1: 
+	                					schedule.createAppointmentSlot(super.getHospitalId(), super.getName(), 0);
+	                					break;
+	                				case 2:
+	                					schedule.createAppointmentSlot(super.getHospitalId(), super.getName(), 1);
+	                					break;
+	                				case 3:
+	                					schedule.createAppointmentSlot(super.getHospitalId(), super.getName(), 2);
+	                					break;
+	                				case 4:
+	                					schedule.createAppointmentSlot(super.getHospitalId(), super.getName(), 3);
+	                					break;
+	                				case 5:
+	                					schedule.createAppointmentSlot(super.getHospitalId(), super.getName(), 4);
+	                					break;
+	                				case 6:
+	                					schedule.createAppointmentSlot(super.getHospitalId(), super.getName(), 5);
+	                					break;
+	                				case 7:
+	                					schedule.createAppointmentSlot(super.getHospitalId(), super.getName(), 6);
+	                					break;
+	                				case 8:
+	                					schedule.sortFile();
+	                					System.out.println("Quitting....");
+	                					break;
+	                				default:
+	                					System.out.println("Only enter available choices!!");
+	                					break;
+	                			}
+	                		} while(choice != 8);
                         break;
+                    case 7:
+                    		System.out.println("Thank you for using our service!!");
+                    		break;
                     default:
-                        System.out.println("Invalid input. Please enter a number between 1 and 5.");
+                        System.out.println("Invalid input. Please enter a number between 1 and 6.");
                         break;
                 }
             } catch (InputMismatchException e) {
-                System.out.println("Invalid input. Please enter a number between 1 and 5.");
+                System.out.println("Invalid input. Please enter a number between 1 and 6.");
                 InputScanner.sc.nextLine(); //
                 choice = -1;
             }
-        } while (choice != 6);
+        } while (choice != 7);
     }
 
 
