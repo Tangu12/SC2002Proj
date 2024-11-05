@@ -67,7 +67,7 @@ public class User {
 				InputScanner.sc.nextLine();
 			} catch (InputMismatchException e) {
 				System.out.println("Invalid input. Please enter 1 or 2: \n");
-				InputScanner.sc.nextLine(); // why..?
+				InputScanner.sc.nextLine();
 				continue;
 			}
 
@@ -138,7 +138,14 @@ public class User {
 						user = new Doctor("", inputID, domain);
 
 						// Look for name in staff file
-						user.setName("Doctor Name");
+						List<String> doctors = new ArrayList<>();
+						FileIO file = new FileIO("program_files/doctors.csv");
+						List<String[]> data = file.getAllRows();
+						for (String[] row : data) {
+							if (row[0].equalsIgnoreCase(inputID)) {
+								user.setName(row[1]);
+							}
+						}
 
 						user.setHospitalId(inputID);
 						user.setDomain(domain);
@@ -268,30 +275,6 @@ public class User {
 //		return user;
 
 
-
-
-	/*
-	* Terminal display:
-	*
-	*  if (User.getdomain == "Patient")
-	*
-	* Patients:
-	* 1. View Medical Record
-	* 2. Update Personal Information (Change Password inside?)
-	* 3. View Available Apppointment slots
-	*
-	*
-	*
-	* else if (User.getdomain == "Doctor")
-	*
-	* Doctor:
-	* 1. View Scheduled patients / Timetable
-	* 2. View Patient Medical Record
-	* 3. View Personal Schedule
-	* 4. Set availability for Appointments
-	* 5. etc.
-	*
-	* */
 
 	public static void homePage(User user) {
 		switch(user.getDomain()) {
