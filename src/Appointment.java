@@ -47,18 +47,26 @@ public class Appointment {
 	private String patientID;
 	private String patientName;
 	private purpose purposeOfAppointment;
+	private department appointmentDepartment;
 	private status statusOfAppointment;
 	private double costOfAppointment;
 	private paymentStatus paymentStatus;
 
 	
-	public Appointment(Boolean availability, String appointmentID, String time, String doctorID, String doctorName, String patientID, String patientName, String purposeOfAppointment, String statusOfAppointment) {
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+	public Appointment(Boolean availability, String appointmentID, String time, String doctorID, String doctorName, String patientID, String patientName, purpose purposeOfAppointment, department appointmentDepartment, status statusOfAppointment, double cost, paymentStatus Paymentstatus) {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
+		this.availability = availability;
 		this.appointmentID = appointmentID;
 		this.time = LocalDateTime.parse(time, formatter);
 		this.doctorID = doctorID;
 		this.doctorName = doctorName;
-		this.availability = true;
+		this.patientID = patientID;
+		this.patientName = patientName;
+		this.purposeOfAppointment = purposeOfAppointment;
+		this.appointmentDepartment = appointmentDepartment;
+		this.statusOfAppointment = statusOfAppointment;
+		this.costOfAppointment = cost;
+		this.paymentStatus = Paymentstatus;
 	}
 	
 	public String getAppID() {
@@ -87,6 +95,10 @@ public class Appointment {
 	
 	public purpose getPurposeOfApp() {
 		return this.purposeOfAppointment;
+	}
+
+	public department getAppointmentDepartment() {
+		return this.appointmentDepartment;
 	}
 	
 	public status getStatusOfApp() {
@@ -132,6 +144,10 @@ public class Appointment {
 	public void setPurposeOfApp(purpose purposeOfAppointment) {
 		this.purposeOfAppointment = purposeOfAppointment;
 	}
+
+	public void setDepartmentOfAppointment(department appointmentDepartment) {
+		this.appointmentDepartment = appointmentDepartment;
+	}
 	
 	public void setStatusOfApp(status statusOfAppointment) {
 		this.statusOfAppointment = statusOfAppointment;
@@ -144,4 +160,6 @@ public class Appointment {
 	public void setPaymentStatus(paymentStatus paymentStatus) {
 		this.paymentStatus = paymentStatus;
 	}
+
+
 }
