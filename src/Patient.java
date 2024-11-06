@@ -1,7 +1,7 @@
 import java.util.Scanner;
 
 public class Patient extends User {
-    public Patient(String name, String hospitalId,domain domain) {
+    public Patient(String name, String hospitalId,Domain domain) {
         super(name, hospitalId, domain);
     }
 

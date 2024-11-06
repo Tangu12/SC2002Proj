@@ -1,5 +1,5 @@
 public class Pharmacist extends User {
-    public Pharmacist(String name, String hospitalId, domain domain) {
+    public Pharmacist(String name, String hospitalId, Domain domain) {
         super(name, hospitalId, domain);
     }
     

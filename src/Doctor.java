@@ -3,7 +3,7 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Doctor extends User {
-    public Doctor(String name, String hospitalId, domain domain) {
+    public Doctor(String name, String hospitalId, Domain domain) {
         super(name, hospitalId, domain);
     }
 

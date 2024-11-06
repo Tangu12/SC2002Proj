@@ -5,7 +5,7 @@ public class Main {
         // User.changePassword("D001", "Johnny123");
     	Scanner sc = new Scanner(System.in);
     	User user;
-    	user = User.displayLoginInterface();// return domain of user
+    	user = User.welcomeScreenInterface();// return domain of user
         if (user == null) {
             return;
         }

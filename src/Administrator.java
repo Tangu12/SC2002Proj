@@ -1,5 +1,5 @@
 public class Administrator extends User {
-    public Administrator(String name, String hospitalId, domain domain) {
+    public Administrator(String name, String hospitalId, Domain domain) {
         super(name, hospitalId, domain);
     }
     public void homePage() {
