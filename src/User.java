@@ -249,90 +249,7 @@ public class User {
 		return null;
 	}
 
-//		System.out.print("(1) Please enter your password : ");
-//		System.out.print("(2) Forgot password : ");
-//		inputPassword = InputScanner.sc.nextLine().trim();
-//		successfulLogin = Credentials.verifyCredentials(inputID,inputPassword);
-
-//		if(!successfulLogin) {
-//			System.out.println("Wrong Password!");
-//			login_attempts++;
-//			if (login_attempts > 3) {
-//				System.out.println("Please change your password: ");
-//				// Ask security question, if fail kick out to main page
-//				String new_password = InputScanner.sc.nextLine().trim();
-//				changePassword(inputID,new_password);
-//			}
-//			}
-//		}
-//
-//		while(!successfulLogin);
-//		// Login Success
-//		// Check the User's domain from the xlxs file and Create the specific User type object (Patient, Doctor..)
-//		// if domain == "Patient", call Patient constructor
-//
-//		domain domain = null;
-//		User user = null;
-//
-//		switch(inputID.charAt(0)) {
-//			case ('A'):
-//				domain = domain.ADMINISTRATOR;
-//
-//				user = new Administrator("",inputID,domain);
-//
-//				// Look for name in staff file
-//				user.setName("Admin Name");
-//
-//				user.setHospitalId(inputID);
-//				user.setDomain(domain);
-//
-//				break;
-//			case ('D'):
-//				domain = domain.DOCTOR;
-//
-//				user = new Doctor("",inputID,domain);
-//
-//				// Look for name in staff file
-//				user.setName("Doctor Name");
-//
-//				user.setHospitalId(inputID);
-//				user.setDomain(domain);
-//				break;
-//			case ('P'):
-//				domain = domain.PATIENT;
-//
-//				user = new Patient("",inputID,domain);
-//
-//				// Look for name in patient file
-//				user.setName("Patient Name");
-//
-//				user.setHospitalId(inputID);
-//				user.setDomain(domain);
-//				break;
-//			case ('R'):
-//				domain = domain.PHARMACIST;
-//
-//				user = new Pharmacist("",inputID,domain);
-//
-//				// Look for name in staff file
-//				user.setName("Pharmacist Name");
-//
-//				user.setHospitalId(inputID);
-//				user.setDomain(domain);
-//				break;
-//		}
-//
-//		try {
-//			System.out.println("Login Successful...");
-//			System.out.println("Welcome "+user.name+ " !");
-//			System.out.println("Redirecting to "+user.domain+" main page...");
-//		}
-//		catch(Exception e) {
-//			e.printStackTrace();
-//		}
-//		return user;
-
-	public static void homePage(User user) {
+	public static boolean homePage(User user) {
 		switch(user.getDomain()) {
 			case PATIENT:
 				// Typecast user into patient
@@ -359,20 +276,20 @@ public class User {
 					Pharmacist pharmacist_user = (Pharmacist)user;
 					pharmacist_user.homePage();
 				}
-				
 				break;
 				
 			case ADMINISTRATOR:
 				// Typecast user into Admin
 				// display Administrator log in page
 				if(user instanceof Administrator) {
-				Administrator administrator_user = (Administrator)user;
-				administrator_user.homePage();
+					Administrator administrator_user = (Administrator)user;
+					administrator_user.homePage();
 				}
 				break;
 			default:
 				System.out.println("ERROR GETTING DOMAIN");
 		}
+		return false;
 	}
 
 	private static User createAccount() {
@@ -532,8 +449,6 @@ public class User {
 		}
 	}
 
-	
-
 	public String getName() {
 		return name;
 	}
@@ -541,8 +456,6 @@ public class User {
 	public String getHospitalId() {
 		return hospitalId;
 	}
-
-	// No get password as the password cannot be unencrypted
 
 	public Domain getDomain() {
 		return domain;
