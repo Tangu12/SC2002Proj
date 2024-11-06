@@ -59,8 +59,13 @@ public class User {
 			System.out.println("(2) Login as Existing User ");
 			System.out.println("(3) Exit System");
 
+			try {
 			choice = InputScanner.sc.nextInt();
-
+			}
+			catch(InputMismatchException e) {
+				choice = 0;
+			}
+			
 			switch (choice) {
 			case 1:
 				user = createAccount();
@@ -79,7 +84,8 @@ public class User {
 				}
 				break;
 			default:
-				System.out.println("Are you sure? Y/N");
+				InputScanner.sc.nextLine();
+				System.out.println("Are you sure you want to exit? Y/N");
 				quit_confirmation = InputScanner.sc.next().trim();
 
 				while (!quit_confirmation.equals("Y") && !quit_confirmation.equals("N")) {
