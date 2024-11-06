@@ -24,7 +24,7 @@ public class ScheduleApp {
 			sc.nextLine();
 			switch(choice) {
 				case 1:
-					schedule.createAppointmentSlot();
+					//schedule.createAppointmentSlot();
 					System.out.println("Appointment Slots are successfully created!!");
 					break;
 				case 2:
@@ -49,7 +49,7 @@ public class ScheduleApp {
 					else if (choicePur == 2) pur = purpose.Surgery;
 					else if (choicePur == 3) pur = purpose.Consultation;
 					else pur = purpose.Other;
-					schedule.scheduleAppointment(appID1, patID, patName, pur.name());
+					//schedule.scheduleAppointment(appID1, patID, patName, pur.name());
 					break;
 				case 3:
 					System.out.println("Enter the Appointment ID that you want to change: ");
@@ -85,12 +85,12 @@ public class ScheduleApp {
 				case 6:
 					System.out.println("Enter your Patient ID: ");
 					String patID2 = sc.nextLine();
-					schedule.viewScheduledAppointments(patID2);
+					//schedule.viewScheduledAppointments(patID2);
 					break;
 				case 7:
 					System.out.println("Enter your Patient ID: ");
 					String patID3 = sc.nextLine();
-					schedule.viewAppointmentOutcomeRecords(patID3);
+					//schedule.viewAppointmentOutcomeRecords(patID3);
 					break;
 				case 8:
 					System.out.println("Enter the appointment ID: ");

@@ -19,19 +19,19 @@ enum Domain {
 }
 
 public class User {
-	
+
 	public static final String PATIENT_PREFIX = "P";
-    public static final String DOCTOR_PREFIX = "D";
-    public static final String PHARMACIST_PREFIX = "R";
-    public static final String ADMIN_PREFIX = "A";
-	
+	public static final String DOCTOR_PREFIX = "D";
+	public static final String PHARMACIST_PREFIX = "R";
+	public static final String ADMIN_PREFIX = "A";
+
 	public static final int MAX_USERS = 999;
 
 	protected String name;
 	protected String hospitalId;
 	protected String password;
 	protected Domain domain;
-	
+
 	public User(String name, String hospitalId, Domain domain) {
 		this.name = name;
 		this.hospitalId = hospitalId;
@@ -195,7 +195,14 @@ public class User {
 					user = new Doctor("", inputID, domain);
 
 					// Look for name in staff file
-					user.setName("Doctor Name");
+					List<String> doctors = new ArrayList<>();
+					FileIO file = new FileIO("program_files/doctors.csv");
+					List<String[]> data = file.getAllRows();
+					for (String[] row : data) {
+						if (row[0].equalsIgnoreCase(inputID)) {
+							user.setName(row[1]);
+						}
+					}
 
 					user.setHospitalId(inputID);
 					user.setDomain(domain);
@@ -238,163 +245,295 @@ public class User {
 			}
 		} while (!successfulLogin && login_attempts < 3);
 		System.out.println("Login failed.");
+
 		return null;
 	}
 
+//		System.out.print("(1) Please enter your password : ");
+//		System.out.print("(2) Forgot password : ");
+//		inputPassword = InputScanner.sc.nextLine().trim();
+//		successfulLogin = Credentials.verifyCredentials(inputID,inputPassword);
+
+//		if(!successfulLogin) {
+//			System.out.println("Wrong Password!");
+//			login_attempts++;
+//			if (login_attempts > 3) {
+//				System.out.println("Please change your password: ");
+//				// Ask security question, if fail kick out to main page
+//				String new_password = InputScanner.sc.nextLine().trim();
+//				changePassword(inputID,new_password);
+//			}
+//			}
+//		}
+//
+//		while(!successfulLogin);
+//		// Login Success
+//		// Check the User's domain from the xlxs file and Create the specific User type object (Patient, Doctor..)
+//		// if domain == "Patient", call Patient constructor
+//
+//		domain domain = null;
+//		User user = null;
+//
+//		switch(inputID.charAt(0)) {
+//			case ('A'):
+//				domain = domain.ADMINISTRATOR;
+//
+//				user = new Administrator("",inputID,domain);
+//
+//				// Look for name in staff file
+//				user.setName("Admin Name");
+//
+//				user.setHospitalId(inputID);
+//				user.setDomain(domain);
+//
+//				break;
+//			case ('D'):
+//				domain = domain.DOCTOR;
+//
+//				user = new Doctor("",inputID,domain);
+//
+//				// Look for name in staff file
+//				user.setName("Doctor Name");
+//
+//				user.setHospitalId(inputID);
+//				user.setDomain(domain);
+//				break;
+//			case ('P'):
+//				domain = domain.PATIENT;
+//
+//				user = new Patient("",inputID,domain);
+//
+//				// Look for name in patient file
+//				user.setName("Patient Name");
+//
+//				user.setHospitalId(inputID);
+//				user.setDomain(domain);
+//				break;
+//			case ('R'):
+//				domain = domain.PHARMACIST;
+//
+//				user = new Pharmacist("",inputID,domain);
+//
+//				// Look for name in staff file
+//				user.setName("Pharmacist Name");
+//
+//				user.setHospitalId(inputID);
+//				user.setDomain(domain);
+//				break;
+//		}
+//
+//		try {
+//			System.out.println("Login Successful...");
+//			System.out.println("Welcome "+user.name+ " !");
+//			System.out.println("Redirecting to "+user.domain+" main page...");
+//		}
+//		catch(Exception e) {
+//			e.printStackTrace();
+//		}
+//		return user;
+
+	public static void homePage(User user) {
+		switch(user.getDomain()) {
+			case PATIENT:
+				// Typecast user into patient
+				// display Patient log in page
+				if(user instanceof Patient) {
+					Patient patient_user = (Patient)user;
+					patient_user.homePage();
+				}
+				break;
+			
+			case DOCTOR:
+				// Typecast user into Doctor
+				// display Doctor log in page
+				if(user instanceof Doctor) {
+					Doctor doctor_user = (Doctor)user;
+					doctor_user.homePage();
+				}
+				break;
+				
+			case PHARMACIST:
+				// Typecast user into Pharmacist
+				// Display Pharmacist log in page
+				if(user instanceof Pharmacist) {
+					Pharmacist pharmacist_user = (Pharmacist)user;
+					pharmacist_user.homePage();
+				}
+				
+				break;
+				
+			case ADMINISTRATOR:
+				// Typecast user into Admin
+				// display Administrator log in page
+				if(user instanceof Administrator) {
+				Administrator administrator_user = (Administrator)user;
+				administrator_user.homePage();
+				}
+				break;
+			default:
+				System.out.println("ERROR GETTING DOMAIN");
+		}
+		
+		
+		
+>>>>>>> b541ef8ba05f449884086e3695d6fd3e2a62287f
+	}
+
 	private static User createAccount() {
-	    int choice = 0;
-	    String choice_confirmation = "";
-	    boolean confirm_choice = false;
-	    Domain userDomain = null;
-	    User newUser = null;
+		int choice = 0;
+		String choice_confirmation = "";
+		boolean confirm_choice = false;
+		Domain userDomain = null;
+		User newUser = null;
 
-	    // Choose Domain
-	    do {
-	        System.out.println("Please Enter Your Domain : ");
-	        System.out.println("(1) Patient");
-	        System.out.println("(2) Doctor");
-	        System.out.println("(3) Pharmacist");
-	        System.out.println("(4) Administrator");
-	        
-	        try {
-	        choice = InputScanner.sc.nextInt();
-	        }
-	        catch(InputMismatchException e){
-	        	choice = 0;
-	        }
-	        InputScanner.sc.nextLine(); // Clear buffer
+		// Choose Domain
+		do {
+			System.out.println("Please Enter Your Domain : ");
+			System.out.println("(1) Patient");
+			System.out.println("(2) Doctor");
+			System.out.println("(3) Pharmacist");
+			System.out.println("(4) Administrator");
 
-	        switch (choice) {
-	            case 1:
-	                userDomain = Domain.PATIENT;
-	                System.out.println("You have selected 'Patient' as your option. Would you like to continue? (Y/N) -");
-	                break;
-	            case 2:
-	                userDomain = Domain.DOCTOR;
-	                System.out.println("You have selected 'Doctor' as your option. Would you like to continue? (Y/N) -");
-	                break;
-	            case 3:
-	                userDomain = Domain.PHARMACIST;
-	                System.out.println("You have selected 'Pharmacist' as your option. Would you like to continue? (Y/N) -");
-	                break;
-	            case 4:
-	                userDomain = Domain.ADMINISTRATOR;
-	                System.out.println("You have selected 'Administrator' as your option. Would you like to continue? (Y/N) -");
-	                break;
-	            default:
-	                System.out.println("Please enter a valid choice ");
-	                continue;
-	        }
+			try {
+				choice = InputScanner.sc.nextInt();
+			} catch (InputMismatchException e) {
+				choice = 0;
+			}
+			InputScanner.sc.nextLine(); // Clear buffer
 
-	        choice_confirmation = InputScanner.sc.next().trim();
-	        while (!choice_confirmation.equals("Y") && !choice_confirmation.equals("N")) {
-	            System.out.println("Please enter a valid choice");
-	            choice_confirmation = InputScanner.sc.next().trim();
-	        }
-	        confirm_choice = choice_confirmation.equals("Y");
+			switch (choice) {
+			case 1:
+				userDomain = Domain.PATIENT;
+				System.out.println("You have selected 'Patient' as your option. Would you like to continue? (Y/N) -");
+				break;
+			case 2:
+				userDomain = Domain.DOCTOR;
+				System.out.println("You have selected 'Doctor' as your option. Would you like to continue? (Y/N) -");
+				break;
+			case 3:
+				userDomain = Domain.PHARMACIST;
+				System.out
+						.println("You have selected 'Pharmacist' as your option. Would you like to continue? (Y/N) -");
+				break;
+			case 4:
+				userDomain = Domain.ADMINISTRATOR;
+				System.out.println(
+						"You have selected 'Administrator' as your option. Would you like to continue? (Y/N) -");
+				break;
+			default:
+				System.out.println("Please enter a valid choice ");
+				continue;
+			}
 
-	    } while (!confirm_choice);
+			choice_confirmation = InputScanner.sc.next().trim();
+			while (!choice_confirmation.equals("Y") && !choice_confirmation.equals("N")) {
+				System.out.println("Please enter a valid choice");
+				choice_confirmation = InputScanner.sc.next().trim();
+			}
+			confirm_choice = choice_confirmation.equals("Y");
 
-	    // Generate new username
-	    String newUsername = null;
+		} while (!confirm_choice);
+
+		// Generate new username
+		String newUsername = null;
 		try {
 			newUsername = Credentials.generateUsername(userDomain);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	    System.out.println("Your assigned Hospital ID will be: " + newUsername);
+		System.out.println("Your assigned Hospital ID will be: " + newUsername);
 
-	    // Get user details
-	    System.out.println("Please enter your full name: ");
-	    InputScanner.sc.nextLine(); // Clear buffer
-	    String fullName = InputScanner.sc.nextLine().trim();
-	    
-	    // Get password
-	    System.out.println("Please enter your password: ");
-	    String password = InputScanner.sc.nextLine().trim();
+		// Get user details
+		System.out.println("Please enter your full name: ");
+		InputScanner.sc.nextLine(); // Clear buffer
+		String fullName = InputScanner.sc.nextLine().trim();
 
-	    // Get security question and answer
-	    
-	    String securityQuestion = null;
-        
-        do {
-        	System.out.println("Please select a security question: ");
-    	    
-    	    System.out.println("(1) What is your Favourite Colour?");
-            System.out.println("(2) What is your Favourite Food?");
-            System.out.println("(3) What is your Favourite Subject?");
-            System.out.println("(4) What is your Favourite Show?");
-            
-		    try {
-		        choice = InputScanner.sc.nextInt();
-		    }
-		    
-		    catch(InputMismatchException e){
-		    	InputScanner.sc.nextLine();
-		    	choice = 0;
-		    }
-		    
-		    switch (choice) {
-		        case 1:
-		            securityQuestion = "What is your Favourite Colour?";
-		            break;
-		        case 2:
-		        	securityQuestion = "What is your Favourite Food?";
-		            break;
-		        case 3:
-		        	securityQuestion = "What is your Favourite Subject?";
-		            break;
-		        case 4:
-		        	securityQuestion = "What is your Favourite Show?";
-		            break;
-		        default:
-		            System.out.println("Please enter a valid choice");
-		            continue;
-		    }
-        }
-	    while(choice==0);
-	      
-	    System.out.println("Please enter the answer to your security question: ");
-	    InputScanner.sc.nextLine();
-	    String securityAnswer = InputScanner.sc.nextLine().trim();
+		// Get password
+		System.out.println("Please enter your password: ");
+		String password = InputScanner.sc.nextLine().trim();
 
-	    // Create appropriate user type based on domain
-	    switch(userDomain) {
-	        case PATIENT:
-	            newUser = new Patient(fullName, newUsername, userDomain);
-	            break;
-	        case DOCTOR:
-	            newUser = new Doctor(fullName, newUsername, userDomain);
-	            break;
-	        case PHARMACIST:
-	            newUser = new Pharmacist(fullName, newUsername, userDomain);
-	            break;
-	        case ADMINISTRATOR:
-	            newUser = new Administrator(fullName, newUsername, userDomain);
-	            break;
-	    }
+		// Get security question and answer
 
-	    // Generate salt and hash password
-	    try {
-	    	String workingDir = System.getProperty("user.dir");
+		String securityQuestion = null;
+
+		do {
+			System.out.println("Please select a security question: ");
+
+			System.out.println("(1) What is your Favourite Colour?");
+			System.out.println("(2) What is your Favourite Food?");
+			System.out.println("(3) What is your Favourite Subject?");
+			System.out.println("(4) What is your Favourite Show?");
+
+			try {
+				choice = InputScanner.sc.nextInt();
+			}
+
+			catch (InputMismatchException e) {
+				InputScanner.sc.nextLine();
+				choice = 0;
+			}
+
+			switch (choice) {
+			case 1:
+				securityQuestion = "What is your Favourite Colour?";
+				break;
+			case 2:
+				securityQuestion = "What is your Favourite Food?";
+				break;
+			case 3:
+				securityQuestion = "What is your Favourite Subject?";
+				break;
+			case 4:
+				securityQuestion = "What is your Favourite Show?";
+				break;
+			default:
+				System.out.println("Please enter a valid choice");
+				continue;
+			}
+		} while (choice == 0);
+
+		System.out.println("Please enter the answer to your security question: ");
+		InputScanner.sc.nextLine();
+		String securityAnswer = InputScanner.sc.nextLine().trim();
+
+		// Create appropriate user type based on domain
+		switch (userDomain) {
+		case PATIENT:
+			newUser = new Patient(fullName, newUsername, userDomain);
+			break;
+		case DOCTOR:
+			newUser = new Doctor(fullName, newUsername, userDomain);
+			break;
+		case PHARMACIST:
+			newUser = new Pharmacist(fullName, newUsername, userDomain);
+			break;
+		case ADMINISTRATOR:
+			newUser = new Administrator(fullName, newUsername, userDomain);
+			break;
+		}
+
+		// Generate salt and hash password
+		try {
+			String workingDir = System.getProperty("user.dir");
 			String credentialsPath = workingDir + "/program_files/" + Credentials.credentials;
-			
-	        String salt = Credentials.generateSalt();
-	        String hashedPassword = Credentials.hashPassword(password, salt);
-	        
-	        BufferedWriter writer = new BufferedWriter(new FileWriter(credentialsPath, true));
-	        
-	        writer.write(newUsername + "," + hashedPassword + "," + salt + "," + password + "," + securityQuestion + "," + securityAnswer);
-	        writer.newLine();
-	        writer.close();
-	        
-	        System.out.println("Account created successfully!");
-	        return newUser;
-	    } catch (Exception e) {
-	        System.out.println("Error creating account");
-	        return null;
-	    }
+
+			String salt = Credentials.generateSalt();
+			String hashedPassword = Credentials.hashPassword(password, salt);
+
+			BufferedWriter writer = new BufferedWriter(new FileWriter(credentialsPath, true));
+
+			writer.write(newUsername + "," + hashedPassword + "," + salt + "," + password + "," + securityQuestion + ","
+					+ securityAnswer);
+			writer.newLine();
+			writer.close();
+
+			System.out.println("Account created successfully!");
+			return newUser;
+		} catch (Exception e) {
+			System.out.println("Error creating account");
+			return null;
+		}
 	}
 
 	public static void homePage(User user) {

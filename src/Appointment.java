@@ -8,11 +8,26 @@ enum purpose {
 	Other
 	}
 
+enum department {
+	Cardiology,
+	Neurology,
+	Oncology,
+	Dermatology,
+	Endocrinology,
+	Gastroenterology,
+	Nephrology,
+	Pulmonology,
+	Rheumatology,
+	ObstetricsGynecology,
+	Others
+}
+
 enum status {
 	Confirmed,
 	Cancelled,
 	Completed,
-	Pending
+	Pending,
+	Unavailable
 }
 
 enum paymentStatus{
@@ -24,19 +39,20 @@ enum paymentStatus{
 }
 
 public class Appointment {
+	private Boolean availability;
 	private String appointmentID;
 	private LocalDateTime time;
-	private String patientID;
-	private String patientName;
 	private String doctorID;
 	private String doctorName;
+	private String patientID;
+	private String patientName;
 	private purpose purposeOfAppointment;
 	private status statusOfAppointment;
 	private double costOfAppointment;
 	private paymentStatus paymentStatus;
-	private boolean availability;
+
 	
-	public Appointment(String appointmentID, String time, String doctorID, String doctorName) {
+	public Appointment(Boolean availability, String appointmentID, String time, String doctorID, String doctorName, String patientID, String patientName, String purposeOfAppointment, String statusOfAppointment) {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
 		this.appointmentID = appointmentID;
 		this.time = LocalDateTime.parse(time, formatter);
@@ -127,5 +143,9 @@ public class Appointment {
 	
 	public void setPaymentStatus(paymentStatus paymentStatus) {
 		this.paymentStatus = paymentStatus;
+	}
+	
+	public void setAvail(boolean avail) {
+		this.availability = avail;
 	}
 }
