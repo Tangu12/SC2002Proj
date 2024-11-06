@@ -373,10 +373,6 @@ public class User {
 			default:
 				System.out.println("ERROR GETTING DOMAIN");
 		}
-		
-		
-		
->>>>>>> b541ef8ba05f449884086e3695d6fd3e2a62287f
 	}
 
 	private static User createAccount() {
@@ -536,49 +532,7 @@ public class User {
 		}
 	}
 
-	public static void homePage(User user) {
-		switch (user.getDomain()) {
-		case PATIENT:
-			// Typecast user into patient
-			// display Patient log in page
-			if (user instanceof Patient) {
-				Patient patient_user = (Patient) user;
-				patient_user.homePage();
-			}
-			break;
-
-		case DOCTOR:
-			// Typecast user into Doctor
-			// display Doctor log in page
-			if (user instanceof Doctor) {
-				Doctor doctor_user = (Doctor) user;
-				doctor_user.homePage();
-			}
-			break;
-
-		case PHARMACIST:
-			// Typecast user into Pharmacist
-			// Display Pharmacist log in page
-			if (user instanceof Pharmacist) {
-				Pharmacist pharmacist_user = (Pharmacist) user;
-				pharmacist_user.homePage();
-			}
-
-			break;
-
-		case ADMINISTRATOR:
-			// Typecast user into Admin
-			// display Administrator log in page
-			if (user instanceof Administrator) {
-				Administrator administrator_user = (Administrator) user;
-				administrator_user.homePage();
-			}
-			break;
-		default:
-			System.out.println("ERROR GETTING DOMAIN");
-		}
-
-	}
+	
 
 	public String getName() {
 		return name;
