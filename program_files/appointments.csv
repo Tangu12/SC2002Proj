@@ -1,4 +1,4 @@
-Availability,AppointmentID,TimeOfAppointment,DoctorID,DoctorName,PatientID,PatientName,PurposeOfAppointment,Department,StatusOfAppointment,Cost,PaymentStatus
+Availability,AppointmentID,TimeOfAppointment,DoctorID,DoctorName,PatientID,PatientName,PurposeOfAppointment,Department,StatusOfAppointment,Cost,PaymentStatus,AppointmentOutcomeRecord
 true,A202410280900,28-10-2024 09:00,D001,John Kayek,P001,Patient Name,Other,Others,Cancelled,0.0,Pending
 true,A202410280930,28-10-2024 09:30,D002,RyanGuy,P001,Patient Name,Other,Cardiology,Pending,0.0,Pending
 true,A202410281000,28-10-2024 10:00,D002,RyanGuy,P001,Patient Name,Other,Dermatology,Pending,0.0,Pending

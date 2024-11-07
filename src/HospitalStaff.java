@@ -40,7 +40,7 @@ public class HospitalStaff {
         int age = InputScanner.sc.nextInt();
 
         try {
-            domain domainRole = domain.valueOf(role.toUpperCase());
+            Domain domainRole = Domain.valueOf(role.toUpperCase());
             User newStaff;
             switch (domainRole) {
                 case DOCTOR -> {
@@ -100,7 +100,7 @@ public class HospitalStaff {
             User staff = staffToUpdate.get();
             staff.setName(newName);
             try {
-                domain newDomain = domain.valueOf(newRole.toUpperCase());
+                Domain newDomain = Domain.valueOf(newRole.toUpperCase());
                 staff.setDomain(newDomain);
                 System.out.println("Updated staff member: " + staff.getName() + " to role " + newDomain);
             } catch (IllegalArgumentException e) {

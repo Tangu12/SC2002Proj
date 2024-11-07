@@ -5,7 +5,7 @@ public class Administrator extends User {
 
     private MedicationInventory inventory;
 
-    public Administrator(String name, String hospitalId, domain domain, String gender, int age) {
+    public Administrator(String name, String hospitalId, Domain domain, String gender, int age) {
         super(name, hospitalId, domain, gender, age);
         this.inventory = MedicationInventory.getInstance();
     }

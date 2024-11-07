@@ -9,7 +9,7 @@ public class Pharmacist extends User {
     private MedicationInventory inventory; // Access to the medication inventory
 
     // Constructor to initialize the Pharmacist with name, hospital ID, and domain
-    public Pharmacist(String name, String hospitalId, domain domain, String gender, int age) {
+    public Pharmacist(String name, String hospitalId, Domain domain, String gender, int age) {
         super(name, hospitalId, domain, gender, age);
         this.prescriptions = new ArrayList<>();
         this.inventory = MedicationInventory.getInstance();

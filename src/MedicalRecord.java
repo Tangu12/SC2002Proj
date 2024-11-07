@@ -31,8 +31,6 @@ public class MedicalRecord {
     }
 
 
-
-
     public String getPatientId() {
         return patientId;
     }
@@ -165,7 +163,7 @@ public class MedicalRecord {
         }
     }
 
-    public void updatePersonalInformation() {
+    public static void updatePersonalInformation() {
         Scanner scanner = new Scanner(System.in);
 
         System.out.print("Enter Patient ID: ");
@@ -304,10 +302,7 @@ public class MedicalRecord {
     }
 
 
-
-
-    public void updateDiagnosis(String patientId, String diagnosis) {
-        Scanner scanner = new Scanner(System.in);
+    public static void updateDiagnosis(String patientId, String diagnosis) {
         String workingDir = System.getProperty("user.dir");
         String patientFilePath = workingDir + "/program_files/MedicalRecord.txt";
         List<String> updatedRecords = new ArrayList<>();
@@ -351,11 +346,7 @@ public class MedicalRecord {
         }
     }
 
-
-
-
-    public void updatePrescriptions(String patientId, String prescription) {
-        Scanner scanner = new Scanner(System.in);
+    public static void updatePrescriptions(String patientId, String prescription) {
         String workingDir = System.getProperty("user.dir");
         String patientFilePath = workingDir + "/program_files/MedicalRecord.txt";
         List<String> updatedRecords = new ArrayList<>();

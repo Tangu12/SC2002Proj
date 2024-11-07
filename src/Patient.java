@@ -1,10 +1,9 @@
-import java.sql.SQLOutput;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 
 public class Patient extends User {
-    public Patient(String name, String hospitalId, domain domain, String gender, int age) {
+    public Patient(String name, String hospitalId, Domain domain, String gender, int age) {
         super(name, hospitalId, domain, gender, age);
     }
 
@@ -16,22 +15,49 @@ public class Patient extends User {
 
         int choice;
         do {
+
+// Patient Menu:
+//● View Medical Record
+//● Update Personal Information
+//● View Available Appointment Slots
+//● Schedule an Appointment
+//● Reschedule an Appointment
+//● Cancel an Appointment
+//● View Scheduled Appointments
+//● View Past Appointment Outcome Records
+//● Logout
+
+
             System.out.println("Choose the number of function:\n"
-                    + "(1) Schedule Appointment\n"
-                    + "(2) Reschedule Appointment\n"
-                    + "(3) Cancel Appointment\n"
-                    + "(4) View your scheduled Appointments\n"
-                    + "(5) View your pending Appointments\n"
-                    + "(6) View Appointment Outcome Records\n"
-                    + "(7) Exit\n");
+                    + "(1) View Medical Record\n"
+                    + "(2) Update Personal Information\n"
+                    + "(3) View Available Appointment Slots\n"
+                    + "(4) Schedule an Appointment\n" // case 1
+                    + "(5) Reschedule an Appointment\n" // case 2
+                    + "(6) Cancel an Appointment\n" // case 3
+                    + "(7) View Scheduled Appointments\n" // case 4
+                    + "(8) View Past Appointment Outcome Records\n"
+                    + "(9) Exit\n");
+
+
             try {
                 choice = InputScanner.sc.nextInt();
                 InputScanner.sc.nextLine(); // Buffer
                 switch (choice) {
                     case 1:
-                        scheduleAppointment(appointmentList);
+                        MedicalRecord.viewMedicalRecord();
                         break;
                     case 2:
+                        MedicalRecord.updatePersonalInformation();
+                        break;
+                    case 3:
+                        // View available appointment slots
+                        viewAvailableAppointmentSlots(appointmentList);
+                        break;
+                    case 4:
+                        scheduleAppointment(appointmentList);
+                        break;
+                    case 5:
                         System.out.println("Enter the Appointment that you want to change: ");
                         String orgAppID = getAppIdFromTime(appointmentList);
                         if (!schedule.checkAppIDExist(orgAppID)) { // Keeping this?
@@ -40,35 +66,34 @@ public class Patient extends User {
                         }
                         scheduleAppointment(appointmentList);
                         break;
-//                        // Find name of doctor/doctorID and then print out all of its available timeslots
-//                        String orgDoctor = findDoctorFromApptID(orgAppID);
-//                        //String orgDoctorID = findDoctorID(orgDoctor);
-//                        String newAppTime = null;
-//                        while (newAppTime == null) newAppTime = selectionOfTimeSlot(orgDoctor);
-//                        String newAppId = getAppIdFromTime(newAppTime);
-//                        schedule.rescheduleAppointment(orgAppID, newAppId, this.getHospitalId());
-//                        break;
-                    case 3:
+                    case 6:
                         System.out.println("Enter the time slot that you want to cancel: ");
                         String oldAppID = getAppIdFromTime(appointmentList);
                         cancelAppointment(oldAppID, appointmentList);
                         break;
-                    case 4:
-                        //schedule.viewPatientScheduledAppointments(this.getHospitalId());
+                    case 7:
                         viewPatientScheduledAppointments(appointmentList);
                         break;
-                    case 5:
-                        //schedule.viewPatientPendingAppointments(this.getHospitalId());
-                        viewPatientPendingAppointments(appointmentList);
+                    case 8:
+                        // View Past Appointment Outcome Records
+                        viewPatientPastAppointmentOutcomeRecord(appointmentList);
                         break;
-                    case 6:
-                        schedule.viewPatientAppointmentOutcomeRecords(this.getHospitalId());
-                        break;
-                    case 7:
+                    case 9:
                         System.out.println("Thank you for using our service!!");
                         // Update file
                         updateAppointmentFile(appointmentList);
                         break;
+//                    case 8:
+//                        viewPatientPendingAppointments(appointmentList);
+//                        break;
+//                    case 9:
+//                        schedule.viewPatientAppointmentOutcomeRecords(this.getHospitalId());
+//                        break;
+//                    case 10:
+//                        System.out.println("Thank you for using our service!!");
+//                        // Update file
+//                        updateAppointmentFile(appointmentList);
+//                        break;
                     default:
                         System.out.println("Invalid input. Please enter a number between 1 and 6.");
                         break;
@@ -83,6 +108,16 @@ public class Patient extends User {
 
 
     // New functions for creating appointment objects
+    public void viewAvailableAppointmentSlots(ArrayList<Appointment> appointmentList) {
+        int i = 1;
+        for (Appointment appointments : appointmentList) {
+            if (appointments.getAvail()) {
+                System.out.println(i + ". Dr. " + appointments.getDocName() + " available for " + appointments.getPurposeOfApp() + " at " + appointments.getTimeOfApp());
+            }
+        }
+    }
+
+
     public void scheduleAppointment(ArrayList<Appointment> appointmentList) {
         try {
             DateTimeFormatter formatterForID = DateTimeFormatter.ofPattern("yyyyMMddHHmm");
@@ -134,7 +169,7 @@ public class Patient extends User {
             String doctorID = findDoctorID(prefDoctor);
             String appTime = null;
             while (appTime == null) appTime = selectionOfTimeSlot(prefDoctor, appointmentList);
-            Appointment newApp = new Appointment(false, "A" + appTime.format(String.valueOf(formatterForID)), appTime, doctorID, prefDoctor, this.getHospitalId(), this.getName(), pur, dept, status.Pending, 0, paymentStatus.Pending);
+            Appointment newApp = new Appointment(false, "A" + appTime.format(String.valueOf(formatterForID)), appTime, doctorID, prefDoctor, this.getHospitalId(), this.getName(), pur, dept, status.Pending, 0, paymentStatus.Pending, " ");
             appointmentList.add(newApp);
         } catch (Exception e) { // add this to cancel
             System.out.println("Not Scheduled");
@@ -247,6 +282,18 @@ public class Patient extends User {
         for (Appointment appointments : appointmentList) {
             if (Objects.equals(appointments.getPatID(), this.getHospitalId()) && appointments.getStatusOfApp() == status.Confirmed) {
                 System.out.println(i + ". " + appointments.getPurposeOfApp() + " at " + appointments.getTimeOfApp().format(formatter) + " with Dr. " + appointments.getDocName());
+                i++;
+            }
+        }
+    }
+
+
+    public void viewPatientPastAppointmentOutcomeRecord(ArrayList<Appointment> appointmentList) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
+        int i = 1;
+        for (Appointment appointments : appointmentList) {
+            if (Objects.equals(appointments.getPatID(), this.getHospitalId()) && appointments.getStatusOfApp() == status.Completed) {
+                System.out.println(i + ". " + appointments.getPurposeOfApp() + " at " + appointments.getTimeOfApp().format(formatter) + " with Dr. " + appointments.getDocName() + " had this feedback: " + appointments.getAppointOutcomeRecord());
                 i++;
             }
         }

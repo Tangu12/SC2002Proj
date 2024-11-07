@@ -51,9 +51,10 @@ public class Appointment {
 	private status statusOfAppointment;
 	private double costOfAppointment;
 	private paymentStatus paymentStatus;
+	private String appointOutcomeRecord;
 
 	
-	public Appointment(Boolean availability, String appointmentID, String time, String doctorID, String doctorName, String patientID, String patientName, purpose purposeOfAppointment, department appointmentDepartment, status statusOfAppointment, double cost, paymentStatus Paymentstatus) {
+	public Appointment(Boolean availability, String appointmentID, String time, String doctorID, String doctorName, String patientID, String patientName, purpose purposeOfAppointment, department appointmentDepartment, status statusOfAppointment, double cost, paymentStatus Paymentstatus, String appointmentOutcomeRecord) {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
 		this.availability = availability;
 		this.appointmentID = appointmentID;
@@ -67,8 +68,13 @@ public class Appointment {
 		this.statusOfAppointment = statusOfAppointment;
 		this.costOfAppointment = cost;
 		this.paymentStatus = Paymentstatus;
+		this.appointOutcomeRecord = appointmentOutcomeRecord;
 	}
-	
+
+	public boolean getAvail() {
+		return this.availability;
+	}
+
 	public String getAppID() {
 		return this.appointmentID;
 	}
@@ -113,8 +119,8 @@ public class Appointment {
 		return this.paymentStatus;
 	}
 	
-	public boolean getAvail() {
-		return this.availability;
+	public String getAppointOutcomeRecord() {
+		return this.appointOutcomeRecord;
 	}
 	
 	public void setAppID(String appID) {
@@ -161,5 +167,8 @@ public class Appointment {
 		this.paymentStatus = paymentStatus;
 	}
 
+	public void setAppointOutcomeRecord(String appointOutcomeRecord) {
+		this.appointOutcomeRecord = appointOutcomeRecord;
+	}
 
 }
