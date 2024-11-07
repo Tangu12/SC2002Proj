@@ -3,8 +3,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class Doctor extends User {
-    public Doctor(String name, String hospitalId, domain domain) {
-        super(name, hospitalId, domain);
+    public Doctor(String name, String hospitalId, domain domain, String gender, int age) {
+        super(name, hospitalId, domain, gender, age);
     }
 
     public void homePage() {

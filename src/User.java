@@ -18,13 +18,17 @@ public class User {
     protected String hospitalId;
     protected String password;
     protected domain domain;
+	protected String gender;
+	protected int age;
     
     
-    public User(String name, String hospitalId, domain domain) {
+    public User(String name, String hospitalId, domain domain, String gender ,int age) {
         this.name = name;
         this.hospitalId = hospitalId;
         // this.password = password;
         this.domain = domain;
+		this.gender = gender;
+		this.age = age;
     }
 
 
@@ -119,12 +123,15 @@ public class User {
 
 				domain domain = null;
 				User user = null;
+				String gender = " ";
+				int age = 0;
+
 
 				switch (inputID.charAt(0)) {
 					case ('A'):
 						domain = domain.ADMINISTRATOR;
 
-						user = new Administrator("", inputID, domain);
+						user = new Administrator("", inputID, domain, gender, age);
 
 						// Look for name in staff file
 						user.setName("Admin Name");
@@ -135,7 +142,7 @@ public class User {
 					case ('D'):
 						domain = domain.DOCTOR;
 
-						user = new Doctor("", inputID, domain);
+						user = new Doctor("", inputID,domain, gender, age);
 
 						// Look for name in staff file
 						List<String> doctors = new ArrayList<>();
@@ -153,7 +160,7 @@ public class User {
 					case ('P'):
 						domain = domain.PATIENT;
 
-						user = new Patient("", inputID, domain);
+						user = new Patient("", inputID, domain, gender, age);
 
 						// Look for name in patient file
 						user.setName("Patient Name");
@@ -164,7 +171,7 @@ public class User {
 					case ('R'):
 						domain = domain.PHARMACIST;
 
-						user = new Pharmacist("", inputID, domain);
+						user = new Pharmacist("", inputID, domain, gender, age);
 
 						// Look for name in staff file
 						user.setName("Pharmacist Name");
@@ -338,6 +345,15 @@ public class User {
 		return domain;
 	}
 
+	public String getGender() {
+		return gender;
+	}
+
+	public int getAge() {
+		return age;
+	}
+
+
 	public void setName(String name) {
 		this.name = name;
 	}
@@ -349,6 +365,16 @@ public class User {
 	public void setDomain(domain domain) {
 		this.domain = domain;
 	}
+
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
+
+	public void setAge(int age) {
+		this.age = age;
+	}
+
+
 
 	// What about other particulars to change, eg. Email, Name..?
 

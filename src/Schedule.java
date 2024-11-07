@@ -1,5 +1,7 @@
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -602,6 +604,111 @@ public class Schedule {
 			}
 		}
 	}
+
+	public void displayAppointmentList(List<String[]> appointments) {
+		if (appointments == null || appointments.isEmpty()) {
+			System.out.println("No appointments found.");
+			return;
+		}
+
+		int columnWidth = 20;
+
+		// Print table header
+		System.out.println("+" + "-".repeat(columnWidth) + "+" +
+				"-".repeat(columnWidth) + "+" + "-".repeat(columnWidth) + "+" +
+				"-".repeat(columnWidth) + "+" + "-".repeat(columnWidth) + "+" +
+				"-".repeat(columnWidth) + "+" + "-".repeat(columnWidth) + "+" +
+				"-".repeat(columnWidth) + "+" + "-".repeat(columnWidth) + "+" +
+				"-".repeat(columnWidth) + "+");
+
+		System.out.println("|" + formatCell("Appointment ID", columnWidth)
+				+ "|" + formatCell("App Date and Time", columnWidth)
+				+ "|" + formatCell("Doctor ID", columnWidth)
+				+ "|" + formatCell("Doctor Name", columnWidth)
+				+ "|" + formatCell("Patient ID", columnWidth)
+				+ "|" + formatCell("Patient Name", columnWidth)
+				+ "|" + formatCell("Purpose", columnWidth)
+				+ "|" + formatCell("Status", columnWidth)
+				+ "|" + formatCell("Cost", columnWidth)
+				+ "|" + formatCell("Payment Status", columnWidth) + "|");
+
+		for (String[] row : appointments) {
+			// Print the row content for debugging
+			System.out.println("Debug: " + String.join(",", row)); // Debug line
+
+			if (row.length < 11) {
+				System.out.println("Skipping row with insufficient data: " + String.join(",", row));
+				continue;
+			}
+
+			System.out.println("|" + formatCell(row[1], columnWidth)
+					+ "|" + formatCell(row[2], columnWidth)
+					+ "|" + formatCell(row[3], columnWidth)
+					+ "|" + formatCell(row[4], columnWidth)
+					+ "|" + formatCell(row[5], columnWidth)
+					+ "|" + formatCell(row[6], columnWidth)
+					+ "|" + formatCell(row[7], columnWidth)
+					+ "|" + formatCell(row[8], columnWidth)
+					+ "|" + formatCell(row[9], columnWidth)
+					+ "|" + formatCell(row[10], columnWidth) + "|");
+		}
+	}
+
+
+	public List<String[]> getAppointmentsByDoctorID(String doctorID) {
+		List<String[]> data = getAllRows();
+		List<String[]> filteredAppointments = new ArrayList<>();
+
+		for (String[] row : data) {
+			if (row.length > 3 && row[3].equals(doctorID)) {
+				filteredAppointments.add(row);
+			}
+		}
+
+		return filteredAppointments;
+	}
+
+	// Retrieve appointments by Patient ID
+	public List<String[]> getAppointmentsByPatientID(String patientID) {
+		List<String[]> data = getAllRows();
+		List<String[]> filteredAppointments = new ArrayList<>();
+
+		for (String[] row : data) {
+			if (row.length > 5 && row[5].equals(patientID)) {
+				filteredAppointments.add(row);
+			}
+		}
+
+		return filteredAppointments;
+	}
+
+	// Retrieve a single appointment by Appointment ID
+	public String[] getAppointmentByID(String appID) {
+		List<String[]> data = getAllRows();
+
+		for (String[] row : data) {
+			if (row.length > 1 && row[1].equals(appID)) {
+				return row;
+			}
+		}
+		return null;
+	}
+
+	// Retrieve appointments by Status
+	public List<String[]> getAppointmentsByStatus(String status) {
+		List<String[]> data = getAllRows();
+		List<String[]> filteredAppointments = new ArrayList<>();
+
+		for (String[] row : data) {
+			if (row.length > 8 && row[8].equalsIgnoreCase(status)) {
+				filteredAppointments.add(row);
+			}
+		}
+
+		return filteredAppointments;
+	}
+
+
 
 	public void sortFile() {
 		List<String[]> data = getAllRows();

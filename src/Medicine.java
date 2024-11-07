@@ -1,57 +1,60 @@
 public class Medicine {
-    private String nameOfMedicine;
+    private String name;
     private int currentStock;
-    private int lowStockLevelAlert;
+    private int lowStockAlert;
     private int requestAmount;
 
-    // Constructor
-    public Medicine(String nameOfMedicine, int currentStock, int lowStockLevelAlert) {
-        this.nameOfMedicine = nameOfMedicine;
+    public Medicine(String name, int currentStock, int lowStockAlert) {
+        this.name = name;
         this.currentStock = currentStock;
-        this.lowStockLevelAlert = lowStockLevelAlert;
-        this.requestAmount = 0;
+        this.lowStockAlert = lowStockAlert;
+        this.requestAmount = 0; // Default to no replenishment requested
     }
 
-    // Getters
-    public String getNameOfMedicine() {
-        return nameOfMedicine;
+    public String getName() {
+        return name;
     }
 
     public int getCurrentStock() {
         return currentStock;
     }
 
-    public int getLowStockLevelAlert() {
-        return lowStockLevelAlert;
+    public int getLowStockAlert() {
+        return lowStockAlert;
     }
 
     public int getRequestAmount() {
         return requestAmount;
     }
 
-    // Setters
     public void setCurrentStock(int newStock) {
         this.currentStock = newStock;
     }
-
-    public void setLowStockLevelAlert(int newAlertLevel) {
-        this.lowStockLevelAlert = newAlertLevel;
+    public void setLowStockAlert(int newAlert) {
+        this.lowStockAlert = newAlert;
+    }
+    public void setRequestAmount(int amount) {
+        this.requestAmount = amount;
     }
 
-    public void setRequestAmount(int requestAmount) {
-        this.requestAmount = requestAmount;
-    }
-
-    // Methods
     public void decrementStock(int amount) {
         if (amount <= currentStock) {
             currentStock -= amount;
-        } else {
-            System.out.println("Insufficient stock available.");
+        }
+        else {
+            System.out.println("Insufficient stock.");
         }
     }
 
     public boolean needsReplenishment() {
-        return currentStock <= lowStockLevelAlert;
+        return currentStock <= lowStockAlert;
+    }
+
+    @Override
+    public String toString() {
+        return "Name: " + name + ", Stock: " + currentStock +
+                ", Low Stock Alert: " + lowStockAlert +
+                ", Request Amount: " + requestAmount;
     }
 }
+

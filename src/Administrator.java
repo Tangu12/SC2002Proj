@@ -1,21 +1,177 @@
+import java.util.List;
+import java.util.ArrayList;
+
 public class Administrator extends User {
-    public Administrator(String name, String hospitalId, domain domain) {
-        super(name, hospitalId, domain);
+
+    private MedicationInventory inventory;
+
+    public Administrator(String name, String hospitalId, domain domain, String gender, int age) {
+        super(name, hospitalId, domain, gender, age);
+        this.inventory = MedicationInventory.getInstance();
     }
+
     public void homePage() {
         int choice;
-        System.out.println( "Choose the number of function:\n"
-                + "(1) Admin Placeholder1\n"
-                + "(2) Admin Placeholder2\n"  // Doctors should be able to do this too..?
-                + "(3) Admin Placeholder3\n"
-                + "(4) Admin Placeholder4\n"
-                + "(5) Admin Placeholder5\n"
-                + "(6) Admin Placeholder6\n"
-                + "(7) Exit");
-        choice = InputScanner.sc.nextInt();
+        do {
+            System.out.println("\nChoose the number of functions:\n"
+                    + "(1) View and Manage Hospital Staff\n"
+                    + "(2) View Appointment Details\n"
+                    + "(3) Manage Inventory System\n"
+                    + "(4) Logout");
 
-        switch(choice) {
+            choice = InputScanner.sc.nextInt();
+            InputScanner.sc.nextLine();
 
+            switch (choice) {
+                case 1 -> viewAndManageHospitalStaff();
+                case 2 -> viewAppointmentDetails();
+                case 3 -> manageInventorySystem();
+                case 4 -> System.out.println("Logging out.");
+                default -> System.out.println("Invalid choice, please try again.");
+            }
+        } while (choice != 4);
+    }
+
+    // Manage Hospital Staff
+    private void viewAndManageHospitalStaff() {
+        HospitalStaff hospitalStaff = HospitalStaff.getInstance();
+        int choice;
+
+        do {
+            System.out.println("\n--- Hospital Staff Management ---");
+            System.out.println("(1) Add Staff Member");
+            System.out.println("(2) Remove Staff Member");
+            System.out.println("(3) Update Staff Information");
+            System.out.println("(4) View All Staff");
+            System.out.println("(5) Return to Main Menu");
+
+            choice = InputScanner.sc.nextInt();
+            InputScanner.sc.nextLine();
+
+            switch (choice) {
+                case 1 -> hospitalStaff.addStaffMember();
+                case 2 -> hospitalStaff.removeStaffMember();
+                case 3 -> hospitalStaff.updateStaffMember();
+                case 4 -> hospitalStaff.displayAllStaff();
+                case 5 -> System.out.println("Returning to Main Menu.");
+                default -> System.out.println("Invalid choice, please try again.");
+            }
+        } while (choice != 5);
+    }
+
+    // View Appointment Details
+    private void viewAppointmentDetails() {
+        Schedule schedule = new Schedule();
+        int choice;
+
+        do {
+            System.out.println("\n--- View Appointment Details ---");
+            System.out.println("(1) View All Appointments");
+            System.out.println("(2) View Appointments by Status");
+            System.out.println("(3) Search by Appointment ID");
+            System.out.println("(4) Search by Patient ID");
+            System.out.println("(5) Search by Doctor ID");
+            System.out.println("(6) Return to Main Menu");
+
+            choice = InputScanner.sc.nextInt();
+            InputScanner.sc.nextLine();
+
+            switch (choice) {
+                case 1 -> schedule.displayAppointmentList(schedule.getAllRows());
+                case 2 -> viewAppointmentsByStatus(schedule);
+                case 3 -> searchAppointmentByID(schedule);
+                case 4 -> searchByPatientID(schedule);
+                case 5 -> searchByDoctorID(schedule);
+                case 6 -> System.out.println("Returning to Main Menu.");
+                default -> System.out.println("Invalid choice, please try again.");
+            }
+        } while (choice != 6);
+    }
+
+    private void viewAppointmentsByStatus(Schedule schedule) {
+        System.out.println("Choose appointment status to filter by:");
+        System.out.println("(1) Confirmed");
+        System.out.println("(2) Pending");
+        System.out.println("(3) Completed");
+        System.out.println("(4) Cancelled");
+
+        int statusChoice = InputScanner.sc.nextInt();
+        InputScanner.sc.nextLine();
+
+        String status;
+        switch (statusChoice) {
+            case 1 -> status = "Confirmed";
+            case 2 -> status = "Pending";
+            case 3 -> status = "Completed";
+            case 4 -> status = "Cancelled";
+            default -> {
+                System.out.println("Invalid status choice.");
+                return;
+            }
         }
+
+        List<String[]> filteredAppointments = schedule.getAppointmentsByStatus(status);
+        schedule.displayAppointmentList(filteredAppointments);
+    }
+
+    private void searchAppointmentByID(Schedule schedule) {
+        System.out.println("Enter the Appointment ID:");
+        String appointmentID = InputScanner.sc.nextLine();
+
+        String[] appointment = schedule.getAppointmentByID(appointmentID);
+        if (appointment != null) {
+            List<String[]> singleAppointmentList = new ArrayList<>();
+            singleAppointmentList.add(appointment);
+            schedule.displayAppointmentList(singleAppointmentList);
+        } else {
+            System.out.println("Appointment ID not found.");
+        }
+    }
+
+    private void searchByPatientID(Schedule schedule) {
+        System.out.println("Enter the Patient ID:");
+        String patientID = InputScanner.sc.nextLine();
+
+        List<String[]> patientAppointments = schedule.getAppointmentsByPatientID(patientID);
+        schedule.displayAppointmentList(patientAppointments);
+    }
+
+    private void searchByDoctorID(Schedule schedule) {
+        System.out.println("Enter the Doctor ID:");
+        String doctorID = InputScanner.sc.nextLine();
+
+        List<String[]> doctorAppointments = schedule.getAppointmentsByDoctorID(doctorID);
+        schedule.displayAppointmentList(doctorAppointments);
+    }
+
+    // Manage Inventory System Menu
+    private void manageInventorySystem() {
+        int choice;
+        do {
+            System.out.println("\n--- Medication Inventory System ---");
+            System.out.println("(1) View Inventory");
+            System.out.println("(2) Add Medicine");
+            System.out.println("(3) Remove Medicine");
+            System.out.println("(4) Update Medicine");
+            System.out.println("(5) Use Medicine");
+            System.out.println("(6) Check Inventory for Low Stock");
+            System.out.println("(7) Process Replenishment Requests");
+            System.out.println("(8) Return to Main Menu");
+
+            choice = InputScanner.sc.nextInt();
+            InputScanner.sc.nextLine();
+
+            switch (choice) {
+                case 1 -> inventory.viewInventory();
+                case 2 -> inventory.addOrIncrementMedicine();
+                case 3 -> inventory.removeMedicine();
+                case 4 -> inventory.updateMedicine();
+                case 5 -> inventory.useMedicine();
+                case 6 -> inventory.checkInventory();
+                case 7 -> inventory.processReplenishmentRequests();
+                case 8 -> System.out.println("Returning to Main Menu.");
+                default -> System.out.println("Invalid choice.");
+            }
+        } while (choice != 8);
     }
 }

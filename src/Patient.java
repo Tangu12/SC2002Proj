@@ -4,8 +4,8 @@ import java.util.*;
 
 
 public class Patient extends User {
-    public Patient(String name, String hospitalId, domain domain) {
-        super(name, hospitalId, domain);
+    public Patient(String name, String hospitalId, domain domain, String gender, int age) {
+        super(name, hospitalId, domain, gender, age);
     }
 
     public void homePage() {
@@ -83,132 +83,6 @@ public class Patient extends User {
 
 
     // New functions for creating appointment objects
-//    public void loadAppointments(ArrayList<Appointment> appointmentList) {
-//        Schedule schedule = new Schedule();
-//        List<String[]> data = schedule.getAllRows();
-//
-//        for (int i = 0; i < data.size(); i++) {
-//            String[] row = data.get(i);
-//
-//            // Skip the header row or empty rows
-//            if (i == 0 || row.length == 0) {
-//                continue;
-//            }
-//
-//            double appCost = 0.0;
-//            try {
-//                appCost = Double.parseDouble(row[10]);
-//            } catch (NumberFormatException e) {
-//                System.out.println("Invalid cost value in row " + i + ": " + row[10]);
-//                continue;
-//            }
-//
-//            // Determine purpose
-//            purpose appPur;
-//            switch (row[7]) {
-//                case "CheckUp":
-//                    appPur = purpose.CheckUp;
-//                    break;
-//                case "Surgery":
-//                    appPur = purpose.Surgery;
-//                    break;
-//                case "Consultation":
-//                    appPur = purpose.Consultation;
-//                    break;
-//                default:
-//                    appPur = purpose.Other;
-//            }
-//
-//            // Determine department (fix duplicates and typos)
-//            department appDept;
-//            switch (row[8]) {
-//                case "Cardiology":
-//                    appDept = department.Cardiology;
-//                    break;
-//                case "Neurology":
-//                    appDept = department.Neurology;
-//                    break;
-//                case "Oncology":
-//                    appDept = department.Oncology;
-//                    break;
-//                case "Dermatology":
-//                    appDept = department.Dermatology;
-//                    break;
-//                case "Endocrinology":
-//                    appDept = department.Endocrinology;
-//                    break;
-//                case "Gastroenterology":
-//                    appDept = department.Gastroenterology;
-//                    break;
-//                case "Nephrology":
-//                    appDept = department.Nephrology;
-//                    break;
-//                case "Pulmonology":
-//                    appDept = department.Pulmonology;
-//                    break;
-//                case "Rheumatology":
-//                    appDept = department.Rheumatology;
-//                    break;
-//                case "ObstetricsGynecology":
-//                    appDept = department.ObstetricsGynecology;
-//                    break;
-//                default:
-//                    appDept = department.Others;
-//            }
-//
-//            // Determine status
-//            status appStatus;
-//            switch (row[9]) {
-//                case "Confirmed":
-//                    appStatus = status.Confirmed;
-//                    break;
-//                case "Cancelled":
-//                    appStatus = status.Cancelled;
-//                    break;
-//                case "Completed":
-//                    appStatus = status.Completed;
-//                    break;
-//                case "Pending":
-//                    appStatus = status.Pending;
-//                    break;
-//                case "Unavailable":
-//                    appStatus = status.Unavailable;
-//                    break;
-//                default:
-//                    appStatus = null;
-//            }
-//
-//            // Determine payment status
-//            paymentStatus payStat;
-//            switch (row[11]) {
-//                case "Prepaid":
-//                    payStat = paymentStatus.Prepaid;
-//                    break;
-//                case "Pending":
-//                    payStat = paymentStatus.Pending;
-//                    break;
-//                case "Completed":
-//                    payStat = paymentStatus.Completed;
-//                    break;
-//                case "Overdued":
-//                    payStat = paymentStatus.Overdued;
-//                    break;
-//                case "Cancelled":
-//                    payStat = paymentStatus.Cancelled;
-//                    break;
-//                default:
-//                    payStat = null;
-//            }
-//
-//            // Create and add the Appointment
-//            Appointment apps = new Appointment(Boolean.valueOf(row[0]), row[1], row[2], row[3], row[4], row[5], row[6],
-//                    appPur, appDept, appStatus, appCost, payStat);
-//            appointmentList.add(apps);
-//        }
-//        System.out.println(appointmentList); // debugging
-//    }
-
-
     public void scheduleAppointment(ArrayList<Appointment> appointmentList) {
         try {
             DateTimeFormatter formatterForID = DateTimeFormatter.ofPattern("yyyyMMddHHmm");
