@@ -1,5 +1,6 @@
 package Boundary;
 
+import Controllers.AccountManager;
 import Services.InputService;
 
 public class WelcomeUI {
@@ -23,10 +24,9 @@ public class WelcomeUI {
             while (true) {
                 int choice = InputService.inputInteger();
                 switch (choice) {
-
-//                  case 1 -> Log in as new User
+                    case 1 -> AccountManager.addUser();
                     case 2 -> LoginUI.loginUI();
-//                  case 3 -> ExitPage.exitPage();
+                    case 3 -> LogoutUI.logoutUI();
                     default -> System.out.println("Invalid choice. Please try again.");
                 }
             }

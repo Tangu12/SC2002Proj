@@ -6,11 +6,11 @@ import Services.PasswordService;
 public class ForgotPasswordUI {
     public static void askToRetry() {
         System.out.println("Wrong Password!");
-
     }
 
     public static void forgotPassword(String inputID) {
         System.out.println("To change your password, please answer this security question: ");
+        int sqAttenpts = 0;
         if (PasswordService.askSecurityQuestion(inputID)) {
             System.out.println("Enter your new password: ");
             String newPassword = InputService.inputString();

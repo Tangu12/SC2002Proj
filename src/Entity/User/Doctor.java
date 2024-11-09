@@ -3,6 +3,9 @@ package Entity.User;
 import Entity.Enums.Department;
 import Entity.Enums.Domain;
 import Entity.Enums.Gender;
+import Entity.MedicalRecord;
+
+import java.util.ArrayList;
 
 /*
  * This is the Doctor object, the doctor has a new attribute which is the department (eg neurological department)
@@ -14,10 +17,12 @@ public class Doctor implements IUser{
     String name;
     int age;
     Gender gender;
-    Domain domain;
+    Domain domain = Domain.DOCTOR;
 
     // Add more attributes as needed
     Department department;
+
+    ArrayList<Patient> doctorPatients;
 
     // Getters
     @Override
@@ -47,6 +52,8 @@ public class Doctor implements IUser{
 
     public Department getDepartment() {return this.department;}
 
+    public ArrayList<Patient> getDoctorPatient() {return this.doctorPatients; }
+
     // Setters
     @Override
     public void setUserId(String userId) {
@@ -74,4 +81,6 @@ public class Doctor implements IUser{
     }
 
     public void setDepartment(Department department) {this.department = department;}
+
+    public void setDoctorPatients(ArrayList<Patient> doctorPatients) {this.doctorPatients = doctorPatients;}
 }

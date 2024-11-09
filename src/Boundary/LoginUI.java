@@ -16,7 +16,7 @@ public class LoginUI {
         do {
             System.out.print("Please enter your unique Hospital ID : ");
             inputID = InputService.inputString();
-            validUserID = true; // UserFinderService to check whether hospitalID is valid?
+            validUserID = true; // function to check valid ID
             if (!validUserID) {
                 System.out.println("User does not exist!");
             }
@@ -33,8 +33,11 @@ public class LoginUI {
                         System.out.print("Password : \n");
                         inputPassword = InputService.inputString();
                         LoginController.login(inputID, inputPassword);
+                        login_attempts++;
                     case 2:
+
                         ForgotPasswordUI.forgotPassword(inputID);
+                        login_attempts++;
                 }
             } catch (Exception e) {
                 System.out.println("Invalid Entry. Enter 1 or 2");

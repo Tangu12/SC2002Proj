@@ -3,8 +3,18 @@ package Controllers;
 import Boundary.ForgotPasswordUI;
 import Services.PasswordService;
 
+// Import credentials Service
+
+
+
+
 public class LoginController {
+
+
     public static void login(String hospitalID, String password) {
+
+        int login_attempts = 0;
+
         if (PasswordService.checkPassword(hospitalID, password)) {
 
             // Dependency Injection? -> instead of instantiating a new User, use a constructor and getters and setters

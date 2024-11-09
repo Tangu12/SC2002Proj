@@ -11,7 +11,7 @@ public class Administrator implements IUser {
     String name;
     int age;
     Gender gender;
-    Domain domain;
+    Domain domain = Domain.ADMINISTRATOR;
 
     // Add more attributes as needed
     ArrayList<MedicalInventory> medicalInventory;

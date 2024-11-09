@@ -23,9 +23,8 @@ public class PasswordService {
 
 
     public static boolean askSecurityQuestion(String inputID){
-        int i = 0;
         boolean securitycheck = false;
-        //Find User in credentials and ask the security qns
+        //UserFinder and ask the security qns
         // if wrong answer, increase counter, ask again until i = 3 (while loop)
         System.out.println("Wrong answer. Please try again: ");
 

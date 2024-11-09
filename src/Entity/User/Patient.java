@@ -14,7 +14,7 @@ public class Patient implements IUser{
     String name;
     int age;
     Gender gender;
-    Domain domain;
+    Domain domain = Domain.PATIENT;
 
     // Add more attributes as needed
     ArrayList<MedicalRecord> medicalHistory;
