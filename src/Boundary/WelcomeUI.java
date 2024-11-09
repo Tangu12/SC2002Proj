@@ -25,7 +25,7 @@ public class WelcomeUI {
                 switch (choice) {
 
 //                  case 1 -> Log in as new User
-                    case 2 -> LoginUI.loginUI();
+                    //case 2 -> LoginUI.loginUI();
 //                  case 3 -> ExitPage.exitPage();
                     default -> System.out.println("Invalid choice. Please try again.");
                 }

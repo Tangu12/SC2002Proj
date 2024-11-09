@@ -7,10 +7,23 @@ public class CredentialsRepository implements IRepository {
         this.path = path;
     }
 
-    public void createRecord(){
+    @Override
+    public void createRecord(Object record) {
 
     }
-    public void readRecord(){}
-    public void updateRecord(){}
-    public void deleteRecord(){}
+
+    @Override
+    public Object readRecord(Object identifier) {
+        return null;
+    }
+
+    @Override
+    public void updateRecord(Object record) {
+
+    }
+
+    @Override
+    public void deleteRecord(Object record) {
+
+    }
 }

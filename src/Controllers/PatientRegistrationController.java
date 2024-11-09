@@ -1,6 +1,6 @@
 package Controllers;
 
-public class RegistrationController {
+public class PatientRegistrationController {
     public static void registerUser(){
 
 

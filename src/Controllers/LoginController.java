@@ -4,6 +4,7 @@ import Boundary.ForgotPasswordUI;
 import Services.PasswordService;
 
 public class LoginController {
+    /*
     public static void login(String hospitalID, String password) {
         if (PasswordService.checkPassword(hospitalID, password)) {
 
@@ -12,7 +13,7 @@ public class LoginController {
             // AccountManager creates user
 
             switch(user.getDomain()) {
-                // case PATIENT-> PatientMainPage.patientMainPage
+                //case PATIENT-> PatientMainPage.patientMainPage
                 break;
 
                 // case DOCTOR-> DoctorMainPage.doctorMainPage
@@ -61,4 +62,5 @@ public class LoginController {
 
 
     }
+     */
 }
