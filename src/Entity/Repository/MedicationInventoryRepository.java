@@ -188,6 +188,9 @@ public class MedicationInventoryRepository implements IRepository<Medicine,Strin
 
     }
 
+    /*
+    Returns all medicine in the file in an ArrayList
+    * */
     public ArrayList<Medicine> getAllMedicine(){
         ArrayList<Medicine> inventory = new ArrayList<>();;
 
@@ -217,4 +220,24 @@ public class MedicationInventoryRepository implements IRepository<Medicine,Strin
         return inventory;
     }
 
+    /*
+    Overwrites the file and stores the inventory List
+    */
+    public void saveInventoryToFile(ArrayList<Medicine> inventory){
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(path))) {
+            writer.write("Medicine Name,Current Stock,Low Stock Alert,Request Amount");
+            writer.newLine();
+
+            for (Medicine medicine : inventory) {
+                writer.write(medicine.getNameOfMedicine() + "," +
+                        medicine.getCurrentStock() + "," +
+                        medicine.getLowStockLevelAlert() + "," +
+                        medicine.getRequestAmount());
+                writer.newLine();
+            }
+        } catch (IOException e) {
+            System.out.println("Error saving inventory");
+            e.printStackTrace();
+        }
+    }
 }
