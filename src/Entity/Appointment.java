@@ -46,16 +46,12 @@ public class Appointment {
     private purpose purposeOfAppointment;
     private department appointmentDepartment;
     private status statusOfAppointment;
-    private double costOfAppointment;
-    private paymentStatus paymentStatus;
     private String appointOutcomeRecord;
 
 
 
 
-
-
-    public Appointment(Boolean availability, String appointmentID, String time, String doctorID, String doctorName, String patientID, String patientName, purpose purposeOfAppointment, department appointmentDepartment, status statusOfAppointment, double cost, paymentStatus Paymentstatus, String appointmentOutcomeRecord) {
+    public Appointment(Boolean availability, String appointmentID, String time, String doctorID, String doctorName, String patientID, String patientName, purpose purposeOfAppointment, department appointmentDepartment, status statusOfAppointment, String appointmentOutcomeRecord) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
         this.availability = availability;
         this.appointmentID = appointmentID;
@@ -67,8 +63,6 @@ public class Appointment {
         this.purposeOfAppointment = purposeOfAppointment;
         this.appointmentDepartment = appointmentDepartment;
         this.statusOfAppointment = statusOfAppointment;
-        this.costOfAppointment = cost;
-        this.paymentStatus = Paymentstatus;
         this.appointOutcomeRecord = appointmentOutcomeRecord;
     }
 
@@ -112,14 +106,6 @@ public class Appointment {
         return this.statusOfAppointment;
     }
 
-    public double getCostOfApp() {
-        return this.costOfAppointment;
-    }
-
-    public paymentStatus getPaymentStatus() {
-        return this.paymentStatus;
-    }
-
     public String getAppointOutcomeRecord() {
         return this.appointOutcomeRecord;
     }
@@ -158,14 +144,6 @@ public class Appointment {
 
     public void setStatusOfApp(status statusOfAppointment) {
         this.statusOfAppointment = statusOfAppointment;
-    }
-
-    public void setCostOfApp(double costOfAppointment) {
-        this.costOfAppointment = costOfAppointment;
-    }
-
-    public void setPaymentStatus(paymentStatus paymentStatus) {
-        this.paymentStatus = paymentStatus;
     }
 
     public void setAppointOutcomeRecord(String appointOutcomeRecord) {

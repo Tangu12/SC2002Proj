@@ -19,7 +19,7 @@ public class MedicationInventoryRepository implements IRepository<Medicine,Strin
     @Override
     public void createRecord(Medicine record) {
 
-        if(readRecord(record.getNameOfMedicine()) == null) {
+        if(readRecord(record.getNameOfMedicine()) != null) {
             System.out.println("Error!! Medicine already exists !!");
             return;
         }
