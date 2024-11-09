@@ -1,0 +1,9 @@
+Availability,AppointmentID,TimeOfAppointment,DoctorID,DoctorName,PatientID,PatientName,PurposeOfAppointment,Department,StatusOfAppointment,Cost,PaymentStatus,AppointmentOutcomeRecord
+true,A202410280900,28-10-2024 09:00,D001,John Kayek,P001,Patient Name,Other,Others,Cancelled,0.0,Pending
+true,A202410280930,28-10-2024 09:30,D002,RyanGuy,P001,Patient Name,Other,Cardiology,Pending,0.0,Pending
+true,A202410281000,28-10-2024 10:00,D002,RyanGuy,P001,Patient Name,Other,Dermatology,Pending,0.0,Pending
+true,A202410281030,28-10-2024 10:30,D001,John Kayek,P001,Patient Name,Other,Others,Confirmed,0.0,Pending
+true,A202410281100,28-10-2024 11:00,D004,Dorcas,P001,Patient Name,CheckUp,Neurology,Confirmed,0.0,Pending
+true,A202410281130,28-10-2024 11:30,D003,Min,P001,Patient Name,CheckUp,Oncology,Confirmed,0.0,Pending
+true,A202410281200,28-10-2024 12:00,D005,Hung,P001,Patient Name,CheckUp,Neurology,Confirmed,0.0,Pending
+true,A202410281230,28-10-2024 12:30,D002,RyanGuy,P001,Patient Name,Other,Cardiology,Pending,0.0,Pending
