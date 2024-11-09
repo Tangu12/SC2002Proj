@@ -82,4 +82,9 @@ public class Patient implements IUser{
     public void addMedicalHistory(MedicalRecord medicalRecord){
         this.medicalHistory.add(medicalRecord);
     }
+
+    public void updateMedicalHistory(MedicalRecord medicalRecord){
+        // uses medical history repository
+    }
+
 }

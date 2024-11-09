@@ -1,6 +1,8 @@
 package Boundary;
 
-public class RegistrationUI {
+public class PatientRegistrationUI {
+    /*
+}
     public static void registrationUI() {
         int choice = 0;
         String choice_confirmation = "";
@@ -120,4 +122,5 @@ public class RegistrationUI {
         }
 
     }
+    */
 }

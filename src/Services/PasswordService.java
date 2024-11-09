@@ -7,7 +7,7 @@ public class PasswordService {
         // Check if password column is correct,
         // if yes, flag = True
         // if no, flag = false
-
+        return successfulLogin;
     }
 
 

@@ -1,8 +1,10 @@
 package Entity.Repository;
 
-public interface IRepository {
-    public void createRecord();
-    public void readRecord();
-    public void updateRecord();
-    public void deleteRecord();
+import Entity.Medicine;
+
+public interface IRepository<T,U> {
+    void createRecord(T record);
+    T readRecord(U identifier);  // This will return a generic type
+    void updateRecord(T record);
+    void deleteRecord(T record);
 }

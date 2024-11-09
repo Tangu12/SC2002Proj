@@ -6,6 +6,7 @@ import Services.PasswordService;
 
 public class LoginUI {
     public static void loginUI() {
+        /*
         int choice = 0;
         String inputID;
         String inputPassword;
@@ -43,7 +44,7 @@ public class LoginUI {
                 System.out.println("Invalid Entry. Enter 1 or 2");
             }
         } while(login_attempts < 3);
-
+*/
 
 //                        PasswordService.checkPassword(); // Should return a Bool and then continue?
 //                        if (!successfulLogin) {

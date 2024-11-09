@@ -6,8 +6,24 @@ public class PatientDataRepository implements IRepository{
     public PatientDataRepository(String path) {
         this.path = path;
     }
-    public void createRecord(){}
-    public void readRecord(){}
-    public void updateRecord(){}
-    public void deleteRecord(){}
+
+    @Override
+    public void createRecord(Object record) {
+
+    }
+
+    @Override
+    public Object readRecord(Object identifier) {
+        return null;
+    }
+
+    @Override
+    public void updateRecord(Object record) {
+
+    }
+
+    @Override
+    public void deleteRecord(Object record) {
+
+    }
 }
