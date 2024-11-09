@@ -1,17 +1,22 @@
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 
 public class Patient extends User {
+	
+	private static int columnWidth = 20;
+	private static ArrayList<String[]> patientList = new ArrayList<>();
+	private static String FILE_NAME = "program_files/patients.csv";
+	
     public Patient(String name, String hospitalId, Domain domain, String gender, int age) {
         super(name, hospitalId, domain, gender, age);
     }
 
     public void homePage() {
         Schedule schedule = new Schedule();
-        ArrayList<Appointment> appointmentList = new ArrayList<>();
-
-        loadAppointments(appointmentList);
 
         int choice;
         do {
@@ -52,36 +57,38 @@ public class Patient extends User {
                         break;
                     case 3:
                         // View available appointment slots
-                        viewAvailableAppointmentSlots(appointmentList);
+                        viewAvailableAppointmentSlots(Schedule.getAppointmentList());
                         break;
                     case 4:
-                        scheduleAppointment(appointmentList);
+                        scheduleAppointment();
                         break;
                     case 5:
                         System.out.println("Enter the Appointment that you want to change: ");
-                        String orgAppID = getAppIdFromTime(appointmentList);
-                        if (!schedule.checkAppIDExist(orgAppID)) { // Keeping this?
+                        int orgAppIDIndex = getAppIdIndexFromTime(Schedule.getAppointmentList());
+                        if (!schedule.checkAppIDExist(Schedule.getAppointmentList().get(orgAppIDIndex).getAppID())) { // Keeping this?
                             System.out.println("Only enter available Appointment IDs");
                             break;
                         }
-                        scheduleAppointment(appointmentList);
+                        cancelAppointment(orgAppIDIndex);
+                        System.out.println("Your original appointment has been cancelled!!\n Select new Appointment.");
+                        scheduleAppointment();
                         break;
                     case 6:
                         System.out.println("Enter the time slot that you want to cancel: ");
-                        String oldAppID = getAppIdFromTime(appointmentList);
-                        cancelAppointment(oldAppID, appointmentList);
+                        int oldAppIDIndex = getAppIdIndexFromTime(Schedule.getAppointmentList());
+                        cancelAppointment(oldAppIDIndex);
                         break;
                     case 7:
-                        viewPatientScheduledAppointments(appointmentList);
+                        viewPatientScheduledAppointments(Schedule.getAppointmentList());
                         break;
                     case 8:
                         // View Past Appointment Outcome Records
-                        viewPatientPastAppointmentOutcomeRecord(appointmentList);
+                        viewPatientPastAppointmentOutcomeRecord(Schedule.getAppointmentList());
                         break;
                     case 9:
                         System.out.println("Thank you for using our service!!");
                         // Update file
-                        updateAppointmentFile(appointmentList);
+                        updateAppointmentFile(Schedule.getAppointmentList());
                         break;
 //                    case 8:
 //                        viewPatientPendingAppointments(appointmentList);
@@ -99,28 +106,51 @@ public class Patient extends User {
                         break;
                 }
             } catch (InputMismatchException e) {
-                System.out.println("Invalid input. Please enter a number between 1 and 6.");
+                System.out.println("Invalid input. Please enter a number between 1 and 9.");
                 InputScanner.sc.nextLine(); //
                 choice = -1;
             }
-        } while (choice != 7);
+        } while (choice != 9);
     }
 
 
     // New functions for creating appointment objects
     public void viewAvailableAppointmentSlots(ArrayList<Appointment> appointmentList) {
-        int i = 1;
-        for (Appointment appointments : appointmentList) {
-            if (appointments.getAvail()) {
-                System.out.println(i + ". Dr. " + appointments.getDocName() + " available for " + appointments.getPurposeOfApp() + " at " + appointments.getTimeOfApp());
-            }
-        }
+        
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/M/yyyy H:mm");
+        
+        System.out.println("+" + "-".repeat(columnWidth) + "+"
+				+ "-".repeat(columnWidth) + "+"
+				+ "-".repeat(columnWidth) + "+"
+				+ "-".repeat(columnWidth) + "+");
+
+		System.out.println("|" + formatCell("Appointment ID", columnWidth)
+				+ "|" + formatCell("App Date and Time", columnWidth)
+				+ "|" + formatCell("Doctor ID", columnWidth)
+				+ "|" + formatCell("Doctor Name", columnWidth) + "|");
+
+		System.out.println("+" + "-".repeat(columnWidth) + "+"
+				+ "-".repeat(columnWidth) + "+"
+				+ "-".repeat(columnWidth) + "+"
+				+ "-".repeat(columnWidth) + "+");
+
+		for(Appointment appointments : appointmentList) {
+			if(appointments.getAvail()) {
+				System.out.println("|" + formatCell(appointments.getAppID(), columnWidth)
+						+ "|" + formatCell(appointments.getTimeOfApp().format(formatter), columnWidth)
+						+ "|" + formatCell(appointments.getDocID(), columnWidth)
+						+ "|" + formatCell(appointments.getDocName(), columnWidth) + "|");
+				System.out.println("+" + "-".repeat(columnWidth) + "+"
+						+ "-".repeat(columnWidth) + "+"
+						+ "-".repeat(columnWidth) + "+"
+						+ "-".repeat(columnWidth) + "+");
+			}
+		}
     }
 
 
-    public void scheduleAppointment(ArrayList<Appointment> appointmentList) {
+    public void scheduleAppointment() {
         try {
-            DateTimeFormatter formatterForID = DateTimeFormatter.ofPattern("yyyyMMddHHmm");
             System.out.println("Choose number of the purpose of your Appointment:\n" // need exception handling?
                     + "(1) CheckUp\n"
                     + "(2) Surgery\n"
@@ -164,13 +194,15 @@ public class Patient extends User {
             String prefDoctor = null;
             while (prefDoctor == null) {
                 System.out.println("Enter your preferred Doctor: ");
-                prefDoctor = selectionOfDoctor(pur, dept, appointmentList);
+                prefDoctor = selectionOfDoctor(pur, dept, Schedule.getAppointmentList());
             }
-            String doctorID = findDoctorID(prefDoctor);
-            String appTime = null;
-            while (appTime == null) appTime = selectionOfTimeSlot(prefDoctor, appointmentList);
-            Appointment newApp = new Appointment(false, "A" + appTime.format(String.valueOf(formatterForID)), appTime, doctorID, prefDoctor, this.getHospitalId(), this.getName(), pur, dept, status.Pending, 0, paymentStatus.Pending, " ");
-            appointmentList.add(newApp);
+            int appIndex = selectionOfTimeSlot(prefDoctor, Schedule.getAppointmentList());
+            Schedule.getAppointmentList().get(appIndex).setAvail(false);
+            Schedule.getAppointmentList().get(appIndex).setPatID(this.getHospitalId());
+            Schedule.getAppointmentList().get(appIndex).setPatName(this.getName());
+            Schedule.getAppointmentList().get(appIndex).setPurposeOfApp(pur);
+            Schedule.getAppointmentList().get(appIndex).setStatusOfApp(status.Pending);
+            Schedule.getAppointmentList().get(appIndex).setPaymentStatus(paymentStatus.Pending);
         } catch (Exception e) { // add this to cancel
             System.out.println("Not Scheduled");
         }
@@ -210,25 +242,27 @@ public class Patient extends User {
     }
 
 
-    public String selectionOfTimeSlot(String doctorName, ArrayList<Appointment> appointmentList) {
+    public int selectionOfTimeSlot(String doctorName, ArrayList<Appointment> appointmentList) {
         // create a array and refer to elements by their index
         int selection = 0;
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
-        List<String> timeSlots = new ArrayList<>();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/M/yyyy H:mm");
+        List<Integer> timeSlotsIndices = new ArrayList<>();
         int i = 1;
+        int index = 0;
         System.out.println("Available Time Slots: ");
         for (Appointment appointments : appointmentList) {
-            if (appointments.getAvail() && appointments.getDocName() == doctorName) {
+            if (appointments.getAvail() && appointments.getDocName().equals(doctorName)) {
                 String appTime = String.valueOf(appointments.getTimeOfApp().format(formatter));
                 System.out.println(i + ". " + appTime);
+                timeSlotsIndices.add(index);
                 i++;
-                timeSlots.add(appTime);
             }
+            index++;
         }
         try {
             selection = InputScanner.sc.nextInt();
             InputScanner.sc.nextLine();
-            return timeSlots.get(selection - 1);
+            return timeSlotsIndices.get(selection - 1);
         } catch (InputMismatchException e) {
             System.out.println("Invalid input.");
             InputScanner.sc.nextLine();
@@ -237,25 +271,27 @@ public class Patient extends User {
             System.out.println("Selected number is out of range. Back to Home Page.");
             // how to return it back to the home page?
         }
-        return null;
+        return 0;
     }
 
 
-    public String getAppIdFromTime(ArrayList<Appointment> appointmentList) {
+    public int getAppIdIndexFromTime(ArrayList<Appointment> appointmentList) {
         int i = 1;
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
-        List<Appointment> possibleApps = new ArrayList<>();
+        int index = 0;
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/M/yyyy H:mm");
+        List<Integer> possibleAppsIndices = new ArrayList<>();
         for (Appointment appointments : appointmentList) {
             if (Objects.equals(appointments.getPatID(), this.getHospitalId()) && (appointments.getStatusOfApp() == status.Confirmed || appointments.getStatusOfApp() == status.Pending)) {
                 System.out.println(i + ". " + appointments.getTimeOfApp().format(formatter));
                 i++;
-                possibleApps.add(appointments);
+                possibleAppsIndices.add(index);
             }
+            index++;
         }
         try {
             int selection = InputScanner.sc.nextInt();
             InputScanner.sc.nextLine();
-            return possibleApps.get(selection - 1).getAppID();
+            return possibleAppsIndices.get(selection - 1);
         } catch (InputMismatchException e) {
             System.out.println("Invalid input.");
             InputScanner.sc.nextLine();
@@ -263,54 +299,96 @@ public class Patient extends User {
         } catch (IndexOutOfBoundsException e) {
             System.out.println("Selected number is out of range. Please choose a valid doctor number.");
         }
-        return null;
+        return 0;
     }
 
 
-    public void cancelAppointment(String oldID, ArrayList<Appointment> appointmentList) {
-        for (Appointment appointments : appointmentList) {
-            if (Objects.equals(appointments.getAppID(), oldID)) {
-                appointments.setStatusOfApp(status.Cancelled);
-            }
-        }
+    public void cancelAppointment(int oldID) {
+        Schedule.getAppointmentList().get(oldID).setStatusOfApp(status.Cancelled);
+        Schedule.getAppointmentList().get(oldID).setAvail(true);
     }
 
 
     public void viewPatientScheduledAppointments(ArrayList<Appointment> appointmentList) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
+    	System.out.println("+" + "-".repeat(5) + "+"
+				+ "-".repeat(columnWidth) + "+"
+				+ "-".repeat(columnWidth) + "+"
+				+ "-".repeat(40) + "+");
+
+		System.out.println("|" + formatCell("No.", 5)
+				+ "|" + formatCell("Purpose of App", columnWidth)
+				+ "|" + formatCell("Time", columnWidth)
+				+ "|" + formatCell("Note", 40) + "|");
+
+		System.out.println("+" + "-".repeat(5) + "+"
+				+ "-".repeat(columnWidth) + "+"
+				+ "-".repeat(columnWidth) + "+"
+				+ "-".repeat(40) + "+");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/M/yyyy H:mm");
         int i = 1;
         for (Appointment appointments : appointmentList) {
-            if (Objects.equals(appointments.getPatID(), this.getHospitalId()) && appointments.getStatusOfApp() == status.Confirmed) {
-                System.out.println(i + ". " + appointments.getPurposeOfApp() + " at " + appointments.getTimeOfApp().format(formatter) + " with Dr. " + appointments.getDocName());
-                i++;
+            if (appointments.getPatID().equals(this.getHospitalId()) && appointments.getStatusOfApp() == status.Confirmed) {
+            	System.out.println("|" + formatCell(String.valueOf(i), 5)
+						+ "|" + formatCell(appointments.getPurposeOfApp().toString(), columnWidth)
+						+ "|" + formatCell(appointments.getTimeOfApp().format(formatter), columnWidth)
+						+ "|" + formatCell("With Dr. " + appointments.getDocName(), 40) + "|");
+				System.out.println("+" + "-".repeat(5) + "+"
+						+ "-".repeat(columnWidth) + "+"
+						+ "-".repeat(columnWidth) + "+"
+						+ "-".repeat(40) + "+");
+		        i++;
+            }
+            if (appointments.getPatID().equals(this.getHospitalId()) && appointments.getStatusOfApp() == status.Pending) {
+            	System.out.println("|" + formatCell(String.valueOf(i), 5)
+						+ "|" + formatCell(appointments.getPurposeOfApp().toString(), columnWidth)
+						+ "|" + formatCell(appointments.getTimeOfApp().format(formatter), columnWidth)
+						+ "|" + formatCell("Waiting for Dr. " + appointments.getDocName() + "'s Approval", 40) + "|");
+				System.out.println("+" + "-".repeat(5) + "+"
+						+ "-".repeat(columnWidth) + "+"
+						+ "-".repeat(columnWidth) + "+"
+						+ "-".repeat(40) + "+");
+				i++;
             }
         }
     }
 
 
     public void viewPatientPastAppointmentOutcomeRecord(ArrayList<Appointment> appointmentList) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
+    	System.out.println("+" + "-".repeat(5) + "+"
+				+ "-".repeat(columnWidth) + "+"
+				+ "-".repeat(columnWidth) + "+"
+				+ "-".repeat(columnWidth) + "+"
+				+ "-".repeat(40) + "+");
+
+		System.out.println("|" + formatCell("No.", 5)
+				+ "|" + formatCell("Purpose of App", columnWidth)
+				+ "|" + formatCell("Time", columnWidth)
+				+ "|" + formatCell("Doc Name", columnWidth)
+				+ "|" + formatCell("Feedback", 40) + "|");
+
+		System.out.println("+" + "-".repeat(5) + "+"
+				+ "-".repeat(columnWidth) + "+"
+				+ "-".repeat(columnWidth) + "+"
+				+ "-".repeat(columnWidth) + "+"
+				+ "-".repeat(40) + "+");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/M/yyyy H:mm");
         int i = 1;
         for (Appointment appointments : appointmentList) {
             if (Objects.equals(appointments.getPatID(), this.getHospitalId()) && appointments.getStatusOfApp() == status.Completed) {
-                System.out.println(i + ". " + appointments.getPurposeOfApp() + " at " + appointments.getTimeOfApp().format(formatter) + " with Dr. " + appointments.getDocName() + " had this feedback: " + appointments.getAppointOutcomeRecord());
+            	System.out.println("|" + formatCell(String.valueOf(i), 5)
+						+ "|" + formatCell(appointments.getPurposeOfApp().toString(), columnWidth)
+						+ "|" + formatCell(appointments.getTimeOfApp().format(formatter), columnWidth)
+						+ "|" + formatCell("Dr. " + appointments.getDocName(), columnWidth) 
+						+ "|" + formatCell(appointments.getAppointOutcomeRecord(), 40) + "|");
+				System.out.println("+" + "-".repeat(5) + "+"
+						+ "-".repeat(columnWidth) + "+"
+						+ "-".repeat(columnWidth) + "+"
+						+ "-".repeat(columnWidth) + "+"
+						+ "-".repeat(40) + "+");
                 i++;
             }
         }
     }
-
-
-    public void viewPatientPendingAppointments(ArrayList<Appointment> appointmentList) {
-        int i = 1;
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
-        for (Appointment appointments : appointmentList) {
-            if (Objects.equals(appointments.getPatID(), this.getHospitalId()) && appointments.getStatusOfApp() == status.Pending) {
-                System.out.println(i + ". " + appointments.getPurposeOfApp() + " at " + appointments.getTimeOfApp().format(formatter) + " with Dr. " + appointments.getDocName());
-                i++;
-            }
-        }
-    }
-
 
     public String findDoctorID(String doctorName) {
         FileIO file = new FileIO("program_files/doctors.csv");
@@ -322,47 +400,83 @@ public class Patient extends User {
         }
         return null;
     }
+    
+    private static String formatCell(String value, int width) {
+		if (value == " ") {
+			value = "";
+		}
+		return String.format("%-" + width + "s", value);  // Left-align the text within the specified width
+	}
 
 
-    // Update file function?
+    // Update file function
     public void updateAppointmentFile(ArrayList<Appointment> appointmentList) {
-        int i = -1;
         Schedule schedule = new Schedule();
-        List<String[]> data = schedule.getAllRows();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
-        for (String[] row : data) {
-            if (i == -1) {
-                row[0] = "Availability";
-                row[1] = "AppointmentID";
-                row[2] = "TimeOfAppointment";
-                row[3] = "DoctorID";
-                row[4] = "DoctorName";
-                row[5] = "PatientID";
-                row[6] = "PatientName";
-                row[7] = "PurposeOfAppointment";
-                row[8] = "Department";
-                row[9] = "StatusOfAppointment";
-                row[10] = "Cost";
-                row[11] = "PaymentStatus";
-                i++;
-                continue;
-            }
-            if (i - 1 < appointmentList.size()) {
-                row[0] = String.valueOf(appointmentList.get(i).getAvail());
-                row[1] = appointmentList.get(i).getAppID();
-                row[2] = appointmentList.get(i).getTimeOfApp().format(formatter);
-                row[3] = appointmentList.get(i).getDocID();
-                row[4] = appointmentList.get(i).getDocName();
-                row[5] = appointmentList.get(i).getPatID();
-                row[6] = appointmentList.get(i).getPatName();
-                row[7] = appointmentList.get(i).getPurposeOfApp().toString();
-                row[8] = appointmentList.get(i).getAppointmentDepartment().toString();
-                row[9] = appointmentList.get(i).getStatusOfApp().toString();
-                row[10] = String.valueOf(appointmentList.get(i).getCostOfApp());
-                row[11] = appointmentList.get(i).getPaymentStatus().toString();
-                i++;
-            }
-        } schedule.updateFile(data);
+        List<String[]> data = new ArrayList<>();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/M/yyyy H:mm");
+        
+        String[] values = new String[12];
+        values[0] = "Availability";
+        values[1] = "AppointmentID";
+        values[2] = "TimeOfAppointment";
+        values[3] = "DoctorID";
+        values[4] = "DoctorName";
+        values[5] = "PatientID";
+        values[6] = "PatientName";
+        values[7] = "PurposeOfAppointment";
+        values[8] = "Department";
+        values[9] = "StatusOfAppointment";
+        values[10] = "Cost";
+        values[11] = "PaymentStatus";
+        data.add(values);
+        
+        for(Appointment appointment : appointmentList) {
+        	String[] row = new String[12];
+        	row[0] = String.valueOf(appointment.getAvail());
+            row[1] = appointment.getAppID();
+            row[2] = appointment.getTimeOfApp().format(formatter);
+            row[3] = appointment.getDocID();
+            row[4] = appointment.getDocName();
+            row[5] = appointment.getPatID();
+            row[6] = appointment.getPatName();
+            if(appointment.getPurposeOfApp() != null) row[7] = appointment.getPurposeOfApp().toString(); else row[7] = " ";
+            row[8] = appointment.getAppointmentDepartment().toString();
+            if(appointment.getStatusOfApp() != null) row[9] = appointment.getStatusOfApp().toString(); else row[9] = " ";
+            row[10] = String.valueOf(appointment.getCostOfApp());
+            if(appointment.getPaymentStatus() != null) row[11] = appointment.getPaymentStatus().toString(); else row[11] = " ";
+            data.add(row);
+        }
+        schedule.updateFile(data);
+    }
+    
+    public static void loadPatientlist() {
+		List<String[]> data = new ArrayList<>();
+
+		//Read the CSV file
+		try (BufferedReader reader = new BufferedReader(new FileReader(FILE_NAME))) {
+			String row;
+			while ((row = reader.readLine()) != null) {
+				String[] values = row.split(",");
+				data.add(values);
+			}
+		} catch (IOException e) {
+			//e.printStackTrace();
+			System.out.println("File is not created yet!!");
+		}
+		boolean headerRow = true;
+		for(String[] row : data) {
+			if(headerRow) headerRow = false;
+			else {
+				String[] addingPatient = new String[2];
+				addingPatient[0] = row[0];
+				addingPatient[1] = row[1];
+				patientList.add(addingPatient);
+			}
+		}
+    }
+    
+    public static ArrayList<String[]> getPatientList(){
+    	return Patient.patientList;
     }
 }
 

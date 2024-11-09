@@ -1,12 +1,16 @@
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 public class HospitalStaff {
 
-    private List<Doctor> doctors;
-    private List<Pharmacist> pharmacists;
-    private List<Administrator> administrators;
+    private static List<Doctor> doctors = new ArrayList<>();
+    private static List<Pharmacist> pharmacists = new ArrayList<>();
+    private static List<Administrator> administrators = new ArrayList<>();
+    private static final String FILE_NAME = "program_files/HospitalStaff.csv";
 
     // Singleton instance
     private static HospitalStaff instance;
@@ -126,5 +130,93 @@ public class HospitalStaff {
         pharmacists.forEach(pharm -> System.out.println(" - " + pharm.getName()));
         System.out.println("Administrators:");
         administrators.forEach(admin -> System.out.println(" - " + admin.getName()));
+    }
+    
+    public static void loadDoctorList() {
+    	List<String[]> data = new ArrayList<>();
+
+		//Read the CSV file
+		try (BufferedReader reader = new BufferedReader(new FileReader(FILE_NAME))) {
+			String row;
+			while ((row = reader.readLine()) != null) {
+				String[] values = row.split(",");
+				data.add(values);
+			}
+		} catch (IOException e) {
+			//e.printStackTrace();
+			System.out.println("File is not created yet!!");
+		}
+		boolean headerRow = true;
+		for(String[] row : data) {
+			if(headerRow) headerRow = false;
+			else if(row[2].equals("Doctor"))
+			{
+				Doctor doctor = new Doctor(row[1], row[0], Domain.DOCTOR, row[3], Integer.valueOf(row[4]));
+				doctor.setDepartment(row[5]);
+				doctors.add(doctor);
+			}
+		}
+    }
+    
+    public static void loadPharmacistList() {
+    	List<String[]> data = new ArrayList<>();
+
+		//Read the CSV file
+		try (BufferedReader reader = new BufferedReader(new FileReader(FILE_NAME))) {
+			String row;
+			while ((row = reader.readLine()) != null) {
+				String[] values = row.split(",");
+				data.add(values);
+			}
+		} catch (IOException e) {
+			//e.printStackTrace();
+			System.out.println("File is not created yet!!");
+		}
+		boolean headerRow = true;
+		for(String[] row : data) {
+			if(headerRow) headerRow = false;
+			else if(row[2].equals("Pharmacist"))
+			{
+				Pharmacist pharmacist = new Pharmacist(row[1], row[0], Domain.PHARMACIST, row[3], Integer.valueOf(row[4]));
+				pharmacists.add(pharmacist);
+			}
+		}
+    }
+    
+    public static void loadAdministrator() {
+    	List<String[]> data = new ArrayList<>();
+
+		//Read the CSV file
+		try (BufferedReader reader = new BufferedReader(new FileReader(FILE_NAME))) {
+			String row;
+			while ((row = reader.readLine()) != null) {
+				String[] values = row.split(",");
+				data.add(values);
+			}
+		} catch (IOException e) {
+			//e.printStackTrace();
+			System.out.println("File is not created yet!!");
+		}
+		boolean headerRow = true;
+		for(String[] row : data) {
+			if(headerRow) headerRow = false;
+			else if(row[2].equals("Administrator"))
+			{
+				Administrator administrator = new Administrator(row[1], row[0], Domain.ADMINISTRATOR, row[3], Integer.valueOf(row[4]));
+				administrators.add(administrator);
+			}
+		}
+    }
+    
+    public static List<Doctor> getDoctorList(){
+    	return HospitalStaff.doctors;
+    }
+    
+    public static List<Pharmacist> getPharmacistList(){
+    	return HospitalStaff.pharmacists;
+    }
+    
+    public static List<Administrator> getAdministratorList(){
+    	return HospitalStaff.administrators;
     }
 }

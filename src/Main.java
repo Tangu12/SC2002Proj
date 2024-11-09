@@ -1,10 +1,12 @@
-import java.util.Scanner;
-
 public class Main {
     public static void main(String[] args) {
         // User.changePassword("D001", "Johnny123");
-    	Scanner sc = new Scanner(System.in);
     	User user;
+		Schedule.loadAppointments();
+		Patient.loadPatientlist();
+		HospitalStaff.loadAdministrator();
+		HospitalStaff.loadDoctorList();
+		HospitalStaff.loadPharmacistList();
     	user = User.displayLoginInterface();// return domain of user
         if (user == null) {
             return;

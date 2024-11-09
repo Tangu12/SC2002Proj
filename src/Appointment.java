@@ -55,7 +55,7 @@ public class Appointment {
 
 	
 	public Appointment(Boolean availability, String appointmentID, String time, String doctorID, String doctorName, String patientID, String patientName, purpose purposeOfAppointment, department appointmentDepartment, status statusOfAppointment, double cost, paymentStatus Paymentstatus, String appointmentOutcomeRecord) {
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/M/yyyy H:mm");
 		this.availability = availability;
 		this.appointmentID = appointmentID;
 		this.time = LocalDateTime.parse(time, formatter);
@@ -121,6 +121,10 @@ public class Appointment {
 	
 	public String getAppointOutcomeRecord() {
 		return this.appointOutcomeRecord;
+	}
+	
+	public void setAvail(boolean avail) {
+		this.availability = avail;
 	}
 	
 	public void setAppID(String appID) {

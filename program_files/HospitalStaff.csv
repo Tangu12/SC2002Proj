@@ -1,5 +1,8 @@
-Staff ID,Name,Role,Gender,Age
-D001,John Smith,Doctor,Male,45
-D002,Emily Clarke,Doctor,Female,38
-P001,Mark Lee,Pharmacist,Male,29
-A001,Sarah Lee,Administrator,Female,40
+Staff ID,Name,Role,Gender,Age,Department
+D001,John Kayek,Doctor,Male,45,Cardiology
+D002,RyanGuy,Doctor,Male,22,Neurology
+R001,Mark Lee,Pharmacist,Male,29,NotApplicable
+A001,Sarah Lee,Administrator,Female,40,NotApplicable
+D003,Min,Doctor,Male,22,Oncology
+D004,Dorcas,Doctor,Female,20,Dermatology
+D005,Hung,Doctor,Male,20,Endocrinology

@@ -685,7 +685,9 @@ public class User {
 						user = new Administrator("", inputID, domain, gender, age);
 
 						// Look for name in staff file
-						user.setName("Admin Name");
+						for(Administrator row : HospitalStaff.getAdministratorList()) {
+							if(row.getHospitalId().equals(inputID)) user.setName(row.getName());
+						}
 
 						user.setHospitalId(inputID);
 						user.setDomain(domain);
@@ -696,15 +698,13 @@ public class User {
 						user = new Doctor("", inputID, domain, gender, age);
 
 						// Look for name in staff file
-						List<String> doctors = new ArrayList<>();
-						FileIO file = new FileIO("program_files/doctors.csv");
-						List<String[]> data = file.getAllRows();
-						for (String[] row : data) {
-							if (row[0].equalsIgnoreCase(inputID)) {
-								user.setName(row[1]);
+						for(Doctor row : HospitalStaff.getDoctorList()) {
+							if(row.getHospitalId().equals(inputID)) {
+								user.setName(row.getName());
+								((Doctor) user).setDepartment(row.getDepartment().toString());
 							}
 						}
-
+						
 						user.setHospitalId(inputID);
 						user.setDomain(domain);
 						break;
@@ -714,8 +714,9 @@ public class User {
 						user = new Patient("", inputID, domain, gender, age);
 
 						// Look for name in patient file
-						user.setName("Patient Name");
-
+						for(String[] row : Patient.getPatientList()) {
+							if(row[0].equals(inputID)) user.setName(row[1]);
+						}
 						user.setHospitalId(inputID);
 						user.setDomain(domain);
 						break;
@@ -725,7 +726,9 @@ public class User {
 						user = new Pharmacist("", inputID, domain, gender, age);
 
 						// Look for name in staff file
-						user.setName("Pharmacist Name");
+						for(Pharmacist row : HospitalStaff.getPharmacistList()) {
+							if(row.getHospitalId().equals(inputID)) user.setName(row.getName());
+						}
 
 						user.setHospitalId(inputID);
 						user.setDomain(domain);
@@ -1010,58 +1013,4 @@ public class User {
 			e.printStackTrace();
 		}
 	}
-
-	public void loadAppointments(ArrayList<Appointment> appointmentList) {
-	int i = 0;
-	Schedule schedule = new Schedule();
-	List<String[]> data = schedule.getAllRows();
-	for(String[] row : data) {
-		System.out.println(Arrays.toString(row));
-		if (i == 0) {
-			i++;
-			continue;
-		}
-		// if row is not empty,  should i put these inside the constructor of Appointments?
-		double appCost = Double.parseDouble(row[10]);
-		purpose appPur;
-		if (Objects.equals(row[7], "CheckUp")) appPur = purpose.CheckUp;
-		else if (Objects.equals(row[7], "Surgery")) appPur = purpose.Surgery;
-		else if (Objects.equals(row[7], "Consultation")) appPur = purpose.Consultation;
-		else appPur = purpose.Other;
-
-		department appDept;
-		if (Objects.equals(row[8], "Cardiology")) appDept = department.Cardiology;
-		else if (Objects.equals(row[8], "Neurology")) appDept = department.Neurology;
-		else if (Objects.equals(row[8], "Oncology")) appDept = department.Oncology;
-		else if (Objects.equals(row[8], "Dermatology")) appDept = department.Dermatology;
-		else if (Objects.equals(row[8], "Neurology")) appDept = department.Endocrinology;
-		else if (Objects.equals(row[8], "Oncology")) appDept = department.Gastroenterology;
-		else if (Objects.equals(row[8], "Dermatology")) appDept = department.Nephrology;
-		else if (Objects.equals(row[8], "Neurology")) appDept = department.Pulmonology;
-		else if (Objects.equals(row[8], "Oncology")) appDept = department.Rheumatology;
-		else if (Objects.equals(row[8], "Dermatology")) appDept = department.ObstetricsGynecology;
-		else appDept = department.Others;
-
-
-		status appStatus = null;
-		if (Objects.equals(row[9], "Confirmed")) appStatus = status.Confirmed;
-		else if (Objects.equals(row[9], "Cancelled")) appStatus = status.Cancelled;
-		else if (Objects.equals(row[9], "Completed")) appStatus = status.Completed;
-		else if (Objects.equals(row[9], "Pending")) appStatus = status.Pending;
-		else if (Objects.equals(row[9], "Unavailable")) appStatus = status.Unavailable;
-
-		paymentStatus payStat = null;
-		if (Objects.equals(row[11], "Prepaid")) payStat = paymentStatus.Prepaid;
-		else if (Objects.equals(row[11], "Pending")) payStat = paymentStatus.Pending;
-		else if (Objects.equals(row[11], "Completed")) payStat = paymentStatus.Completed;
-		else if (Objects.equals(row[11], "Overdued")) payStat = paymentStatus.Overdued;
-		else if (Objects.equals(row[11], "Cancelled")) payStat = paymentStatus.Cancelled;
-
-		Appointment apps = new Appointment(Boolean.valueOf(row[0]),row[1],row[2],row[3],row[4],row[5],row[6],appPur,appDept,appStatus,appCost,payStat, " ");
-		appointmentList.add(apps);
-		i++;
-	}
-	System.out.println(appointmentList); // debugging
-	}
-
 }

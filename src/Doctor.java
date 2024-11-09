@@ -3,16 +3,60 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class Doctor extends User {
+	
+	private department dep;
+	
     public Doctor(String name, String hospitalId, Domain domain, String gender, int age) {
         super(name, hospitalId, domain, gender, age);
     }
 
+    public void setDepartment(String dep) {
+    	switch(dep) {
+	        case "Cardiology":
+	            this.dep = department.Cardiology;
+	            break;
+	        case "Neurology":
+	            this.dep = department.Neurology;
+	            break;
+	        case "Oncology":
+	            this.dep = department.Oncology;
+	            break;
+	        case "Dermatology":
+	        	this.dep = department.Dermatology;
+	            break;
+	        case "Endocrinology":
+	        	this.dep = department.Endocrinology;
+	            break;
+	        case "Gastroenterology":
+	        	this.dep = department.Gastroenterology;
+	            break;
+	        case "Nephrology":
+	        	this.dep = department.Nephrology;
+	            break;
+	        case "Pulmonology":
+	        	this.dep = department.Pulmonology;
+	            break;
+	        case "Rheumatology":
+	        	this.dep = department.Rheumatology;
+	            break;
+	        case "ObstetricsGynecology":
+	        	this.dep = department.ObstetricsGynecology;
+	            break;
+	        case "Others":
+	        	this.dep = department.Others;
+	            break;
+	        default:
+	            System.out.println("Invalid department name.");
+	            break;
+    	}
+    }
+    
+    public department getDepartment() {
+    	return this.dep;
+    }
+    
     public void homePage() {
         Schedule schedule = new Schedule();
-
-        ArrayList<Appointment> appointmentList = new ArrayList<>();
-
-        loadAppointments(appointmentList);
 
         int choice;
         do {
@@ -51,7 +95,7 @@ public class Doctor extends User {
                         break;
                     case 3:
                         // View Personal Schedule
-                        viewPersonalSchedule(appointmentList);
+                        viewPersonalSchedule(Schedule.getAppointmentList());
                         break;
                     case 4:
                         // Set availability for appointments
@@ -59,15 +103,15 @@ public class Doctor extends User {
                         break;
                     case 5:
                         // Accept or decline appointments
-                        acceptOrDeclinePendingApp(appointmentList);
+                        acceptOrDeclinePendingApp(Schedule.getAppointmentList());
                         break;
                     case 6:
                         // View upcoming appointments
-                        viewDoctorScheduledAppointments(appointmentList);
+                        viewDoctorScheduledAppointments(Schedule.getAppointmentList());
                         break;
                     case 7:
                         // Record Appt Outcome Records
-                        updateApptOutcomeRecords(appointmentList);
+                        updateApptOutcomeRecords(Schedule.getAppointmentList());
                         break;
                     case 8:
                         System.out.println("Thank you for using our service!!");
@@ -81,7 +125,7 @@ public class Doctor extends User {
                 InputScanner.sc.nextLine(); //
                 choice = -1;
             }
-        } while (choice != 6);
+        } while (choice != 8);
     }
 
 
@@ -99,7 +143,7 @@ public class Doctor extends User {
 
     public void setAvailability() {
         Schedule schedule = new Schedule();
-        int choice = InputScanner.sc.nextInt();
+        int choice;
         do {
             System.out.println("Please enter your choice to update your shift for upcoming week: \n"
                     + "(1) " + LocalDate.now() + "\n"
@@ -110,28 +154,29 @@ public class Doctor extends User {
                     + "(6) " + LocalDate.now().plusDays(5) + "\n"
                     + "(7) " + LocalDate.now().plusDays(6) + "\n"
                     + "(8) Exit");
-
+            choice = InputScanner.sc.nextInt();
+            InputScanner.sc.nextLine();
             switch(choice) {
                 case 1:
-                    schedule.createAppointmentSlot(super.getHospitalId(), super.getName(), 0);
+                    schedule.createAppointmentSlot(super.getHospitalId(), super.getName(), 0, this.dep);
                     break;
                 case 2:
-                    schedule.createAppointmentSlot(super.getHospitalId(), super.getName(), 1);
+                    schedule.createAppointmentSlot(super.getHospitalId(), super.getName(), 1, this.dep);
                     break;
                 case 3:
-                    schedule.createAppointmentSlot(super.getHospitalId(), super.getName(), 2);
+                    schedule.createAppointmentSlot(super.getHospitalId(), super.getName(), 2, this.dep);
                     break;
                 case 4:
-                    schedule.createAppointmentSlot(super.getHospitalId(), super.getName(), 3);
+                    schedule.createAppointmentSlot(super.getHospitalId(), super.getName(), 3, this.dep);
                     break;
                 case 5:
-                    schedule.createAppointmentSlot(super.getHospitalId(), super.getName(), 4);
+                    schedule.createAppointmentSlot(super.getHospitalId(), super.getName(), 4, this.dep);
                     break;
                 case 6:
-                    schedule.createAppointmentSlot(super.getHospitalId(), super.getName(), 5);
+                    schedule.createAppointmentSlot(super.getHospitalId(), super.getName(), 5, this.dep);
                     break;
                 case 7:
-                    schedule.createAppointmentSlot(super.getHospitalId(), super.getName(), 6);
+                    schedule.createAppointmentSlot(super.getHospitalId(), super.getName(), 6, this.dep);
                     break;
                 case 8:
                     schedule.sortFile();
@@ -234,6 +279,13 @@ public class Doctor extends User {
         }
         schedule.changeAppointmentStatus(unAvailableID, status.Unavailable);
     }
+    
+    private static String formatCell(String value, int width) {
+		if (value == " ") {
+			value = "";
+		}
+		return String.format("%-" + width + "s", value);  // Left-align the text within the specified width
+	}
 
 
     public void cancelAppointment(String oldID, ArrayList<Appointment> appointmentList) {
