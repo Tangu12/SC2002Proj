@@ -1,6 +1,10 @@
 package Controllers;
 
 public class AccountManager {
-    public static void addUser(){}
-    public static void updateUser(){}
+    public static void addUser(){
+
+    }
+    public static void updateUser(){
+
+    }
 }
