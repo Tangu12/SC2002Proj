@@ -1,6 +1,7 @@
 package Entity.Repository;
 
 import Entity.Appointment;
+import Entity.Enums.Purpose;
 import Entity.Medicine;
 
 import java.io.BufferedReader;

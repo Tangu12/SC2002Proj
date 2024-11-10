@@ -5,7 +5,7 @@ import Entity.Medicine;
 import java.io.*;
 import java.util.ArrayList;
 
-public class MedicationInventoryRepository implements IRepository<Medicine,String>{
+public class MedicationInventoryRepository implements IRepository<Medicine,String,Medicine,Medicine>{
     public final String path;
 
     public MedicationInventoryRepository(String path) {

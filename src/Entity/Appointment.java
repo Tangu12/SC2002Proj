@@ -1,38 +1,11 @@
 package Entity;
 
+import Entity.Enums.Department;
+import Entity.Enums.Purpose;
+import Entity.Enums.Status;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-
-enum purpose {
-    CheckUp,
-    Surgery,
-    Consultation,
-    Other
-}
-
-enum department {
-    Cardiology,
-    Neurology,
-    Oncology,
-    Dermatology,
-    Endocrinology,
-    Gastroenterology,
-    Nephrology,
-    Pulmonology,
-    Rheumatology,
-    ObstetricsGynecology,
-    Others
-}
-
-enum status {
-    Confirmed,
-    Cancelled,
-    Completed,
-    Pending,
-    Unavailable
-}
-
-
 
 public class Appointment {
 
@@ -43,15 +16,15 @@ public class Appointment {
     private String doctorName;
     private String patientID;
     private String patientName;
-    private purpose purposeOfAppointment;
-    private department appointmentDepartment;
-    private status statusOfAppointment;
+    private Purpose purposeOfAppointment;
+    private Department appointmentDepartment;
+    private Status statusOfAppointment;
     private String appointOutcomeRecord;
 
 
 
 
-    public Appointment(Boolean availability, String appointmentID, String time, String doctorID, String doctorName, String patientID, String patientName, purpose purposeOfAppointment, department appointmentDepartment, status statusOfAppointment, String appointmentOutcomeRecord) {
+    public Appointment(Boolean availability, String appointmentID, String time, String doctorID, String doctorName, String patientID, String patientName, Purpose purposeOfAppointment, Department appointmentDepartment, Status statusOfAppointment, String appointmentOutcomeRecord) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
         this.availability = availability;
         this.appointmentID = appointmentID;
@@ -94,15 +67,15 @@ public class Appointment {
         return this.doctorName;
     }
 
-    public purpose getPurposeOfApp() {
+    public Purpose getPurposeOfApp() {
         return this.purposeOfAppointment;
     }
 
-    public department getAppointmentDepartment() {
+    public Department getAppointmentDepartment() {
         return this.appointmentDepartment;
     }
 
-    public status getStatusOfApp() {
+    public Status getStatusOfApp() {
         return this.statusOfAppointment;
     }
 
@@ -134,15 +107,15 @@ public class Appointment {
         this.doctorName = docName;
     }
 
-    public void setPurposeOfApp(purpose purposeOfAppointment) {
+    public void setPurposeOfApp(Purpose purposeOfAppointment) {
         this.purposeOfAppointment = purposeOfAppointment;
     }
 
-    public void setDepartmentOfAppointment(department appointmentDepartment) {
+    public void setDepartmentOfAppointment(Department appointmentDepartment) {
         this.appointmentDepartment = appointmentDepartment;
     }
 
-    public void setStatusOfApp(status statusOfAppointment) {
+    public void setStatusOfApp(Status statusOfAppointment) {
         this.statusOfAppointment = statusOfAppointment;
     }
 
