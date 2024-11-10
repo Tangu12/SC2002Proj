@@ -1,26 +1,14 @@
 import java.io.*;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
 public class MedicationInventory {
-    private List<Medicine> inventory;
-    private static MedicationInventory instance;
+    private static List<Medicine> inventory = new ArrayList<>();
     private static final String FILE_PATH = "program_files/MedicationInventory.csv";
 
-    private MedicationInventory() {
-        this.inventory = new ArrayList<>();
-        loadInventoryFromFile();
-    }
-
-    public static MedicationInventory getInstance() {
-        if (instance == null) {
-            instance = new MedicationInventory();
-        }
-        return instance;
-    }
-
     // Load inventory from CSV file
-    private void loadInventoryFromFile() {
+    public static void loadInventoryFromFile() {
         try (BufferedReader reader = new BufferedReader(new FileReader(FILE_PATH))) {
             String line;
             boolean isFirstLine = true;
@@ -35,37 +23,40 @@ public class MedicationInventory {
                 int lowStockAlert = Integer.parseInt(data[2].trim());
                 inventory.add(new Medicine(name, currentStock, lowStockAlert));
             }
+        } catch (FileNotFoundException e) {
+            System.out.println("The file does not exist: " + FILE_PATH);
         } catch (IOException e) {
             System.out.println("Error loading inventory: " + e.getMessage());
         }
     }
 
-    // Save inventory to CSV file
-    private void saveInventoryToFile() {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_PATH))) {
-            writer.write("Medicine Name,Current Stock,Low Stock Alert,Request Amount");
-            writer.newLine();
-
-            for (Medicine medicine : inventory) {
-                writer.write(medicine.getName() + "," +
-                        medicine.getCurrentStock() + "," +
-                        medicine.getLowStockAlert() + "," +
-                        medicine.getRequestAmount());
-                writer.newLine();
-            }
-        } catch (IOException e) {
-            System.out.println("Error saving inventory: " + e.getMessage());
-        }
-    }
-
     // View all medicines in the inventory
     public void viewInventory() {
+    	int i = 1;
         if (inventory.isEmpty()) {
             System.out.println("Inventory is empty.");
         } else {
             System.out.println("Current Inventory:");
+            System.out.println("+" + "-".repeat(3) + "+"
+    				+ "-".repeat(30) + "+"
+    				+ "-".repeat(15));
+
+    		System.out.println("|" + formatCell("No.", 3)
+    				+ "|" + formatCell("Medicine Name", 30)
+    				+ "|" + formatCell("Current Stock", 15) + "|");
+
+    		System.out.println("+" + "-".repeat(3) + "+"
+    				+ "-".repeat(30) + "+"
+    				+ "-".repeat(15) + "+");
             for (Medicine medicine : inventory) {
-                System.out.println(medicine);
+                //System.out.println(i + ". " + medicine);
+                System.out.println("|" + formatCell(String.valueOf(i), 3)
+						+ "|" + formatCell(medicine.getName(), 30)
+						+ "|" + formatCell(String.valueOf(medicine.getCurrentStock()), 15) + "|");
+				System.out.println("+" + "-".repeat(3) + "+"
+						+ "-".repeat(30) + "+"
+						+ "-".repeat(15) + "+");
+				i++;
             }
         }
     }
@@ -87,28 +78,38 @@ public class MedicationInventory {
 
     // Add or increment stock of a medicine
     public void addOrIncrementMedicine() {
-        System.out.print("Enter medicine name: ");
-        String name = InputScanner.sc.nextLine();
-
-        if (isMedicineInInventory(name)) {
+    	viewInventory();
+        System.out.print("Please select the medicine to add stock (0 to add new medicine): ");
+        int selection = InputScanner.sc.nextInt();
+        InputScanner.sc.nextLine();
+        if(selection < 0 || selection > inventory.size()) { //user input unavailable choice
+        	System.out.println("Please only select from the available choices.");
+        	return;
+        }
+        	
+        if (selection != 0 && isMedicineInInventory(inventory.get(selection-1).getName())) {
             System.out.print("Enter additional stock: ");
             int additionalStock = InputScanner.sc.nextInt();
-            incrementStock(name, additionalStock);
+            incrementStock(inventory.get(selection-1).getName(), additionalStock);
         } else {
+        	System.out.print("Enter new medicine name: ");
+        	String name = InputScanner.sc.nextLine();
+        	if(isMedicineInInventory(name)) {
+        		System.out.println("Medicine is inside the inventory! Please check again.");
+        		return;
+        	}
             System.out.print("Enter initial stock: ");
             int stock = InputScanner.sc.nextInt();
             System.out.print("Enter low stock alert level: ");
             int alertLevel = InputScanner.sc.nextInt();
             addNewMedicine(name, stock, alertLevel);
         }
-        saveInventoryToFile(); // Save changes
     }
 
     // Add new medicine to the inventory
     public void addNewMedicine(String name, int stock, int alertLevel) {
         inventory.add(new Medicine(name, stock, alertLevel));
         System.out.println("Medicine added: " + name);
-        saveInventoryToFile(); // Save changes
     }
 
     // Increment stock of an existing medicine
@@ -118,19 +119,23 @@ public class MedicationInventory {
             int newStock = medicine.getCurrentStock() + additionalStock;
             medicine.setCurrentStock(newStock);
             System.out.println("Added " + additionalStock + " units to " + name + ". New stock: " + newStock);
-            saveInventoryToFile(); // Save changes
         }
     }
 
     // Remove Medicine from inventory
     public void removeMedicine() {
-        System.out.print("Enter the name of the medicine to remove: ");
-        String name = InputScanner.sc.nextLine();
-        Medicine medicine = findMedicineByName(name);
+    	viewInventory();
+        System.out.print("Select the medicine to remove: ");
+        int choice = InputScanner.sc.nextInt();
+        InputScanner.sc.nextLine();
+        Medicine medicine = findMedicineByName(inventory.get(choice-1).getName());
+        if(choice <= 0 || choice > inventory.size()) { //user input unavailable choice
+        	System.out.println("Please only select from the available choices: ");
+        	return;
+        }
         if (medicine != null) {
             inventory.remove(medicine);
-            System.out.println("Medicine removed: " + name);
-            saveInventoryToFile(); // Save changes
+            System.out.println("Medicine removed: " + inventory.get(choice-1).getName());
         } else {
             System.out.println("Medicine not found.");
         }
@@ -138,9 +143,15 @@ public class MedicationInventory {
 
     // Update medicine stock and alert level
     public void updateMedicine() {
-        System.out.print("Enter existing medicine name: ");
-        String name = InputScanner.sc.nextLine();
-        Medicine medicine = findMedicineByName(name);
+    	viewInventory();
+    	System.out.print("Select the medicine to update: ");
+        int choice = InputScanner.sc.nextInt();
+        InputScanner.sc.nextLine();
+        if(choice <= 0 || choice > inventory.size()) { //user input unavailable choice
+        	System.out.println("Please only select from the available choices: ");
+        	return;
+        }
+        Medicine medicine = findMedicineByName(inventory.get(choice-1).getName());
         if (medicine == null) {
             System.out.println("Medicine not found.");
             return;
@@ -152,15 +163,16 @@ public class MedicationInventory {
         int newAlertLevel = InputScanner.sc.nextInt();
         medicine.setCurrentStock(newStock);
         medicine.setLowStockAlert(newAlertLevel);
-        System.out.println("Updated " + name + ": New stock = " + newStock + ", New alert level = " + newAlertLevel);
-        saveInventoryToFile(); // Save changes
+        System.out.println("Updated " + inventory.get(choice-1).getName() + ": New stock = " + newStock + ", New alert level = " + newAlertLevel);
     }
 
     // Use a specific amount of medicine
     public void useMedicine() {
-        System.out.print("Enter medicine name: ");
-        String name = InputScanner.sc.nextLine();
-        Medicine medicine = findMedicineByName(name);
+    	viewInventory();
+        System.out.print("Enter medicine name to use: ");
+        int choice = InputScanner.sc.nextInt();
+        InputScanner.sc.nextLine();
+        Medicine medicine = findMedicineByName(inventory.get(choice-1).getName());
         if (medicine == null) {
             System.out.println("Medicine not found.");
             return;
@@ -170,8 +182,7 @@ public class MedicationInventory {
         int amount = InputScanner.sc.nextInt();
         if (amount <= medicine.getCurrentStock()) {
             medicine.decrementStock(amount);
-            System.out.println("Used " + amount + " units of " + name + ".");
-            saveInventoryToFile(); // Save changes
+            System.out.println("Used " + amount + " units of " + inventory.get(choice-1).getName() + ".");
         } else {
             System.out.println("Insufficient stock.");
         }
@@ -206,7 +217,6 @@ public class MedicationInventory {
         if (!hasRequests) {
             System.out.println("No pending replenishment requests.");
         }
-        saveInventoryToFile(); // Save changes
     }
 
     // Submit a replenishment request for a specific medicine
@@ -215,9 +225,51 @@ public class MedicationInventory {
         if (medicine != null) {
             medicine.setRequestAmount(requestAmount);
             System.out.println("Replenishment request of " + requestAmount + " units submitted for " + medicineName + ".");
-            saveInventoryToFile(); // Save changes
         } else {
             System.out.println("Medicine not found in the inventory.");
         }
     }
+    
+    public static void updateInventoryFile(List<Medicine> inventoryList) {
+        List<String[]> data = new ArrayList<>();
+        
+        String[] values = new String[4];
+        values[0] = "Medicine Name";
+        values[1] = "Current Stock";
+        values[2] = "Low Stock";
+        values[3] = "Request Amount";
+        data.add(values);
+        
+        for(Medicine med : inventoryList) {
+        	String[] row = new String[4];
+        	row[0] = med.getName();
+            row[1] = String.valueOf(med.getCurrentStock());
+            row[2] = String.valueOf(med.getLowStockAlert());
+            row[3] = String.valueOf(med.getRequestAmount());
+            data.add(row);
+        }
+        updateFile(data);
+    }
+    
+    private static void updateFile(List<String[]> data) {
+		try {
+			BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_PATH));
+			for(String[] row : data) writer.write(String.join(",", row) + "\n");
+			writer.close();
+		} catch(IOException e) {
+			System.out.println("An error occurred.");
+			e.printStackTrace();
+		}
+	}
+    
+    public static List<Medicine> getInventory(){
+    	return MedicationInventory.inventory;
+    }
+    
+    private static String formatCell(String value, int width) {
+		if (value == " ") {
+			value = "";
+		}
+		return String.format("%-" + width + "s", value);  // Left-align the text within the specified width
+	}
 }

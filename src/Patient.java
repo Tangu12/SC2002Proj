@@ -200,7 +200,6 @@ public class Patient extends User {
             Schedule.getAppointmentList().get(appIndex).setPatName(this.getName());
             Schedule.getAppointmentList().get(appIndex).setPurposeOfApp(pur);
             Schedule.getAppointmentList().get(appIndex).setStatusOfApp(status.Pending);
-            Schedule.getAppointmentList().get(appIndex).setPaymentStatus(paymentStatus.Pending);
         } catch (Exception e) { // add this to cancel
             System.out.println("Not Scheduled");
         }
@@ -372,7 +371,7 @@ public class Patient extends User {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/M/yyyy H:mm");
         int i = 1;
         for (Appointment appointments : appointmentList) {
-            if (Objects.equals(appointments.getPatID(), this.getHospitalId()) && appointments.getStatusOfApp() == status.Completed) {
+            if (Objects.equals(appointments.getPatID(), this.getHospitalId()) && (appointments.getStatusOfApp() == status.Completed || appointments.getStatusOfApp() == status.PrescriptionPending)) {
             	System.out.println("|" + formatCell(String.valueOf(i), 5)
 						+ "|" + formatCell(appointments.getPurposeOfApp().toString(), columnWidth)
 						+ "|" + formatCell(appointments.getTimeOfApp().format(formatter), columnWidth)

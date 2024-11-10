@@ -1,7 +1,5 @@
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -11,7 +9,6 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -45,7 +42,7 @@ public class Schedule {
 			File appointmentFile = new File(FILE_NAME);
 			if (appointmentFile.createNewFile()) {
 				FileWriter headerWriter = new FileWriter(appointmentFile);
-				headerWriter.write("Availability,AppointmentID,TimeOfAppointment,DoctorID,DoctorName,PatientID,PatientName,PurposeOfAppointment,Department,StatusOfAppointment,Cost,PaymentStatus,AppointmentOutcomeRecord\n");
+				headerWriter.write("Availability,AppointmentID,TimeOfAppointment,DoctorID,DoctorName,PatientID,PatientName,PurposeOfAppointment,Department,StatusOfAppointment,AppointmentOutcomeRecord,Medicine,IssuedDate,Dosage,Instructions\n");
 				headerWriter.close();
 			}
 			BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_NAME,true));
@@ -63,138 +60,8 @@ public class Schedule {
 			e.printStackTrace();
 		}
 		sortFile();
+		loadAppointments();
 	}
-
-	public void viewDoctorScheduledAppointments(String hospitalID) {
-		System.out.println("+" + "-".repeat(columnWidth) + "+"
-				+ "-".repeat(columnWidth) + "+"
-				+ "-".repeat(columnWidth) + "+"
-				+ "-".repeat(columnWidth) + "+"
-				+ "-".repeat(columnWidth) + "+"
-				+ "-".repeat(columnWidth) + "+"
-				+ "-".repeat(columnWidth) + "+"
-				+ "-".repeat(columnWidth) + "+");
-
-		System.out.println("|" + formatCell("Appointment ID", columnWidth)
-				+ "|" + formatCell("App Date and Time", columnWidth)
-				+ "|" + formatCell("Doctor ID", columnWidth)
-				+ "|" + formatCell("Doctor Name", columnWidth)
-				+ "|" + formatCell("Patient ID", columnWidth)
-				+ "|" + formatCell("Patient Name", columnWidth)
-				+ "|" + formatCell("Purpose Of App", columnWidth)
-				+ "|" + formatCell("Status Of App", columnWidth) + "|");
-
-		System.out.println("+" + "-".repeat(columnWidth) + "+"
-				+ "-".repeat(columnWidth) + "+"
-				+ "-".repeat(columnWidth) + "+"
-				+ "-".repeat(columnWidth) + "+"
-				+ "-".repeat(columnWidth) + "+"
-				+ "-".repeat(columnWidth) + "+"
-				+ "-".repeat(columnWidth) + "+"
-				+ "-".repeat(columnWidth) + "+");
-
-		List<String[]> data = getAllRows();
-		for(String[] row : data) {
-			if((row[0].equals("FALSE") || row[0].equals("false")) && row[3].equals(hospitalID) && row[8].equals("Confirmed")) {
-				System.out.println("|" + formatCell(row[1], columnWidth)
-						+ "|" + formatCell(row[2], columnWidth)
-						+ "|" + formatCell(row[3], columnWidth)
-						+ "|" + formatCell(row[4], columnWidth)
-						+ "|" + formatCell(row[5], columnWidth)
-						+ "|" + formatCell(row[6], columnWidth)
-						+ "|" + formatCell(row[7], columnWidth)
-						+ "|" + formatCell(row[8], columnWidth) + "|");
-				System.out.println("+" + "-".repeat(columnWidth) + "+"
-						+ "-".repeat(columnWidth) + "+"
-						+ "-".repeat(columnWidth) + "+"
-						+ "-".repeat(columnWidth) + "+"
-						+ "-".repeat(columnWidth) + "+"
-						+ "-".repeat(columnWidth) + "+"
-						+ "-".repeat(columnWidth) + "+"
-						+ "-".repeat(columnWidth) + "+");
-			}
-		}
-	}
-
-
-
-
-	public void approveAppointment(String appointmentID) {
-		// Switch the pending to Confirmed
-		List<String[]> data = getAllRows();
-		for(String[] row : data) {
-			if (Objects.equals(row[1], appointmentID)) {
-				row[8] = "Confirmed";
-			}
-		}
-		overwriteCSV(data);
-	}
-
-	public void viewDoctorAppointmentOutcomeRecords(String hospitalID) {
-		System.out.println("+" + "-".repeat(columnWidth) + "+"
-				+ "-".repeat(columnWidth) + "+"
-				+ "-".repeat(columnWidth) + "+"
-				+ "-".repeat(columnWidth) + "+"
-				+ "-".repeat(columnWidth) + "+"
-				+ "-".repeat(columnWidth) + "+"
-				+ "-".repeat(columnWidth) + "+"
-				+ "-".repeat(columnWidth) + "+"
-				+ "-".repeat(columnWidth) + "+"
-				+ "-".repeat(columnWidth) + "+");
-
-		System.out.println("|" + formatCell("Appointment ID", columnWidth)
-				+ "|" + formatCell("App Date and Time", columnWidth)
-				+ "|" + formatCell("Doctor ID", columnWidth)
-				+ "|" + formatCell("Doctor Name", columnWidth)
-				+ "|" + formatCell("Patient ID", columnWidth)
-				+ "|" + formatCell("Patient Name", columnWidth)
-				+ "|" + formatCell("Purpose Of App", columnWidth)
-				+ "|" + formatCell("Status Of App", columnWidth)
-				+ "|" + formatCell("Cost", columnWidth)
-				+ "|" + formatCell("Payment Status", columnWidth) + "|");
-
-		System.out.println("+" + "-".repeat(columnWidth) + "+"
-				+ "-".repeat(columnWidth) + "+"
-				+ "-".repeat(columnWidth) + "+"
-				+ "-".repeat(columnWidth) + "+"
-				+ "-".repeat(columnWidth) + "+"
-				+ "-".repeat(columnWidth) + "+"
-				+ "-".repeat(columnWidth) + "+"
-				+ "-".repeat(columnWidth) + "+"
-				+ "-".repeat(columnWidth) + "+"
-				+ "-".repeat(columnWidth) + "+");
-
-		List<String[]> data = getAllRows();
-		for(String[] row : data) {
-			if((row[0].equals("FALSE") || row[0].equals("false")) && row[3].equals(hospitalID) && row[8].equals("Completed")) {
-				System.out.println("|" + formatCell(row[1], columnWidth)
-						+ "|" + formatCell(row[2], columnWidth)
-						+ "|" + formatCell(row[3], columnWidth)
-						+ "|" + formatCell(row[4], columnWidth)
-						+ "|" + formatCell(row[5], columnWidth)
-						+ "|" + formatCell(row[6], columnWidth)
-						+ "|" + formatCell(row[7], columnWidth)
-						+ "|" + formatCell(row[8], columnWidth)
-						+ "|" + formatCell(row[9], columnWidth)
-						+ "|" + formatCell(row[10], columnWidth) + "|");
-				System.out.println("+" + "-".repeat(columnWidth) + "+"
-						+ "-".repeat(columnWidth) + "+"
-						+ "-".repeat(columnWidth) + "+"
-						+ "-".repeat(columnWidth) + "+"
-						+ "-".repeat(columnWidth) + "+"
-						+ "-".repeat(columnWidth) + "+"
-						+ "-".repeat(columnWidth) + "+"
-						+ "-".repeat(columnWidth) + "+"
-						+ "-".repeat(columnWidth) + "+"
-						+ "-".repeat(columnWidth) + "+");
-			}
-		}
-	}
-
-
-
-
-
 
 	public void changeAppointmentStatus(String appID, status stat) {
 		List<String[]> data = getAllRows();
@@ -216,55 +83,15 @@ public class Schedule {
 		overwriteCSV(data);
 	}
 
-
-	public void changePaymentStatus(String appID, paymentStatus stat) {
-		List<String[]> data = getAllRows();
-		boolean foundData = false;
-
-		for(String[] row : data) {
-			if(row[1].equals(appID) && (row[0].equals("FALSE") || row[0].equals("false")) && !row[8].equals("Cancelled")) {
-				row[10] = stat.name();
-				foundData = true;
-				break;
-			}
-		}
-
-		if (!foundData) {
-			System.out.println("The Appointment ID you want to change payment status cannot be found! Please try again.");
-			return;
-		}
-		overwriteCSV(data);
-	}
-
-	public void addChangeCost(String appID, double cost) {
-		List<String[]> data = getAllRows();
-		boolean foundData = false;
-
-		for(String[] row : data) {
-			if(row[1].equals(appID) && (row[0].equals("FALSE") || row[0].equals("false")) && !row[8].equals("Cancelled")) {
-				row[9] = String.valueOf(cost);
-				foundData = true;
-				break;
-			}
-		}
-
-		if (!foundData) {
-			System.out.println("The Appointment ID you want to add cost cannot be found! Please try again.");
-			return;
-		}
-		overwriteCSV(data);
-	}
-
 	public boolean checkAppIDExist(String appID){
-		List<String[]> data = getAllRows();
-		for(String[] row : data) {
-			if(row[1].equals(appID)) return true;
+		for(Appointment app : appointmentList) {
+			if(app.getAppID().equals(appID)) return true;
 		}
 		return false;
 	}
 
 	public void printAppointmentOfaDayForDoc(String date, String docID) {
-
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/M/yyyy H:mm");
 		System.out.println("Below is the schedule for the day");
 		System.out.println("+" + "-".repeat(columnWidth) + "+"
 				+ "-".repeat(columnWidth) + "+"
@@ -292,17 +119,17 @@ public class Schedule {
 				+ "-".repeat(columnWidth) + "+"
 				+ "-".repeat(columnWidth) + "+"
 				+ "-".repeat(columnWidth) + "+");
-		List<String[]> data = getAllRows();
-		for(String[] row : data) {
-			if(row[2].startsWith(date) && row[3].equals(docID)) {
-				System.out.println("|" + formatCell(row[1], columnWidth)
-						+ "|" + formatCell(row[2], columnWidth)
-						+ "|" + formatCell(row[3], columnWidth)
-						+ "|" + formatCell(row[4], columnWidth)
-						+ "|" + formatCell(row[5], columnWidth)
-						+ "|" + formatCell(row[6], columnWidth)
-						+ "|" + formatCell(row[7], columnWidth)
-						+ "|" + formatCell(row[8], columnWidth) + "|");
+		
+		for(Appointment app : appointmentList) {
+			if(app.getTimeOfApp().format(formatter).startsWith(date) && app.getDocID().equals(docID)) {
+				System.out.println("|" + formatCell(app.getAppID(), columnWidth)
+						+ "|" + formatCell(app.getTimeOfApp().format(formatter), columnWidth)
+						+ "|" + formatCell(app.getDocID(), columnWidth)
+						+ "|" + formatCell(app.getDocName(), columnWidth)
+						+ "|" + formatCell(app.getPatID(), columnWidth)
+						+ "|" + formatCell(app.getPatName(), columnWidth)
+						+ "|" + formatCell((app.getPurposeOfApp() != null) ? app.getPurposeOfApp().toString() : " ", columnWidth)
+						+ "|" + formatCell((app.getStatusOfApp() != null) ? app.getStatusOfApp().toString() : " ", columnWidth) + "|");
 				System.out.println("+" + "-".repeat(columnWidth) + "+"
 						+ "-".repeat(columnWidth) + "+"
 						+ "-".repeat(columnWidth) + "+"
@@ -315,22 +142,21 @@ public class Schedule {
 		}
 	}
 
-	public void displayAppointmentList(List<String[]> appointments) {
-		if (appointments == null || appointments.isEmpty()) {
-			System.out.println("No appointments found.");
+	public void displayAppointmentList(ArrayList<Appointment> appointmentList) {
+		if (appointmentList == null || appointmentList.isEmpty()) {
+			System.out.println("No appointments are found.");
 			return;
 		}
-
-		int columnWidth = 20;
 
 		// Print table header
 		System.out.println("+" + "-".repeat(columnWidth) + "+" +
 				"-".repeat(columnWidth) + "+" + "-".repeat(columnWidth) + "+" +
 				"-".repeat(columnWidth) + "+" + "-".repeat(columnWidth) + "+" +
 				"-".repeat(columnWidth) + "+" + "-".repeat(columnWidth) + "+" +
+				"-".repeat(columnWidth) + "+" + "-".repeat(columnWidth) + "+" + "-".repeat(50) + "+" +
 				"-".repeat(columnWidth) + "+" + "-".repeat(columnWidth) + "+" +
-				"-".repeat(columnWidth) + "+");
-
+				"-".repeat(columnWidth) + "+" + "-".repeat(30) + "+");
+		
 		System.out.println("|" + formatCell("Appointment ID", columnWidth)
 				+ "|" + formatCell("App Date and Time", columnWidth)
 				+ "|" + formatCell("Doctor ID", columnWidth)
@@ -338,79 +164,92 @@ public class Schedule {
 				+ "|" + formatCell("Patient ID", columnWidth)
 				+ "|" + formatCell("Patient Name", columnWidth)
 				+ "|" + formatCell("Purpose", columnWidth)
+				+ "|" + formatCell("Department", columnWidth)
 				+ "|" + formatCell("Status", columnWidth)
-				+ "|" + formatCell("Cost", columnWidth)
-				+ "|" + formatCell("Payment Status", columnWidth) + "|");
-
-		for (String[] row : appointments) {
-			// Print the row content for debugging
-			System.out.println("Debug: " + String.join(",", row)); // Debug line
-
-			if (row.length < 11) {
-				System.out.println("Skipping row with insufficient data: " + String.join(",", row));
-				continue;
-			}
-
-			System.out.println("|" + formatCell(row[1], columnWidth)
-					+ "|" + formatCell(row[2], columnWidth)
-					+ "|" + formatCell(row[3], columnWidth)
-					+ "|" + formatCell(row[4], columnWidth)
-					+ "|" + formatCell(row[5], columnWidth)
-					+ "|" + formatCell(row[6], columnWidth)
-					+ "|" + formatCell(row[7], columnWidth)
-					+ "|" + formatCell(row[8], columnWidth)
-					+ "|" + formatCell(row[9], columnWidth)
-					+ "|" + formatCell(row[10], columnWidth) + "|");
+				+ "|" + formatCell("Appointment Outcomes", 50) 
+				+ "|" + formatCell("Medicine", columnWidth) 
+				+ "|" + formatCell("Issued Date", columnWidth)
+				+ "|" + formatCell("Dosage", columnWidth)
+				+ "|" + formatCell("Instructions", 30) + "|");
+		
+		System.out.println("+" + "-".repeat(columnWidth) + "+" +
+				"-".repeat(columnWidth) + "+" + "-".repeat(columnWidth) + "+" +
+				"-".repeat(columnWidth) + "+" + "-".repeat(columnWidth) + "+" +
+				"-".repeat(columnWidth) + "+" + "-".repeat(columnWidth) + "+" +
+				"-".repeat(columnWidth) + "+" + "-".repeat(columnWidth) + "+" + "-".repeat(50) + "+" +
+				"-".repeat(columnWidth) + "+" + "-".repeat(columnWidth) + "+" +
+				"-".repeat(columnWidth) + "+" + "-".repeat(30) + "+");
+		
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/M/yyyy H:mm");
+		DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("d/M/yyyy");
+		for (Appointment row : appointmentList) {
+			System.out.println("|" + formatCell(row.getAppID(), columnWidth)
+					+ "|" + formatCell(row.getTimeOfApp().format(formatter), columnWidth)
+					+ "|" + formatCell(row.getDocID(), columnWidth)
+					+ "|" + formatCell(row.getDocName(), columnWidth)
+					+ "|" + formatCell(row.getPatID(), columnWidth)
+					+ "|" + formatCell(row.getPatName(), columnWidth)
+					+ "|" + formatCell((row.getPurposeOfApp() != null) ? row.getPurposeOfApp().toString() : " ", columnWidth)
+					+ "|" + formatCell(row.getAppointmentDepartment().toString(), columnWidth)
+					+ "|" + formatCell((row.getStatusOfApp() != null) ? row.getStatusOfApp().toString() : " ", columnWidth)
+					+ "|" + formatCell(row.getAppointOutcomeRecord(), 50) 
+					+ "|" + formatCell(row.getMedicine(), columnWidth)
+					+ "|" + formatCell((row.getMedicineIssuedDate() != null) ? row.getMedicineIssuedDate().format(formatter1) : " ", columnWidth)
+					+ "|" + formatCell(row.getDosage(), columnWidth)
+					+ "|" + formatCell(row.getInstructions(), 30) + "|");
+			
+			System.out.println("+" + "-".repeat(columnWidth) + "+"
+					+ "-".repeat(columnWidth) + "+"
+					+ "-".repeat(columnWidth) + "+"
+					+ "-".repeat(columnWidth) + "+"
+					+ "-".repeat(columnWidth) + "+"
+					+ "-".repeat(columnWidth) + "+"
+					+ "-".repeat(columnWidth) + "+"
+					+ "-".repeat(columnWidth) + "+"
+					+ "-".repeat(columnWidth) + "+"
+					+ "-".repeat(50) + "+"
+					+ "-".repeat(columnWidth) + "+"
+					+ "-".repeat(columnWidth) + "+"
+					+ "-".repeat(columnWidth) + "+"
+					+ "-".repeat(30) + "+");
 		}
 	}
 
 
-	public List<String[]> getAppointmentsByDoctorID(String doctorID) {
-		List<String[]> data = getAllRows();
-		List<String[]> filteredAppointments = new ArrayList<>();
-
-		for (String[] row : data) {
-			if (row.length > 3 && row[3].equals(doctorID)) {
-				filteredAppointments.add(row);
-			}
+	public ArrayList<Appointment> getAppointmentsByDoctorID(String doctorID) {
+		ArrayList<Appointment> filteredAppointments = new ArrayList<>();
+		for(Appointment appointment : appointmentList) {
+			if(appointment.getDocID().equals(doctorID)) filteredAppointments.add(appointment);
 		}
 
 		return filteredAppointments;
 	}
 
 	// Retrieve appointments by Patient ID
-	public List<String[]> getAppointmentsByPatientID(String patientID) {
-		List<String[]> data = getAllRows();
-		List<String[]> filteredAppointments = new ArrayList<>();
-
-		for (String[] row : data) {
-			if (row.length > 5 && row[5].equals(patientID)) {
-				filteredAppointments.add(row);
-			}
+	public ArrayList<Appointment> getAppointmentsByPatientID(String patientID) {
+		ArrayList<Appointment> filteredAppointments = new ArrayList<>();
+		for(Appointment appointment : appointmentList) {
+			if (appointment.getPatID().equals(patientID))
+				filteredAppointments.add(appointment);
 		}
 
 		return filteredAppointments;
 	}
 
 	// Retrieve a single appointment by Appointment ID
-	public String[] getAppointmentByID(String appID) {
-		List<String[]> data = getAllRows();
-
-		for (String[] row : data) {
-			if (row.length > 1 && row[1].equals(appID)) {
-				return row;
-			}
+	public Appointment getAppointmentByID(String appID) {
+		for(Appointment appointment : appointmentList) {
+			if(appID.equals(appointment.getAppID())) return appointment;
 		}
 		return null;
 	}
 
 	// Retrieve appointments by Status
-	public List<String[]> getAppointmentsByStatus(String status) {
-		List<String[]> data = getAllRows();
-		List<String[]> filteredAppointments = new ArrayList<>();
+	public ArrayList<Appointment> getAppointmentsByStatus(String status) {
+		ArrayList<Appointment> filteredAppointments = new ArrayList<>();
 
-		for (String[] row : data) {
-			if (row.length > 8 && row[8].equalsIgnoreCase(status)) {
+		for (Appointment row : appointmentList) {
+			if (row.getStatusOfApp() != null && row.getStatusOfApp().toString().equalsIgnoreCase(status)) {
 				filteredAppointments.add(row);
 			}
 		}
@@ -458,7 +297,6 @@ public class Schedule {
 				continue;
 			}
 			// if row is not empty,  should i put these inside the constructor of Appointments?
-			double appCost = 0;
 			purpose appPur;
 			if (Objects.equals(row[7], "CheckUp")) appPur = purpose.CheckUp;
 			else if (Objects.equals(row[7], "Surgery")) appPur = purpose.Surgery;
@@ -486,14 +324,9 @@ public class Schedule {
 			else if (Objects.equals(row[9], "Completed")) appStatus = status.Completed;
 			else if (Objects.equals(row[9], "Pending")) appStatus = status.Pending;
 			else if (Objects.equals(row[9], "Unavailable")) appStatus = status.Unavailable;
+			else if (Objects.equals(row[9], "PrescriptionPending")) appStatus = status.PrescriptionPending;
 
-			paymentStatus payStat = null;
-			if (Objects.equals(row[11], "Prepaid")) payStat = paymentStatus.Prepaid;
-			else if (Objects.equals(row[11], "Pending")) payStat = paymentStatus.Pending;
-			else if (Objects.equals(row[11], "Completed")) payStat = paymentStatus.Completed;
-			else if (Objects.equals(row[11], "Overdued")) payStat = paymentStatus.Overdued;
-			else if (Objects.equals(row[11], "Cancelled")) payStat = paymentStatus.Cancelled;
-			Appointment apps = new Appointment(Boolean.valueOf(row[0]),row[1],row[2],row[3],row[4],row[5],row[6],appPur,appDept,appStatus,appCost,payStat, " ");
+			Appointment apps = new Appointment(Boolean.valueOf(row[0]),row[1],row[2],row[3],row[4],row[5],row[6],appPur,appDept,appStatus, " ", row[11], row[12], row[13], row[14]);
 			appointmentList.add(apps);
 			i++;
 		}
@@ -504,8 +337,8 @@ public class Schedule {
         Schedule schedule = new Schedule();
         List<String[]> data = new ArrayList<>();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/M/yyyy H:mm");
-        
-        String[] values = new String[12];
+        DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("d/M/yyyy");
+        String[] values = new String[15];
         values[0] = "Availability";
         values[1] = "AppointmentID";
         values[2] = "TimeOfAppointment";
@@ -516,13 +349,15 @@ public class Schedule {
         values[7] = "PurposeOfAppointment";
         values[8] = "Department";
         values[9] = "StatusOfAppointment";
-        values[10] = "Cost";
-        values[11] = "PaymentStatus";
-        values[11] = "Appointment Outcomes";
+        values[10] = "Appointment Outcomes";
+        values[11] = "Medicine";
+        values[12] = "Date Issued";
+        values[13] = "Dosage";
+        values[14] = "Instructions";
         data.add(values);
         
         for(Appointment appointment : appointmentList) {
-        	String[] row = new String[12];
+        	String[] row = new String[15];
         	row[0] = String.valueOf(appointment.getAvail());
             row[1] = appointment.getAppID();
             row[2] = appointment.getTimeOfApp().format(formatter);
@@ -533,9 +368,12 @@ public class Schedule {
             if(appointment.getPurposeOfApp() != null) row[7] = appointment.getPurposeOfApp().toString(); else row[7] = " ";
             row[8] = appointment.getAppointmentDepartment().toString();
             if(appointment.getStatusOfApp() != null) row[9] = appointment.getStatusOfApp().toString(); else row[9] = " ";
-            row[10] = String.valueOf(appointment.getCostOfApp());
-            if(appointment.getPaymentStatus() != null) row[11] = appointment.getPaymentStatus().toString(); else row[11] = " ";
-            row[11] = appointment.getAppointOutcomeRecord();
+            row[10] = appointment.getAppointOutcomeRecord();
+            row[11] = appointment.getMedicine();
+            if(appointment.getMedicineIssuedDate() != null) row[12] = appointment.getMedicineIssuedDate().format(formatter1); else row[12] = " ";
+            row[13] = appointment.getDosage();
+            row[14] = appointment.getInstructions();
+            
             data.add(row);
         }
         schedule.updateFile(data);

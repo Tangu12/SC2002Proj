@@ -964,6 +964,14 @@ public class User {
 	public Domain getDomain() {
 		return domain;
 	}
+	
+	public String getGender() {
+		return this.gender;
+	}
+	
+	public int getAge() {
+		return this.age;
+	}
 
 	public void setName(String name) {
 		this.name = name;
@@ -975,6 +983,14 @@ public class User {
 
 	public void setDomain(Domain domain) {
 		this.domain = domain;
+	}
+	
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
+	
+	public void setAge(int age) {
+		this.age = age;
 	}
 
 	// What about other particulars to change, eg. Email, Name..?

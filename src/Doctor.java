@@ -252,14 +252,46 @@ public class Doctor extends User {
 
 
     public void updateApptOutcomeRecords(ArrayList<Appointment> appointmentList) {
-    	List<Integer> pendingIndices = viewDoctorScheduledAppointments(appointmentList);
+    		List<Integer> pendingIndices = viewDoctorScheduledAppointments(appointmentList);
         System.out.println("Select one of the record you would like to update: ");
         int selection = InputScanner.sc.nextInt();
         InputScanner.sc.nextLine(); // Buffer
+        if(selection-1 >= pendingIndices.size()) {System.out.println("Please only enter the available records:"); return;}
         System.out.println("Please enter your notes (Doctor's notes):");
         String doctorNotes = InputScanner.sc.nextLine().trim();
-        if(selection-1 >= pendingIndices.size()) System.out.println("Please only enter the available records:");
-        else appointmentList.get(pendingIndices.get(selection-1)).setAppointOutcomeRecord(doctorNotes);
+        System.out.println("Please select the status of the appointment:\n"
+        		+ "(1) Confirmed\n"
+        		+ "(2) Cancelled\n"
+        		+ "(3) Completed\n"
+        		+ "(4) Pending\n"
+        		+ "(5) Unavailable\n"
+        		+ "(6) PrescriptionPending");
+        int choice = InputScanner.sc.nextInt();
+        InputScanner.sc.nextLine();
+        switch(choice) {
+	        case 1:
+	        		appointmentList.get(pendingIndices.get(selection-1)).setStatusOfApp(status.Confirmed);
+	        		break;
+	        case 2:
+	        		appointmentList.get(pendingIndices.get(selection-1)).setStatusOfApp(status.Cancelled);
+	        		break;
+	        case 3:
+	        		appointmentList.get(pendingIndices.get(selection-1)).setStatusOfApp(status.Completed);
+	        		break;
+	        case 4:
+	        		appointmentList.get(pendingIndices.get(selection-1)).setStatusOfApp(status.Pending);
+	        		break;
+	        case 5:
+	        		appointmentList.get(pendingIndices.get(selection-1)).setStatusOfApp(status.Unavailable);
+	        		break;
+	        case 6:
+	        		appointmentList.get(pendingIndices.get(selection-1)).setStatusOfApp(status.PrescriptionPending);
+	        		break;
+	        	default:
+	        		System.out.println("Please only select the available status.");
+	        		return;
+        }
+        appointmentList.get(pendingIndices.get(selection-1)).setAppointOutcomeRecord(doctorNotes);
     }
 
 
@@ -342,15 +374,15 @@ public class Doctor extends User {
 
 
 
-    public String getAppIdFromTime(String time) {
-        List<String[]> data = Schedule.getAllRows();
-        for (String[] row : data) {
-            if (row[2].equals(time)) {
-                return row[1]; //returns doctorName
-            }
-        }
-        return null;
-    }
+//    public String getAppIdFromTime(String time) {
+//        List<String[]> data = Schedule.getAllRows();
+//        for (String[] row : data) {
+//            if (row[2].equals(time)) {
+//                return row[1]; //returns doctorName
+//            }
+//        }
+//        return null;
+//    }
 
     public void setUnavailableTimeslot(String unAvailableID) {
         Schedule schedule = new Schedule();

@@ -12,7 +12,7 @@ public class Pharmacist extends User {
     public Pharmacist(String name, String hospitalId, Domain domain, String gender, int age) {
         super(name, hospitalId, domain, gender, age);
         this.prescriptions = new ArrayList<>();
-        this.inventory = MedicationInventory.getInstance();
+        //this.inventory = MedicationInventory.getInstance();
     }
 
     // Main menu for Pharmacist
@@ -45,8 +45,7 @@ public class Pharmacist extends User {
     // View all appointments using Schedule class
     private void viewAllAppointments(Schedule schedule) {
         System.out.println("\n--- Viewing All Appointments ---");
-        List<String[]> allAppointments = schedule.getAllRows();
-        schedule.displayAppointmentList(allAppointments);
+        schedule.displayAppointmentList(Schedule.getAppointmentList());
     }
 
     // Manage prescriptions - includes viewing, adding, searching, and updating prescriptions

@@ -4,10 +4,10 @@ import java.util.ArrayList;
 public class Administrator extends User {
 
     private MedicationInventory inventory;
-
+    
     public Administrator(String name, String hospitalId, Domain domain, String gender, int age) {
         super(name, hospitalId, domain, gender, age);
-        this.inventory = MedicationInventory.getInstance();
+        this.inventory = new MedicationInventory();
     }
 
     public void homePage() {
@@ -34,7 +34,7 @@ public class Administrator extends User {
 
     // Manage Hospital Staff
     private void viewAndManageHospitalStaff() {
-        HospitalStaff hospitalStaff = HospitalStaff.getInstance();
+        HospitalStaff hospitalStaff = new HospitalStaff();
         int choice;
 
         do {
@@ -77,7 +77,7 @@ public class Administrator extends User {
             InputScanner.sc.nextLine();
 
             switch (choice) {
-                case 1 -> schedule.displayAppointmentList(schedule.getAllRows());
+                case 1 -> schedule.displayAppointmentList(Schedule.getAppointmentList());
                 case 2 -> viewAppointmentsByStatus(schedule);
                 case 3 -> searchAppointmentByID(schedule);
                 case 4 -> searchByPatientID(schedule);
@@ -94,6 +94,7 @@ public class Administrator extends User {
         System.out.println("(2) Pending");
         System.out.println("(3) Completed");
         System.out.println("(4) Cancelled");
+        System.out.println("(5) PrescriptionPending");
 
         int statusChoice = InputScanner.sc.nextInt();
         InputScanner.sc.nextLine();
@@ -104,13 +105,14 @@ public class Administrator extends User {
             case 2 -> status = "Pending";
             case 3 -> status = "Completed";
             case 4 -> status = "Cancelled";
+            case 5 -> status = "PrescriptionPending";
             default -> {
                 System.out.println("Invalid status choice.");
                 return;
             }
         }
 
-        List<String[]> filteredAppointments = schedule.getAppointmentsByStatus(status);
+        ArrayList<Appointment> filteredAppointments = schedule.getAppointmentsByStatus(status);
         schedule.displayAppointmentList(filteredAppointments);
     }
 
@@ -118,9 +120,9 @@ public class Administrator extends User {
         System.out.println("Enter the Appointment ID:");
         String appointmentID = InputScanner.sc.nextLine();
 
-        String[] appointment = schedule.getAppointmentByID(appointmentID);
+        Appointment appointment = schedule.getAppointmentByID(appointmentID);
         if (appointment != null) {
-            List<String[]> singleAppointmentList = new ArrayList<>();
+        		ArrayList<Appointment> singleAppointmentList = new ArrayList<>();
             singleAppointmentList.add(appointment);
             schedule.displayAppointmentList(singleAppointmentList);
         } else {
@@ -132,7 +134,7 @@ public class Administrator extends User {
         System.out.println("Enter the Patient ID:");
         String patientID = InputScanner.sc.nextLine();
 
-        List<String[]> patientAppointments = schedule.getAppointmentsByPatientID(patientID);
+        ArrayList<Appointment> patientAppointments = schedule.getAppointmentsByPatientID(patientID);
         schedule.displayAppointmentList(patientAppointments);
     }
 
@@ -140,7 +142,7 @@ public class Administrator extends User {
         System.out.println("Enter the Doctor ID:");
         String doctorID = InputScanner.sc.nextLine();
 
-        List<String[]> doctorAppointments = schedule.getAppointmentsByDoctorID(doctorID);
+        ArrayList<Appointment> doctorAppointments = schedule.getAppointmentsByDoctorID(doctorID);
         schedule.displayAppointmentList(doctorAppointments);
     }
 

@@ -1,3 +1,4 @@
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -27,15 +28,8 @@ enum status {
 	Cancelled,
 	Completed,
 	Pending,
-	Unavailable
-}
-
-enum paymentStatus{
-	Prepaid,
-	Pending,
-	Completed,
-	Overdued,
-	Cancelled
+	Unavailable,
+	PrescriptionPending
 }
 
 public class Appointment {
@@ -49,13 +43,17 @@ public class Appointment {
 	private purpose purposeOfAppointment;
 	private department appointmentDepartment;
 	private status statusOfAppointment;
-	private double costOfAppointment;
-	private paymentStatus paymentStatus;
 	private String appointOutcomeRecord;
-
+	private String medicine;
+	private LocalDate medicineIssuedDate;
+	private String dosage;
+	private String instructions;
 	
-	public Appointment(Boolean availability, String appointmentID, String time, String doctorID, String doctorName, String patientID, String patientName, purpose purposeOfAppointment, department appointmentDepartment, status statusOfAppointment, double cost, paymentStatus Paymentstatus, String appointmentOutcomeRecord) {
+	public Appointment(Boolean availability, String appointmentID, String time, String doctorID, String doctorName, String patientID, String patientName, 
+			purpose purposeOfAppointment, department appointmentDepartment, status statusOfAppointment, String appointmentOutcomeRecord,
+			String medicine, String medicineIssuedDate, String dosage, String instructions) {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/M/yyyy H:mm");
+		DateTimeFormatter formatterDate = DateTimeFormatter.ofPattern("d/M/yyyy"); 
 		this.availability = availability;
 		this.appointmentID = appointmentID;
 		this.time = LocalDateTime.parse(time, formatter);
@@ -66,9 +64,12 @@ public class Appointment {
 		this.purposeOfAppointment = purposeOfAppointment;
 		this.appointmentDepartment = appointmentDepartment;
 		this.statusOfAppointment = statusOfAppointment;
-		this.costOfAppointment = cost;
-		this.paymentStatus = Paymentstatus;
 		this.appointOutcomeRecord = appointmentOutcomeRecord;
+		this.medicine = medicine;
+		if(medicineIssuedDate.equals(" ")) this.medicineIssuedDate = null;
+		else this.medicineIssuedDate = LocalDate.parse(medicineIssuedDate, formatterDate);
+		this.dosage = dosage;
+		this.instructions = instructions;
 	}
 
 	public boolean getAvail() {
@@ -111,16 +112,25 @@ public class Appointment {
 		return this.statusOfAppointment;
 	}
 	
-	public double getCostOfApp() {
-		return this.costOfAppointment;
-	}
-	
-	public paymentStatus getPaymentStatus() {
-		return this.paymentStatus;
-	}
-	
 	public String getAppointOutcomeRecord() {
 		return this.appointOutcomeRecord;
+	}
+	
+	
+	public String getMedicine() {
+		return this.medicine;
+	}
+	
+	public LocalDate getMedicineIssuedDate() {
+		return this.medicineIssuedDate;
+	}
+	
+	public String getDosage() {
+		return this.dosage;
+	}
+	
+	public String getInstructions() {
+		return this.instructions;
 	}
 	
 	public void setAvail(boolean avail) {
@@ -162,17 +172,25 @@ public class Appointment {
 	public void setStatusOfApp(status statusOfAppointment) {
 		this.statusOfAppointment = statusOfAppointment;
 	}
-	
-	public void setCostOfApp(double costOfAppointment) {
-		this.costOfAppointment = costOfAppointment;
-	}
-	
-	public void setPaymentStatus(paymentStatus paymentStatus) {
-		this.paymentStatus = paymentStatus;
-	}
 
 	public void setAppointOutcomeRecord(String appointOutcomeRecord) {
 		this.appointOutcomeRecord = appointOutcomeRecord;
 	}
-
+	
+	public void setMedicine(String med) {
+		this.medicine = med;
+	}
+	
+	public void setLocalDate(String date) {
+		DateTimeFormatter formatterDate = DateTimeFormatter.ofPattern("d/M/yyyy"); 
+		this.medicineIssuedDate = LocalDate.parse(date, formatterDate);
+	}
+	
+	public void setDosage(String dosage) {
+		this.dosage = dosage;
+	}
+	
+	public void setInstructions(String instructions) {
+		this.instructions = instructions;
+	}
 }
