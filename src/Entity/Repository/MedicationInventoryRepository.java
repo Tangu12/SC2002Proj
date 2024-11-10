@@ -19,18 +19,13 @@ public class MedicationInventoryRepository implements IRepository<String,String,
 
     @Override
     public void createRecord(Object... attributes) {
-        if (attributes.length != 4) {
+        if (attributes.length != 1 && !(attributes[0] instanceof Medicine)) {
             System.out.println("Error: Incorrect number of attributes provided.");
             return;
         }
 
         try {
-            String nameOfMedicine = (String) attributes[0];
-            int currentStock = (int) attributes[1];
-            int lowStockLevelAlert = (int) attributes[2];
-            int requestAmount = (int) attributes[3];
-
-            Medicine record = new Medicine(nameOfMedicine, currentStock, lowStockLevelAlert, requestAmount);
+            Medicine record = (Medicine) attributes[0];
 
             if (readRecord(record.getNameOfMedicine()) != null) {
                 System.out.println("Error!! Medicine already exists !!");
