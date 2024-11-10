@@ -12,6 +12,7 @@ public class Main {
             return;
         }
         User.homePage(user);
+        Schedule.updateAppointmentFile(Schedule.getAppointmentList());
         // User.changePassword("D001", "James123");
     }
 }

@@ -87,8 +87,6 @@ public class Patient extends User {
                         break;
                     case 9:
                         System.out.println("Thank you for using our service!!");
-                        // Update file
-                        updateAppointmentFile(Schedule.getAppointmentList());
                         break;
 //                    case 8:
 //                        viewPatientPendingAppointments(appointmentList);
@@ -407,47 +405,6 @@ public class Patient extends User {
 		}
 		return String.format("%-" + width + "s", value);  // Left-align the text within the specified width
 	}
-
-
-    // Update file function
-    public void updateAppointmentFile(ArrayList<Appointment> appointmentList) {
-        Schedule schedule = new Schedule();
-        List<String[]> data = new ArrayList<>();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/M/yyyy H:mm");
-        
-        String[] values = new String[12];
-        values[0] = "Availability";
-        values[1] = "AppointmentID";
-        values[2] = "TimeOfAppointment";
-        values[3] = "DoctorID";
-        values[4] = "DoctorName";
-        values[5] = "PatientID";
-        values[6] = "PatientName";
-        values[7] = "PurposeOfAppointment";
-        values[8] = "Department";
-        values[9] = "StatusOfAppointment";
-        values[10] = "Cost";
-        values[11] = "PaymentStatus";
-        data.add(values);
-        
-        for(Appointment appointment : appointmentList) {
-        	String[] row = new String[12];
-        	row[0] = String.valueOf(appointment.getAvail());
-            row[1] = appointment.getAppID();
-            row[2] = appointment.getTimeOfApp().format(formatter);
-            row[3] = appointment.getDocID();
-            row[4] = appointment.getDocName();
-            row[5] = appointment.getPatID();
-            row[6] = appointment.getPatName();
-            if(appointment.getPurposeOfApp() != null) row[7] = appointment.getPurposeOfApp().toString(); else row[7] = " ";
-            row[8] = appointment.getAppointmentDepartment().toString();
-            if(appointment.getStatusOfApp() != null) row[9] = appointment.getStatusOfApp().toString(); else row[9] = " ";
-            row[10] = String.valueOf(appointment.getCostOfApp());
-            if(appointment.getPaymentStatus() != null) row[11] = appointment.getPaymentStatus().toString(); else row[11] = " ";
-            data.add(row);
-        }
-        schedule.updateFile(data);
-    }
     
     public static void loadPatientlist() {
 		List<String[]> data = new ArrayList<>();

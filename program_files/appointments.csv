@@ -1,6 +1,6 @@
-Availability,AppointmentID,TimeOfAppointment,DoctorID,DoctorName,PatientID,PatientName,PurposeOfAppointment,Department,StatusOfAppointment,Cost,PaymentStatus
+Availability,AppointmentID,TimeOfAppointment,DoctorID,DoctorName,PatientID,PatientName,PurposeOfAppointment,Department,StatusOfAppointment,Cost,Appointment Outcomes
 true,A202411090100D002,9/11/2024 1:00,D002,RyanGuy, , , ,Cardiology, ,0.0, 
-false,A202411090130D002,9/11/2024 1:30,D002,RyanGuy,P001,Patient Name,Consultation,Neurology,Completed,0.0,Pending
+false,A202411090130D002,9/11/2024 1:30,D002,RyanGuy,P001,Patient Name,Consultation,Neurology,Completed,0.0, 
 true,A202411090200D002,9/11/2024 2:00,D002,RyanGuy, , , ,Neurology, ,0.0, 
 true,A202411090230D002,9/11/2024 2:30,D002,RyanGuy, , , ,Neurology, ,0.0, 
 true,A202411090300D002,9/11/2024 3:00,D002,RyanGuy, , , ,Neurology, ,0.0, 
@@ -18,12 +18,12 @@ true,A202411090830D002,9/11/2024 8:30,D002,RyanGuy, , , ,Neurology, ,0.0,
 true,A202411090900D002,9/11/2024 9:00,D002,RyanGuy, , , ,Neurology, ,0.0, 
 true,A202411090930D002,9/11/2024 9:30,D002,RyanGuy, , , ,Neurology, ,0.0, 
 true,A202411091000D001,9/11/2024 10:00,D001,John Kayek, , , ,Cardiology, ,0.0, 
-true,A202411091030D001,9/11/2024 10:30,D001,John Kayek, , , ,Cardiology, ,0.0, 
-true,A202411091100D001,9/11/2024 11:00,D001,John Kayek,P001,Patient Name,Consultation,Cardiology,Cancelled,0.0,Pending
+false,A202411091030D001,9/11/2024 10:30,D001,John Kayek,P001,Dorcas,Surgery,Cardiology,Pending,0.0, 
+true,A202411091100D001,9/11/2024 11:00,D001,John Kayek,P001,Patient Name,Consultation,Cardiology,Cancelled,0.0, 
 true,A202411091130D001,9/11/2024 11:30,D001,John Kayek, , , ,Cardiology, ,0.0, 
 true,A202411091200D001,9/11/2024 12:00,D001,John Kayek, , , ,Cardiology, ,0.0, 
 true,A202411091230D001,9/11/2024 12:30,D001,John Kayek, , , ,Cardiology, ,0.0, 
 true,A202411091300D001,9/11/2024 13:00,D001,John Kayek, , , ,Cardiology, ,0.0, 
-false,A202411091330D001,9/11/2024 13:30,D001,John Kayek,P001,Patient Name,Surgery,Cardiology,Confirmed,0.0,Pending
-true,A202411091400D001,9/11/2024 14:00,D001,John Kayek, , , ,Cardiology, ,0.0, 
-false,A202411091430D001,9/11/2024 14:30,D001,John Kayek,P001,,Surgery,Cardiology,Pending,0.0,Pending
+false,A202411091330D001,9/11/2024 13:30,D001,John Kayek,P001,Patient Name,Surgery,Cardiology,Confirmed,0.0, 
+false,A202411091400D001,9/11/2024 14:00,D001,John Kayek,P001,Dorcas,Surgery,Cardiology,Confirmed,0.0,Cough and high fever
+false,A202411091430D001,9/11/2024 14:30,D001,John Kayek,P001,Dorcas,Consultation,Cardiology,Pending,0.0, 
