@@ -118,7 +118,7 @@ public class AppointmentsRepository implements IRepository {
                 String statusOfAppointment = data[9];
                 String appointmentOutcomeRecord = data[10];
                                             // how to make enums in the constructor?
-                Appointment temp = new Appointment((availability, appointmentID, appointmentTime, doctorID, doctorName, patientID, patientName, purposeOfAppointment, appointmentDepartment, statusOfAppointment, appointmentOutcomeRecord);
+                //Appointment temp = new Appointment((availability, appointmentID, appointmentTime, doctorID, doctorName, patientID, patientName, purposeOfAppointment, appointmentDepartment, statusOfAppointment, appointmentOutcomeRecord);
                 if (appointment.getAppID().equalsIgnoreCase(temp.getAppID())) {
                     tempAppointmentList.add(appointment);
                 }
@@ -176,7 +176,7 @@ public class AppointmentsRepository implements IRepository {
                 String statusOfAppointment = data[9];
                 String appointmentOutcomeRecord = data[10];
 
-                Appointment temp = new Appointment((availability, appointmentID, appointmentTime, doctorID, doctorName, patientID, patientName, purposeOfAppointment, appointmentDepartment, statusOfAppointment, appointmentOutcomeRecord);
+                //Appointment temp = new Appointment((availability, appointmentID, appointmentTime, doctorID, doctorName, patientID, patientName, purposeOfAppointment, appointmentDepartment, statusOfAppointment, appointmentOutcomeRecord);
                 if (appointment.getAppID().equalsIgnoreCase(temp.getAppID())) {
                     isDeleted = true;
                 }
@@ -206,6 +206,26 @@ public class AppointmentsRepository implements IRepository {
             System.out.println("Error writing to Appointment file!");
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void createRecord(Object... attributes) {
+
+    }
+
+    @Override
+    public Object readRecord(Object identifier) {
+        return null;
+    }
+
+    @Override
+    public void updateRecord(Object record) {
+
+    }
+
+    @Override
+    public void deleteRecord(Object record) {
+
     }
 
 

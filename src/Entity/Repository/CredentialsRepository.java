@@ -1,6 +1,6 @@
 package Entity.Repository;
 
-import Services.CredentialsService;
+//import Services.CredentialsService;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -43,6 +43,21 @@ public class CredentialsRepository implements IRepository {
         } else {
             System.out.println("Error: Invalid number of arguments for creating record.");
         }
+    }
+
+    @Override
+    public Object readRecord(Object identifier) {
+        return null;
+    }
+
+    @Override
+    public void updateRecord(Object record) {
+
+    }
+
+    @Override
+    public void deleteRecord(Object record) {
+
     }
 
     //@Override

@@ -7,8 +7,9 @@ public class MedicalRecordRepository implements IRepository{
         this.path = path;
     }
 
+
     @Override
-    public void createRecord(Object record) {
+    public void createRecord(Object... attributes) {
 
     }
 
