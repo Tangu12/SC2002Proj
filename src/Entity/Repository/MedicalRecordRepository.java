@@ -1,22 +1,26 @@
 package Entity.Repository;
 
 import Entity.MedicalRecord;
-import Entity.Medicine;
-import org.openxmlformats.schemas.officeDocument.x2006.docPropsVTypes.OblobDocument;
 
 import java.io.*;
 import java.util.ArrayList;
 
-public class MedicalRecordRepository implements IRepository{
+public class MedicalRecordRepository implements IRepository<MedicalRecord,String,MedicalRecord,MedicalRecord>{
     public final String path;
 
     public MedicalRecordRepository(String path) {
         this.path = path;
     }
 
-    public void createRecord(MedicalRecord medicalRecord) { // or Object Identifier?
+    public void createRecord(Object... attributes) {
+        if(attributes.length != 1 && !(attributes[0] instanceof MedicalRecord)){
+            System.out.println("Error! Attributes must be of type MedicalRecord");
+            return;
+        }
+        MedicalRecord medicalRecord = (MedicalRecord) attributes[0];
+
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(path, true))) {
-            writer.write(medicalRecord.getAppointmentID() + "," + medicalRecord.getPatientId() + "," + medicalRecord.getName() + "," + medicalRecord.getDateOfBirth() + "," + medicalRecord.getGender() + "," + medicalRecord.getBloodType() + "," + medicalRecord.getPhoneNumber() + "," + medicalRecord.getEmailAddress() + "," + medicalRecord.getPastDiagnosis() + "," + medicalRecord.getPastPrescriptions());
+            writer.write(medicalRecord.getAppointmentID() + "," + medicalRecord.getPatientId() + "," + medicalRecord.getName() + "," + medicalRecord.getDateOfBirth() + "," + medicalRecord.getGender() + "," + medicalRecord.getBloodType() + "," + medicalRecord.getPhoneNumber() + "," + medicalRecord.getEmailAddress() + "," + medicalRecord.getDiagnosis() + "," + medicalRecord.getPrescriptions());
             writer.newLine();
         } catch (Exception e) {
             System.out.println("Error accessing MedicationRecord file !!");
@@ -58,7 +62,6 @@ public class MedicalRecordRepository implements IRepository{
         }
         return null;
     }
-
 
     public void updateRecord(MedicalRecord updatedRecord) {
         ArrayList<MedicalRecord> tempMedicalRecords = new ArrayList<>();
