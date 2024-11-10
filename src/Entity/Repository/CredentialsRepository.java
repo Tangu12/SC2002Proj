@@ -128,7 +128,6 @@ public class CredentialsRepository implements IRepository <String,String,String[
 
                 String fileUserID = data[0];
 
-                // Ignore the record if it matches the name
                 if (fileUserID.equalsIgnoreCase(record[0])) {
                     credentialsDatabase.add(record);
                     isUpdated = true; // Add the updated record instead

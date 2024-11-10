@@ -11,5 +11,7 @@ public enum Department {
     Pulmonology,
     Rheumatology,
     ObstetricsGynecology,
+    Pharmacy,
+    Administrator,
     Others
 }
