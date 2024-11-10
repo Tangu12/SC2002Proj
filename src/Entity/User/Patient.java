@@ -19,6 +19,18 @@ public class Patient implements IUser{
     // Add more attributes as needed
     ArrayList<MedicalRecord> medicalHistory;
 
+    public Patient(String userID, String name, int age, Gender gender, Domain domain, ArrayList<MedicalRecord> medicalHistory) {
+        this.userID = userID;
+        this.name = name;
+        this.age = age;
+        this.gender = gender;
+        this.domain = domain;
+        this.medicalHistory = medicalHistory;
+
+}
+
+
+
     // Getters
     @Override
     public String getUserId() {
