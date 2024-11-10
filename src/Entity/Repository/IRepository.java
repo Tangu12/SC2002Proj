@@ -2,9 +2,9 @@ package Entity.Repository;
 
 import Entity.Medicine;
 
-public interface IRepository<T,U> {
+public interface IRepository<T,U,V,X> {
     void createRecord(Object... attributes);
-    T readRecord(U identifier);  // This will return a generic type
-    void updateRecord(T record);
+    V readRecord(U identifier);  // This will return a generic type
+    void updateRecord(X record);
     void deleteRecord(T record);
 }

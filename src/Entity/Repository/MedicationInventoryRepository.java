@@ -5,7 +5,7 @@ import Entity.Medicine;
 import java.io.*;
 import java.util.ArrayList;
 
-public class MedicationInventoryRepository implements IRepository<Medicine,String>{
+public class MedicationInventoryRepository implements IRepository<String,String,Medicine,Medicine>{
     public final String path;
 
     public MedicationInventoryRepository(String path) {
@@ -16,19 +16,35 @@ public class MedicationInventoryRepository implements IRepository<Medicine,Strin
     /*
      * Creates a new record in the medicationInventory File. It checks if the file exists, if not, it appends the record to the end of the file.
      * */
-    @Override
-    public void createRecord(Medicine record) {
 
-        if(readRecord(record.getNameOfMedicine()) != null) {
-            System.out.println("Error!! Medicine already exists !!");
+    @Override
+    public void createRecord(Object... attributes) {
+        if (attributes.length != 1 && !(attributes[0] instanceof Medicine)) {
+            System.out.println("Error: Incorrect number of attributes provided.");
             return;
         }
 
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(path, true))) {
-            writer.write(record.getNameOfMedicine() + "," + record.getCurrentStock() + "," + record.getLowStockLevelAlert()+ "," +record.getRequestAmount());
-            writer.newLine();
-        } catch (Exception e) {
-            System.out.println("Error accessing MedicationInventory file !!");
+        try {
+            Medicine record = (Medicine) attributes[0];
+
+            if (readRecord(record.getNameOfMedicine()) != null) {
+                System.out.println("Error!! Medicine already exists !!");
+                return;
+            }
+
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(path, true))) {
+                writer.write(record.getNameOfMedicine() + "," +
+                        record.getCurrentStock() + "," +
+                        record.getLowStockLevelAlert() + "," +
+                        record.getRequestAmount());
+                writer.newLine();
+            } catch (Exception e) {
+                System.out.println("Error accessing MedicationInventory file !!");
+                e.printStackTrace();
+            }
+
+        } catch (ClassCastException e) {
+            System.out.println("Error: Invalid attribute types provided.");
             e.printStackTrace();
         }
     }
@@ -65,13 +81,6 @@ public class MedicationInventoryRepository implements IRepository<Medicine,Strin
         }
         return null;
     }
-
-    //Admin
-    // IncreaseParacetomlby5
-    // temp = Medicine(Paracetoml,5,...)
-    // UpdateRecord(temp)'
-
-
 
     /*
     Loads all medicine into a temporary List. Then goes through the list to find the record that matches and adds it to the temporary List. It then writes the temporary list into the file
@@ -134,7 +143,7 @@ public class MedicationInventoryRepository implements IRepository<Medicine,Strin
     Loads all medicine into a temporary List. Then goes through the list to find the record that matches DOES NOT add it to the temporaryList. It then writes the temporary list into the file
     */
     @Override
-    public void deleteRecord(Medicine record){
+    public void deleteRecord(String medicineName){
         ArrayList<Medicine> tempMedicineList = new ArrayList<>();
         boolean isDeleted = false;
 
@@ -156,7 +165,7 @@ public class MedicationInventoryRepository implements IRepository<Medicine,Strin
                 Medicine temp = new Medicine(name, currentStock, lowStockAlert,requestAmount);
 
                 // Update the record if it matches
-                if (temp.getNameOfMedicine().equalsIgnoreCase(record.getNameOfMedicine())) {
+                if (temp.getNameOfMedicine().equalsIgnoreCase(medicineName)) {
                     isDeleted = true; // Do not add the record
                 } else {
                     tempMedicineList.add(temp); // Add existing record unchanged
@@ -188,6 +197,9 @@ public class MedicationInventoryRepository implements IRepository<Medicine,Strin
 
     }
 
+    /*
+    Returns all medicine in the file in an ArrayList
+    * */
     public ArrayList<Medicine> getAllMedicine(){
         ArrayList<Medicine> inventory = new ArrayList<>();;
 
@@ -217,4 +229,24 @@ public class MedicationInventoryRepository implements IRepository<Medicine,Strin
         return inventory;
     }
 
+    /*
+    Overwrites the file and stores the inventory List
+    */
+    public void saveInventoryToFile(ArrayList<Medicine> inventory){
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(path))) {
+            writer.write("Medicine Name,Current Stock,Low Stock Alert,Request Amount");
+            writer.newLine();
+
+            for (Medicine medicine : inventory) {
+                writer.write(medicine.getNameOfMedicine() + "," +
+                        medicine.getCurrentStock() + "," +
+                        medicine.getLowStockLevelAlert() + "," +
+                        medicine.getRequestAmount());
+                writer.newLine();
+            }
+        } catch (IOException e) {
+            System.out.println("Error saving inventory");
+            e.printStackTrace();
+        }
+    }
 }

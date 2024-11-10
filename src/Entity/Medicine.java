@@ -39,37 +39,47 @@ public class Medicine {
     }
 
     // Setters with validation
-    public void setCurrentStock(int newStock) {
+    public boolean setCurrentStock(int newStock) {
         if (newStock >= 0) {
             this.currentStock = newStock;
+            return true;
         } else {
             System.out.println("Error, current stock cannot be negative!");
+            return false;
         }
     }
 
-    public void setLowStockLevelAlert(int newAlertLevel) {
+    public boolean setLowStockLevelAlert(int newAlertLevel) {
         if (newAlertLevel >= 0) {
             this.lowStockLevelAlert = newAlertLevel;
+            return true;
         } else {
             System.out.println("Error, low level stock alert cannot be negative!");
+            return false;
         }
     }
 
-    public void setRequestAmount(int requestAmount) {
+    public boolean setRequestAmount(int requestAmount) {
         if (requestAmount >= 0) {
             this.requestAmount = requestAmount;
+            return true;
         } else {
             System.out.println("Error, request amount cannot be negative!");
+            return false;
         }
     }
 
     // Methods
+    public void incrementStock(int amount){
+        currentStock += amount;
+    }
+
     public boolean decrementStock(int amount) {
         if (amount <= currentStock && amount > 0) {
             currentStock -= amount;
             return true;
         } else {
-            System.out.println("Error, Insufficient stock available or invalid amount.");
+            System.out.println("Error, insufficient stock available or invalid amount.");
             return false;
         }
     }

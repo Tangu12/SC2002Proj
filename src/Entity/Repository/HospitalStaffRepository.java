@@ -8,7 +8,7 @@ public class HospitalStaffRepository implements IRepository{
     }
 
     @Override
-    public void createRecord(Object record) {
+    public void createRecord(Object... attributes) {
 
     }
 
