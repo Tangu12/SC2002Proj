@@ -1,7 +1,9 @@
 package Entity.Repository;
 
 import Entity.Appointment;
+import Entity.Enums.Department;
 import Entity.Enums.Purpose;
+import Entity.Enums.Status;
 import Entity.Medicine;
 
 import java.io.BufferedReader;
@@ -28,8 +30,7 @@ import java.util.Objects;
 //import java.util.List;
 
 
-public class AppointmentsRepository implements IRepository {
-
+public class AppointmentsRepository implements IRepository <String,String,Appointment,Appointment> {
     public String path;
 
     public AppointmentsRepository(String path) {
@@ -37,13 +38,15 @@ public class AppointmentsRepository implements IRepository {
     }
 
     // Creating a new appointment entry inside the appointment file
-    public void createRecord(Appointment newAppointment) {
-         {
-             if(readRecord(newAppointment.getAppID()) != null) {
-                 System.out.println("Error!! Appointment already exists !!");
-                 return;
-             }
+    @Override
+    public void createRecord(Object... attributes) {
+        if(attributes.length == 1 && attributes[0] instanceof Appointment) {
+            Appointment newAppointment = (Appointment) attributes[0];
 
+            if(readRecord(newAppointment.getAppID()) != null) {
+                System.out.println("Error!! Appointment already exists !!");
+                return;
+            }
             try (BufferedWriter writer = new BufferedWriter(new FileWriter(path, true))) {
                 writer.write(String.valueOf(newAppointment.getAvail())  + "," + newAppointment.getAppID() + "," + newAppointment.getTimeOfApp() + "," + newAppointment.getDocID() + "," + newAppointment.getDocName() + "," + newAppointment.getPatID() + "," + newAppointment.getPatName() + "," + newAppointment.getPurposeOfApp() + "," + newAppointment.getAppointmentDepartment() + "," + newAppointment.getStatusOfApp() + "," + newAppointment.getAppointOutcomeRecord());
                 writer.newLine();
@@ -52,10 +55,15 @@ public class AppointmentsRepository implements IRepository {
                 e.printStackTrace();
             }
         }
+        else{
+            System.out.println("Error! Appointment Object Expected !!");
+        }
     }
 
-
-    // Finding instance of a appointment in appointment file and returning the appointment object
+    /*
+    Finding instance of an appointment in appointment file using AppointmentID and returns the appointment object
+    */
+    @Override
     public Appointment readRecord(String inputID){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/M/yyyy H:mm");
         try (BufferedReader reader = new BufferedReader(new FileReader(path))) {
@@ -72,18 +80,18 @@ public class AppointmentsRepository implements IRepository {
                 if (inputID.equals(appointmentID)) {
 
                     boolean availability = Boolean.parseBoolean(data[0].trim());
-                    LocalDateTime appointmentTime = LocalDateTime.parse(data[2], formatter);
+                    String appointmentTime = data[2];
                     String doctorID = data[3];
                     String doctorName = data[4];
                     String patientID = data[5];
                     String patientName = data[6];
-                    String purposeOfAppointment = data[7];
-                    String appointmentDepartment = data[8];
-                    String statusOfAppointment = data[9];
+                    Purpose purposeOfAppointment = Purpose.valueOf(data[7]);
+                    Department appointmentDepartment = Department.valueOf(data[8]);
+                    Status statusOfAppointment = Status.valueOf(data[9]);
                     String appointmentOutcomeRecord = data[10];
 
-                    return new Appointment(availability, appointmentID, appointmentTime, doctorID, doctorName, patientID, patientName, purposeOfAppointment.valueOf(purposeOfAppointment), appointmentDepartment, statusOfAppointment, appointmentOutcomeRecord);
-                }  // how tf to fix the enum
+                    return new Appointment(availability, appointmentID, appointmentTime, doctorID, doctorName, patientID, patientName, purposeOfAppointment, appointmentDepartment, statusOfAppointment, appointmentOutcomeRecord);
+                }
             }
         } catch (Exception e) {
             System.out.println("Error accessing MedicationInventory file !!");
@@ -92,9 +100,71 @@ public class AppointmentsRepository implements IRepository {
         return null;
     }
 
+    /*
+    Finding instance of an appointment in appointment file using AppointmentID and deletes it
+    */
+    @Override
+    public void deleteRecord(String deleteAppointmentID) {
+        ArrayList<Appointment> tempAppointmentList = new ArrayList<>();
 
-    // Updating the data of an appointment slot inside the appointment file
-    public void updateRecord(Appointment appointment){
+        boolean isDeleted = false;
+        try (BufferedReader reader = new BufferedReader(new FileReader(path))) {
+            String line;
+            boolean isFirstLine = true;
+            while ((line = reader.readLine()) != null) {
+                if (isFirstLine) { // Skip the header row
+                    isFirstLine = false;
+                    continue;
+                }
+                String[] data = line.split(",");
+
+                boolean availability = Boolean.parseBoolean(data[0].trim());
+                String appointmentID = data[1].trim();
+                String appointmentTime = data[2];
+                String doctorID = data[3];
+                String doctorName = data[4];
+                String patientID = data[5];
+                String patientName = data[6];
+                Purpose purposeOfAppointment = Purpose.valueOf(data[7]);
+                Department appointmentDepartment = Department.valueOf(data[8]);
+                Status statusOfAppointment = Status.valueOf(data[9]);
+                String appointmentOutcomeRecord = data[10];
+
+                Appointment temp = new Appointment(availability, appointmentID, appointmentTime, doctorID, doctorName, patientID, patientName, purposeOfAppointment, appointmentDepartment, statusOfAppointment, appointmentOutcomeRecord);
+                if (deleteAppointmentID.equalsIgnoreCase(temp.getAppID())) {
+                    isDeleted = true;
+                }
+                else {
+                    tempAppointmentList.add(temp);
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("Error accessing Appointment file !!");
+            e.printStackTrace();
+        }
+        // Once the whole file is read, we copy the file back
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(path))) {
+            writer.write("Availability,AppointmentID,TimeOfAppointment,DoctorID,DoctorName,PatientID,PatientName,PurposeOfAppointment,Department,StatusOfAppointment,AppointmentOutcomeRecord\n\n");
+            writer.newLine();
+
+            for (Appointment tempAppointment : tempAppointmentList) {
+                writer.write(tempAppointment.getAvail() + "," + tempAppointment.getAppID() + "," + tempAppointment.getTimeOfApp() + "," + tempAppointment.getDocID() + tempAppointment.getDocName() + "," + tempAppointment.getPatID() + "," + tempAppointment.getPatName() + "," + tempAppointment.getPurposeOfApp() + "," +  tempAppointment.getAppointmentDepartment() + "," + tempAppointment.getStatusOfApp() + tempAppointment.getAppointOutcomeRecord());
+                writer.newLine();
+            }
+            if (!isDeleted) {
+                System.out.println("Error, appointment not found! File is unchanged.");
+            }
+        } catch (IOException e) {
+            System.out.println("Error writing to Appointment file!");
+            e.printStackTrace();
+        }
+    }
+
+    /*
+    Updating the data of an appointment slot inside the appointment file according to AppointmentID
+    */
+    @Override
+    public void updateRecord(Appointment record){
         ArrayList<Appointment> tempAppointmentList = new ArrayList<>();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/M/yyyy H:mm");
         boolean isUpdated = false;
@@ -107,21 +177,22 @@ public class AppointmentsRepository implements IRepository {
                     continue;
                 }
                 String[] data = line.split(",");
+
                 boolean availability = Boolean.parseBoolean(data[0].trim());
                 String appointmentID = data[1].trim();
-                LocalDateTime appointmentTime = LocalDateTime.parse(data[2], formatter);
+                String appointmentTime = data[2];
                 String doctorID = data[3];
                 String doctorName = data[4];
                 String patientID = data[5];
                 String patientName = data[6];
-                String purposeOfAppointment = data[7];
-                String appointmentDepartment = data[8];
-                String statusOfAppointment = data[9];
+                Purpose purposeOfAppointment = Purpose.valueOf(data[7]);
+                Department appointmentDepartment = Department.valueOf(data[8]);
+                Status statusOfAppointment = Status.valueOf(data[9]);
                 String appointmentOutcomeRecord = data[10];
-                                            // how to make enums in the constructor?
-                //Appointment temp = new Appointment((availability, appointmentID, appointmentTime, doctorID, doctorName, patientID, patientName, purposeOfAppointment, appointmentDepartment, statusOfAppointment, appointmentOutcomeRecord);
-                if (appointment.getAppID().equalsIgnoreCase(temp.getAppID())) {
-                    tempAppointmentList.add(appointment);
+
+                Appointment temp = new Appointment(availability, appointmentID, appointmentTime, doctorID, doctorName, patientID, patientName, purposeOfAppointment, appointmentDepartment, statusOfAppointment, appointmentOutcomeRecord);
+                if (record.getAppID().equalsIgnoreCase(appointmentID)) {
+                    tempAppointmentList.add(record);
                 }
                 else {
                     tempAppointmentList.add(temp);
@@ -130,28 +201,32 @@ public class AppointmentsRepository implements IRepository {
         } catch (Exception e) {
                 System.out.println("Error accessing Appointment file !!");
                 e.printStackTrace();
-            }
-
-            // Once the whole file is read, we copy the file back
-
-            try (BufferedWriter writer = new BufferedWriter(new FileWriter(path))) {
-                writer.write("Availability,AppointmentID,TimeOfAppointment,DoctorID,DoctorName,PatientID,PatientName,PurposeOfAppointment,Department,StatusOfAppointment,AppointmentOutcomeRecord\n\n");
-                writer.newLine();
-
-                for (Appointment tempAppointment : tempAppointmentList) {
-                    writer.write(tempAppointment.getAvail() + "," + tempAppointment.getAppID() + "," + tempAppointment.getTimeOfApp() + "," + tempAppointment.getDocID() + tempAppointment.getDocName() + "," + tempAppointment.getPatID() + "," + tempAppointment.getPatName() + "," + tempAppointment.getPurposeOfApp() + "," +  tempAppointment.getAppointmentDepartment() + "," + tempAppointment.getStatusOfApp() + tempAppointment.getAppointOutcomeRecord());
-                    writer.newLine();
-                }
-                if (!isUpdated) {
-                    System.out.println("Error, appointment not found! File is unchanged.");
-                }
-            } catch (IOException e) {
-                System.out.println("Error writing to Appointment file!");
-                e.printStackTrace();
-            }
         }
 
+        // Once the whole file is read, we copy the file back
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(path))) {
+            writer.write("Availability,AppointmentID,TimeOfAppointment,DoctorID,DoctorName,PatientID,PatientName,PurposeOfAppointment,Department,StatusOfAppointment,AppointmentOutcomeRecord\n\n");
+            writer.newLine();
 
+            for (Appointment tempAppointment : tempAppointmentList) {
+                writer.write(tempAppointment.getAvail() + "," + tempAppointment.getAppID() + "," + tempAppointment.getTimeOfApp() + "," + tempAppointment.getDocID() + tempAppointment.getDocName() + "," + tempAppointment.getPatID() + "," + tempAppointment.getPatName() + "," + tempAppointment.getPurposeOfApp() + "," +  tempAppointment.getAppointmentDepartment() + "," + tempAppointment.getStatusOfApp() + tempAppointment.getAppointOutcomeRecord());
+                writer.newLine();
+            }
+            if (!isUpdated) {
+                System.out.println("Error, appointment not found! File is unchanged.");
+            }
+        } catch (IOException e) {
+            System.out.println("Error writing to Appointment file!");
+            e.printStackTrace();
+        }
+    }
+
+
+
+
+
+
+    /*
     public void deleteRecord(Appointment appointment) {
         ArrayList<Appointment> tempAppointmentList = new ArrayList<>();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/M/yyyy H:mm");
@@ -207,27 +282,7 @@ public class AppointmentsRepository implements IRepository {
             System.out.println("Error writing to Appointment file!");
             e.printStackTrace();
         }
-    }
-
-    @Override
-    public void createRecord(Object... attributes) {
-
-    }
-
-    @Override
-    public Object readRecord(Object identifier) {
-        return null;
-    }
-
-    @Override
-    public void updateRecord(Object record) {
-
-    }
-
-    @Override
-    public void deleteRecord(Object record) {
-
-    }
+    }*/
 
 
     // sortRecord According to time function

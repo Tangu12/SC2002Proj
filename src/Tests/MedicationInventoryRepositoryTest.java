@@ -122,7 +122,7 @@ public class MedicationInventoryRepositoryTest {
         Medicine medicine = new Medicine("Aspirin", 100, 20, 50);
         repository.createRecord(medicine);
 
-        repository.deleteRecord(medicine);
+        repository.deleteRecord(medicine.getNameOfMedicine());
 
         Medicine result = repository.readRecord("Aspirin");
         assertNull(result); // Record should be deleted
@@ -131,7 +131,7 @@ public class MedicationInventoryRepositoryTest {
     @Test
     public void testDeleteNonExistingRecord() {
         Medicine medicine = new Medicine("NonExistingMedicine", 100, 20, 50);
-        repository.deleteRecord(medicine);
+        repository.deleteRecord(medicine.getNameOfMedicine());
 
         // File should be unchanged
         Medicine result = repository.readRecord("NonExistingMedicine");

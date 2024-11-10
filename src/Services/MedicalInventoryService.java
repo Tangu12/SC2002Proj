@@ -40,9 +40,9 @@ public class MedicalInventoryService {
     }
 
     // Remove Medicine from list and from file
-    public void removeMedicineFromInventory(Medicine medicine){
-        medicationInventory.deleteMedicine(medicine.getNameOfMedicine());
-        medicationInventoryRepository.deleteRecord(medicine);
+    public void removeMedicineFromInventory(String medicineName){
+        medicationInventory.deleteMedicine(medicineName);
+        medicationInventoryRepository.deleteRecord(medicineName);
     }
 
     // Increment Stock of Medicine

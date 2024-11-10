@@ -5,7 +5,7 @@ import Entity.Medicine;
 import java.io.*;
 import java.util.ArrayList;
 
-public class MedicationInventoryRepository implements IRepository<Medicine,String,Medicine,Medicine>{
+public class MedicationInventoryRepository implements IRepository<String,String,Medicine,Medicine>{
     public final String path;
 
     public MedicationInventoryRepository(String path) {
@@ -148,7 +148,7 @@ public class MedicationInventoryRepository implements IRepository<Medicine,Strin
     Loads all medicine into a temporary List. Then goes through the list to find the record that matches DOES NOT add it to the temporaryList. It then writes the temporary list into the file
     */
     @Override
-    public void deleteRecord(Medicine record){
+    public void deleteRecord(String medicineName){
         ArrayList<Medicine> tempMedicineList = new ArrayList<>();
         boolean isDeleted = false;
 
@@ -170,7 +170,7 @@ public class MedicationInventoryRepository implements IRepository<Medicine,Strin
                 Medicine temp = new Medicine(name, currentStock, lowStockAlert,requestAmount);
 
                 // Update the record if it matches
-                if (temp.getNameOfMedicine().equalsIgnoreCase(record.getNameOfMedicine())) {
+                if (temp.getNameOfMedicine().equalsIgnoreCase(medicineName)) {
                     isDeleted = true; // Do not add the record
                 } else {
                     tempMedicineList.add(temp); // Add existing record unchanged
