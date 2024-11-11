@@ -4,7 +4,7 @@ import Entity.Enums.Department;
 import Entity.Enums.Domain;
 import Entity.Enums.Gender;
 
-public class HospitalStaff {
+public class HospitalStaff implements IUser {
     private String userID;
     private String name;
     private int age;
@@ -12,6 +12,14 @@ public class HospitalStaff {
     private Domain domain;
     private Department department;
 
+    public HospitalStaff (String userID, String name, int age, Gender gender, Domain domain) {
+    	this.userID = userID;
+    	this.name = name;
+    	this.age = age;
+    	this.gender = gender;
+    	this.domain = domain;
+    }
+    
     // Getter and Setter for userID
     public String getUserID() {
         return userID;
@@ -65,4 +73,14 @@ public class HospitalStaff {
     public void setDepartment(Department department) {
         this.department = department;
     }
+
+	@Override
+	public String getUserId() {
+		return this.userID;
+	}
+
+	@Override
+	public void setUserId(String userId) {
+		this.userID = userId;
+	}
 }
