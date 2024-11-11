@@ -9,7 +9,7 @@ import Entity.User.Patient;
 import java.io.*;
 import java.util.ArrayList;
 
-public class PatientDataRepository implements IRepository{
+public class PatientDataRepository implements IRepository <Patient,String,Patient,Patient>{
     public final String path;
 
     public PatientDataRepository(String path) {
@@ -45,7 +45,7 @@ public class PatientDataRepository implements IRepository{
     }
 
     @Override
-    public Object readRecord(String targetID) { // why cant i change this to String?
+    public Patient readRecord(String targetID) { // why cant i change this to String?
         try (BufferedReader reader = new BufferedReader(new FileReader(path))) {
             String line;
             boolean isFirstLine = true;
