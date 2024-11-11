@@ -1,4 +1,4 @@
-package Controllers;
+package Services;
 
 public class AccountManager {
     public static void addUser(){
