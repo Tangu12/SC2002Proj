@@ -1,324 +1,171 @@
 package Entity.Repository;
 
 import Entity.Appointment;
+import Entity.AppointmentList;
 import Entity.Enums.Department;
 import Entity.Enums.Purpose;
 import Entity.Enums.Status;
-import Entity.Medicine;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
-//import java.io.*;
-//import java.nio.file.*;
-//import java.util.ArrayList;
-//import java.util.List;
+
 
 
 public class AppointmentsRepository implements IRepository <String,String,Appointment,Appointment> {
-    public String path;
+	
+	private static final String FILE_NAME = "program_files/appointments.csv";
+	public static void loadAppointments() {
+		int i = 0;
+		List<String[]> data = getAllRows();
+		for(String[] row : data) {
+			if (i == 0) {
+				i++;
+				continue;
+			}
+			// if row is not empty,  should i put these inside the constructor of Appointments?
+			Purpose appPur;
+			if (Objects.equals(row[7], "CheckUp")) appPur = Purpose.CheckUp;
+			else if (Objects.equals(row[7], "Surgery")) appPur = Purpose.Surgery;
+			else if (Objects.equals(row[7], "Consultation")) appPur = Purpose.Consultation;
+			else if (Objects.equals(row[7], "Others")) appPur = Purpose.Other;
+			else appPur = null;
 
-    public AppointmentsRepository(String path) {
-        this.path = path;
-    }
+			Department appDept;
+			if (Objects.equals(row[8], "Cardiology")) appDept = Department.Cardiology;
+			else if (Objects.equals(row[8], "Neurology")) appDept = Department.Neurology;
+			else if (Objects.equals(row[8], "Oncology")) appDept = Department.Oncology;
+			else if (Objects.equals(row[8], "Dermatology")) appDept = Department.Dermatology;
+			else if (Objects.equals(row[8], "Neurology")) appDept = Department.Endocrinology;
+			else if (Objects.equals(row[8], "Oncology")) appDept = Department.Gastroenterology;
+			else if (Objects.equals(row[8], "Dermatology")) appDept = Department.Nephrology;
+			else if (Objects.equals(row[8], "Neurology")) appDept = Department.Pulmonology;
+			else if (Objects.equals(row[8], "Oncology")) appDept = Department.Rheumatology;
+			else if (Objects.equals(row[8], "Dermatology")) appDept = Department.ObstetricsGynecology;
+			else appDept = Department.Others;
 
-    // Creating a new appointment entry inside the appointment file
-    @Override
-    public void createRecord(Object... attributes) {
-        if(attributes.length == 1 && attributes[0] instanceof Appointment) {
-            Appointment newAppointment = (Appointment) attributes[0];
 
-            if(readRecord(newAppointment.getAppID()) != null) {
-                System.out.println("Error!! Appointment already exists !!");
-                return;
-            }
-            try (BufferedWriter writer = new BufferedWriter(new FileWriter(path, true))) {
-                writer.write(String.valueOf(newAppointment.getAvail())  + "," + newAppointment.getAppID() + "," + newAppointment.getTimeOfApp() + "," + newAppointment.getDocID() + "," + newAppointment.getDocName() + "," + newAppointment.getPatID() + "," + newAppointment.getPatName() + "," + newAppointment.getPurposeOfApp() + "," + newAppointment.getAppointmentDepartment() + "," + newAppointment.getStatusOfApp() + "," + newAppointment.getAppointOutcomeRecord());
-                writer.newLine();
-            } catch (IOException e) {
-                System.out.println("Error");
-                e.printStackTrace();
-            }
-        }
-        else{
-            System.out.println("Error! Appointment Object Expected !!");
-        }
-    }
+			Status appStatus = null;
+			if (Objects.equals(row[9], "Confirmed")) appStatus = Status.Confirmed;
+			else if (Objects.equals(row[9], "Cancelled")) appStatus = Status.Cancelled;
+			else if (Objects.equals(row[9], "Completed")) appStatus = Status.Completed;
+			else if (Objects.equals(row[9], "Pending")) appStatus = Status.Pending;
+			else if (Objects.equals(row[9], "Unavailable")) appStatus = Status.Unavailable;
+			else if (Objects.equals(row[9], "PrescriptionPending")) appStatus = Status.PendingPrescription;
 
-    /*
-    Finding instance of an appointment in appointment file using AppointmentID and returns the appointment object
-    */
-    @Override
-    public Appointment readRecord(String inputID){
+			Appointment apps = new Appointment(Boolean.valueOf(row[0]),row[1],row[2],row[3],row[4],row[5],row[6],appPur,appDept,appStatus, " ", row[11], row[12], row[13], row[14]);
+			AppointmentList.getInstance().getAppointmentList().add(apps);
+			i++;
+		}
+	}
+	
+	public static List<String[]> getAllRows() {
+		List<String[]> data = new ArrayList<>();
+
+		//Read the CSV file
+		try (BufferedReader reader = new BufferedReader(new FileReader(FILE_NAME))) {
+			String row;
+			while ((row = reader.readLine()) != null) {
+				String[] values = row.split(",");
+				data.add(values);
+			}
+		} catch (IOException e) {
+			//e.printStackTrace();
+			System.out.println("File is not created yet!!");
+		}
+		return data;
+	}
+	
+	public static void updateAppointmentFile(ArrayList<Appointment> appointmentList) {
+        List<String[]> data = new ArrayList<>();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/M/yyyy H:mm");
-        try (BufferedReader reader = new BufferedReader(new FileReader(path))) {
-            String line;
-            boolean isFirstLine = true;
-            while ((line = reader.readLine()) != null) {
-                if (isFirstLine) { // Skip the header row
-                    isFirstLine = false;
-                    continue;
-                }
-                String[] data = line.split(",");
-                String appointmentID = data[1].trim();
-
-                if (inputID.equals(appointmentID)) {
-
-                    boolean availability = Boolean.parseBoolean(data[0].trim());
-                    String appointmentTime = data[2];
-                    String doctorID = data[3];
-                    String doctorName = data[4];
-                    String patientID = data[5];
-                    String patientName = data[6];
-                    Purpose purposeOfAppointment = Purpose.valueOf(data[7]);
-                    Department appointmentDepartment = Department.valueOf(data[8]);
-                    Status statusOfAppointment = Status.valueOf(data[9]);
-                    String appointmentOutcomeRecord = data[10];
-
-                    return new Appointment(availability, appointmentID, appointmentTime, doctorID, doctorName, patientID, patientName, purposeOfAppointment, appointmentDepartment, statusOfAppointment, appointmentOutcomeRecord);
-                }
-            }
-        } catch (Exception e) {
-            System.out.println("Error accessing MedicationInventory file !!");
-            e.printStackTrace();
+        DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("d/M/yyyy");
+        String[] values = new String[15];
+        values[0] = "Availability";
+        values[1] = "AppointmentID";
+        values[2] = "TimeOfAppointment";
+        values[3] = "DoctorID";
+        values[4] = "DoctorName";
+        values[5] = "PatientID";
+        values[6] = "PatientName";
+        values[7] = "PurposeOfAppointment";
+        values[8] = "Department";
+        values[9] = "StatusOfAppointment";
+        values[10] = "Appointment Outcomes";
+        values[11] = "Medicine";
+        values[12] = "Date Issued";
+        values[13] = "Dosage";
+        values[14] = "Instructions";
+        data.add(values);
+        
+        for(Appointment appointment : appointmentList) {
+        	String[] row = new String[15];
+        	row[0] = String.valueOf(appointment.getAvail());
+            row[1] = appointment.getAppID();
+            row[2] = appointment.getTimeOfApp().format(formatter);
+            row[3] = appointment.getDocID();
+            row[4] = appointment.getDocName();
+            row[5] = appointment.getPatID();
+            row[6] = appointment.getPatName();
+            if(appointment.getPurposeOfApp() != null) row[7] = appointment.getPurposeOfApp().toString(); else row[7] = " ";
+            row[8] = appointment.getAppointmentDepartment().toString();
+            if(appointment.getStatusOfApp() != null) row[9] = appointment.getStatusOfApp().toString(); else row[9] = " ";
+            row[10] = appointment.getAppointOutcomeRecord();
+            row[11] = appointment.getMedicine();
+            if(appointment.getMedicineIssuedDate() != null) row[12] = appointment.getMedicineIssuedDate().format(formatter1); else row[12] = " ";
+            row[13] = appointment.getDosage();
+            row[14] = appointment.getInstructions();
+            
+            data.add(row);
         }
-        return null;
+        updateFile(data);
     }
+	
+	private static void overwriteCSV(List<String[]> data) {
+		try {
+			BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_NAME));
+			for(String[] row : data) writer.write(String.join(",", row) + "\n");
+			writer.close();
+		} catch(IOException e) {
+			System.out.println("An error occurred.");
+			e.printStackTrace();
+		}
+	}
 
-    /*
-    Finding instance of an appointment in appointment file using AppointmentID and deletes it
-    */
-    @Override
-    public void deleteRecord(String deleteAppointmentID) {
-        ArrayList<Appointment> tempAppointmentList = new ArrayList<>();
+	public static void updateFile(List<String[]> data) {
+		overwriteCSV(data);
+	}
 
-        boolean isDeleted = false;
-        try (BufferedReader reader = new BufferedReader(new FileReader(path))) {
-            String line;
-            boolean isFirstLine = true;
-            while ((line = reader.readLine()) != null) {
-                if (isFirstLine) { // Skip the header row
-                    isFirstLine = false;
-                    continue;
-                }
-                String[] data = line.split(",");
+	@Override
+	public void createRecord(Object... attributes) {
+		// TODO Auto-generated method stub
+		
+	}
 
-                boolean availability = Boolean.parseBoolean(data[0].trim());
-                String appointmentID = data[1].trim();
-                String appointmentTime = data[2];
-                String doctorID = data[3];
-                String doctorName = data[4];
-                String patientID = data[5];
-                String patientName = data[6];
-                Purpose purposeOfAppointment = Purpose.valueOf(data[7]);
-                Department appointmentDepartment = Department.valueOf(data[8]);
-                Status statusOfAppointment = Status.valueOf(data[9]);
-                String appointmentOutcomeRecord = data[10];
+	@Override
+	public Appointment readRecord(String identifier) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
-                Appointment temp = new Appointment(availability, appointmentID, appointmentTime, doctorID, doctorName, patientID, patientName, purposeOfAppointment, appointmentDepartment, statusOfAppointment, appointmentOutcomeRecord);
-                if (deleteAppointmentID.equalsIgnoreCase(temp.getAppID())) {
-                    isDeleted = true;
-                }
-                else {
-                    tempAppointmentList.add(temp);
-                }
-            }
-        } catch (Exception e) {
-            System.out.println("Error accessing Appointment file !!");
-            e.printStackTrace();
-        }
-        // Once the whole file is read, we copy the file back
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(path))) {
-            writer.write("Availability,AppointmentID,TimeOfAppointment,DoctorID,DoctorName,PatientID,PatientName,PurposeOfAppointment,Department,StatusOfAppointment,AppointmentOutcomeRecord\n\n");
-            writer.newLine();
+	@Override
+	public void updateRecord(Appointment record) {
+		// TODO Auto-generated method stub
+		
+	}
 
-            for (Appointment tempAppointment : tempAppointmentList) {
-                writer.write(tempAppointment.getAvail() + "," + tempAppointment.getAppID() + "," + tempAppointment.getTimeOfApp() + "," + tempAppointment.getDocID() + tempAppointment.getDocName() + "," + tempAppointment.getPatID() + "," + tempAppointment.getPatName() + "," + tempAppointment.getPurposeOfApp() + "," +  tempAppointment.getAppointmentDepartment() + "," + tempAppointment.getStatusOfApp() + tempAppointment.getAppointOutcomeRecord());
-                writer.newLine();
-            }
-            if (!isDeleted) {
-                System.out.println("Error, appointment not found! File is unchanged.");
-            }
-        } catch (IOException e) {
-            System.out.println("Error writing to Appointment file!");
-            e.printStackTrace();
-        }
-    }
-
-    /*
-    Updating the data of an appointment slot inside the appointment file according to AppointmentID
-    */
-    @Override
-    public void updateRecord(Appointment record){
-        ArrayList<Appointment> tempAppointmentList = new ArrayList<>();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/M/yyyy H:mm");
-        boolean isUpdated = false;
-        try (BufferedReader reader = new BufferedReader(new FileReader(path))) {
-            String line;
-            boolean isFirstLine = true;
-            while ((line = reader.readLine()) != null) {
-                if (isFirstLine) { // Skip the header row
-                    isFirstLine = false;
-                    continue;
-                }
-                String[] data = line.split(",");
-
-                boolean availability = Boolean.parseBoolean(data[0].trim());
-                String appointmentID = data[1].trim();
-                String appointmentTime = data[2];
-                String doctorID = data[3];
-                String doctorName = data[4];
-                String patientID = data[5];
-                String patientName = data[6];
-                Purpose purposeOfAppointment = Purpose.valueOf(data[7]);
-                Department appointmentDepartment = Department.valueOf(data[8]);
-                Status statusOfAppointment = Status.valueOf(data[9]);
-                String appointmentOutcomeRecord = data[10];
-
-                Appointment temp = new Appointment(availability, appointmentID, appointmentTime, doctorID, doctorName, patientID, patientName, purposeOfAppointment, appointmentDepartment, statusOfAppointment, appointmentOutcomeRecord);
-                if (record.getAppID().equalsIgnoreCase(appointmentID)) {
-                    tempAppointmentList.add(record);
-                }
-                else {
-                    tempAppointmentList.add(temp);
-                }
-            }
-        } catch (Exception e) {
-                System.out.println("Error accessing Appointment file !!");
-                e.printStackTrace();
-        }
-
-        // Once the whole file is read, we copy the file back
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(path))) {
-            writer.write("Availability,AppointmentID,TimeOfAppointment,DoctorID,DoctorName,PatientID,PatientName,PurposeOfAppointment,Department,StatusOfAppointment,AppointmentOutcomeRecord\n\n");
-            writer.newLine();
-
-            for (Appointment tempAppointment : tempAppointmentList) {
-                writer.write(tempAppointment.getAvail() + "," + tempAppointment.getAppID() + "," + tempAppointment.getTimeOfApp() + "," + tempAppointment.getDocID() + tempAppointment.getDocName() + "," + tempAppointment.getPatID() + "," + tempAppointment.getPatName() + "," + tempAppointment.getPurposeOfApp() + "," +  tempAppointment.getAppointmentDepartment() + "," + tempAppointment.getStatusOfApp() + tempAppointment.getAppointOutcomeRecord());
-                writer.newLine();
-            }
-            if (!isUpdated) {
-                System.out.println("Error, appointment not found! File is unchanged.");
-            }
-        } catch (IOException e) {
-            System.out.println("Error writing to Appointment file!");
-            e.printStackTrace();
-        }
-    }
-
-
-
-
-
-
-    /*
-    public void deleteRecord(Appointment appointment) {
-        ArrayList<Appointment> tempAppointmentList = new ArrayList<>();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/M/yyyy H:mm");
-        boolean isDeleted = false;
-        try (BufferedReader reader = new BufferedReader(new FileReader(path))) {
-            String line;
-            boolean isFirstLine = true;
-            while ((line = reader.readLine()) != null) {
-                if (isFirstLine) { // Skip the header row
-                    isFirstLine = false;
-                    continue;
-                }
-                String[] data = line.split(",");
-                boolean availability = Boolean.parseBoolean(data[0].trim());
-                String appointmentID = data[1].trim();
-                LocalDateTime appointmentTime = LocalDateTime.parse(data[2], formatter);
-                String doctorID = data[3];
-                String doctorName = data[4];
-                String patientID = data[5];
-                String patientName = data[6];
-                String purposeOfAppointment = data[7];
-                String appointmentDepartment = data[8];
-                String statusOfAppointment = data[9];
-                String appointmentOutcomeRecord = data[10];
-
-                //Appointment temp = new Appointment((availability, appointmentID, appointmentTime, doctorID, doctorName, patientID, patientName, purposeOfAppointment, appointmentDepartment, statusOfAppointment, appointmentOutcomeRecord);
-                if (appointment.getAppID().equalsIgnoreCase(temp.getAppID())) {
-                    isDeleted = true;
-                }
-                else {
-                    tempAppointmentList.add(temp);
-                }
-            }
-        } catch (Exception e) {
-            System.out.println("Error accessing Appointment file !!");
-            e.printStackTrace();
-        }
-
-        // Once the whole file is read, we copy the file back
-
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(path))) {
-            writer.write("Availability,AppointmentID,TimeOfAppointment,DoctorID,DoctorName,PatientID,PatientName,PurposeOfAppointment,Department,StatusOfAppointment,AppointmentOutcomeRecord\n\n");
-            writer.newLine();
-
-            for (Appointment tempAppointment : tempAppointmentList) {
-                writer.write(tempAppointment.getAvail() + "," + tempAppointment.getAppID() + "," + tempAppointment.getTimeOfApp() + "," + tempAppointment.getDocID() + tempAppointment.getDocName() + "," + tempAppointment.getPatID() + "," + tempAppointment.getPatName() + "," + tempAppointment.getPurposeOfApp() + "," +  tempAppointment.getAppointmentDepartment() + "," + tempAppointment.getStatusOfApp() + tempAppointment.getAppointOutcomeRecord());
-                writer.newLine();
-            }
-            if (!isDeleted) {
-                System.out.println("Error, appointment not found! File is unchanged.");
-            }
-        } catch (IOException e) {
-            System.out.println("Error writing to Appointment file!");
-            e.printStackTrace();
-        }
-    }*/
-
-
-    // sortRecord According to time function
-
-}
-
-
-
-//    public List<String[]> getAllRows() {
-//        List<String[]> data = new ArrayList<>();
-//        //Read the CSV file
-//        try (BufferedReader reader = new BufferedReader(new FileReader(path))) {
-//            String row;
-//            while ((row = reader.readLine()) != null) {
-//                String[] values = row.split(",");
-//                data.add(values);
-//            }
-//        } catch (IOException e) {
-//            //e.printStackTrace();
-//            System.out.println("File is not created yet!!");
-//        }
-//        return data;
-//    }
-//
-//
-//    private void overwriteCSV(List<String[]> data) {
-//        try {
-//            BufferedWriter writer = new BufferedWriter(new FileWriter(path));
-//            for(String[] row : data) writer.write(String.join(",", row) + "\n");
-//            writer.close();
-//        } catch(IOException e) {
-//            System.out.println("An error occurred.");
-//            e.printStackTrace();
-//        }
-//    }
-
+	@Override
+	public void deleteRecord(String record) {
+		// TODO Auto-generated method stub
+		
+	}
+ }
 
 
 

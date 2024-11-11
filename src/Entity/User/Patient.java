@@ -10,11 +10,13 @@ import java.util.ArrayList;
  * */
 
 public class Patient implements IUser{
+	
     String userID;
     String name;
     int age;
     Gender gender;
     Domain domain = Domain.PATIENT;
+    private static ArrayList<String[]> patientList = new ArrayList<>();
 
     // Add more attributes as needed
     ArrayList<MedicalRecord> medicalHistory;
@@ -97,6 +99,10 @@ public class Patient implements IUser{
 
     public void updateMedicalHistory(MedicalRecord medicalRecord){
         // uses medical history repository
+    }
+    
+    public static ArrayList<String[]> getPatientList(){
+    	return Patient.patientList;
     }
 
 }

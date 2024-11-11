@@ -1,9 +1,43 @@
-Availability,AppointmentID,TimeOfAppointment,DoctorID,DoctorName,PatientID,PatientName,PurposeOfAppointment,Department,StatusOfAppointment,Cost,PaymentStatus,AppointmentOutcomeRecord
-true,A202410280900,28-10-2024 09:00,D001,John Kayek,P001,Patient Name,Other,Others,Cancelled,0.0,Pending
-true,A202410280930,28-10-2024 09:30,D002,RyanGuy,P001,Patient Name,Other,Cardiology,Pending,0.0,Pending
-true,A202410281000,28-10-2024 10:00,D002,RyanGuy,P001,Patient Name,Other,Dermatology,Pending,0.0,Pending
-true,A202410281030,28-10-2024 10:30,D001,John Kayek,P001,Patient Name,Other,Others,Confirmed,0.0,Pending
-true,A202410281100,28-10-2024 11:00,D004,Dorcas,P001,Patient Name,CheckUp,Neurology,Confirmed,0.0,Pending
-true,A202410281130,28-10-2024 11:30,D003,Min,P001,Patient Name,CheckUp,Oncology,Confirmed,0.0,Pending
-true,A202410281200,28-10-2024 12:00,D005,Hung,P001,Patient Name,CheckUp,Neurology,Confirmed,0.0,Pending
-true,A202410281230,28-10-2024 12:30,D002,RyanGuy,P001,Patient Name,Other,Cardiology,Pending,0.0,Pending
+Availability,AppointmentID,TimeOfAppointment,DoctorID,DoctorName,PatientID,PatientName,PurposeOfAppointment,Department,StatusOfAppointment,Appointment Outcomes,Medicine,Date Issued,Dosage,Instructions
+false,A202411100500D001,10/11/2024 5:00,D001,John Kayek,P001,Dorcas,Other,Cardiology,Pending, , , , , 
+true,A202411100530D001,10/11/2024 5:30,D001,John Kayek, , , ,Cardiology, , , , , , 
+true,A202411100600D001,10/11/2024 6:00,D001,John Kayek, , , ,Cardiology, , , , , , 
+true,A202411100630D001,10/11/2024 6:30,D001,John Kayek, , , ,Cardiology, , , , , , 
+true,A202411100700D001,10/11/2024 7:00,D001,John Kayek, , , ,Cardiology, , , , , , 
+true,A202411100730D001,10/11/2024 7:30,D001,John Kayek, , , ,Cardiology, , , , , , 
+true,A202411100800D001,10/11/2024 8:00,D001,John Kayek, , , ,Cardiology, , , , , , 
+true,A202411100830D001,10/11/2024 8:30,D001,John Kayek, , , ,Cardiology, , , , , , 
+true,A202411100900D001,10/11/2024 9:00,D001,John Kayek, , , ,Cardiology, , , , , , 
+true,A202411100930D001,10/11/2024 9:30,D001,John Kayek, , , ,Cardiology, , , , , , 
+true,A202411100500D001,10/11/2024 5:00,D001,John Kayek, , , ,Cardiology, , , , , , 
+true,A202411100530D001,10/11/2024 5:30,D001,John Kayek, , , ,Cardiology, , , , , , 
+true,A202411100600D001,10/11/2024 6:00,D001,John Kayek, , , ,Cardiology, , , , , , 
+true,A202411100630D001,10/11/2024 6:30,D001,John Kayek, , , ,Cardiology, , , , , , 
+true,A202411100700D001,10/11/2024 7:00,D001,John Kayek, , , ,Cardiology, , , , , , 
+true,A202411100730D001,10/11/2024 7:30,D001,John Kayek, , , ,Cardiology, , , , , , 
+true,A202411100800D001,10/11/2024 8:00,D001,John Kayek, , , ,Cardiology, , , , , , 
+true,A202411100830D001,10/11/2024 8:30,D001,John Kayek, , , ,Cardiology, , , , , , 
+true,A202411100900D001,10/11/2024 9:00,D001,John Kayek, , , ,Cardiology, , , , , , 
+false,A202411100930D001,10/11/2024 9:30,D001,John Kayek,P001,Dorcas,CheckUp,Cardiology,Pending, , , , , 
+true,A202411151000D001,15/11/2024 10:00,D001,John Kayek, , , ,Cardiology, , , , , , 
+true,A202411151030D001,15/11/2024 10:30,D001,John Kayek, , , ,Cardiology, , , , , , 
+true,A202411151100D001,15/11/2024 11:00,D001,John Kayek, , , ,Cardiology, , , , , , 
+true,A202411151130D001,15/11/2024 11:30,D001,John Kayek, , , ,Cardiology, , , , , , 
+true,A202411151200D001,15/11/2024 12:00,D001,John Kayek, , , ,Cardiology, , , , , , 
+true,A202411151230D001,15/11/2024 12:30,D001,John Kayek, , , ,Cardiology, , , , , , 
+true,A202411151300D001,15/11/2024 13:00,D001,John Kayek, , , ,Cardiology, , , , , , 
+true,A202411151330D001,15/11/2024 13:30,D001,John Kayek, , , ,Cardiology, , , , , , 
+true,A202411151400D001,15/11/2024 14:00,D001,John Kayek, , , ,Cardiology, , , , , , 
+true,A202411151430D001,15/11/2024 14:30,D001,John Kayek, , , ,Cardiology, , , , , , 
+true,A202411151500D001,15/11/2024 15:00,D001,John Kayek, , , ,Cardiology, , , , , , 
+true,A202411151530D001,15/11/2024 15:30,D001,John Kayek, , , ,Cardiology, , , , , , 
+false,A202411151600D001,15/11/2024 16:00,D001,John Kayek,P001,Dorcas,Consultation,Cardiology, , , , , , 
+true,A202411151630D001,15/11/2024 16:30,D001,John Kayek, , , ,Cardiology, , , , , , 
+true,A202411151700D001,15/11/2024 17:00,D001,John Kayek, , , ,Cardiology, , , , , , 
+true,A202411151730D001,15/11/2024 17:30,D001,John Kayek, , , ,Cardiology, , , , , , 
+true,A202411151800D001,15/11/2024 18:00,D001,John Kayek, , , ,Cardiology, , , , , , 
+true,A202411151830D001,15/11/2024 18:30,D001,John Kayek, , , ,Cardiology, , , , , , 
+true,A202411151900D001,15/11/2024 19:00,D001,John Kayek, , , ,Cardiology, , , , , , 
+false,A202411151930D001,15/11/2024 19:30,D001,John Kayek,P001,Dorcas, ,Cardiology,Pending, , , , , 
+true,A202411152000D001,15/11/2024 20:00,D001,John Kayek, , , ,Cardiology, , , , , , 
+false,A202411152030D001,15/11/2024 20:30,D001,John Kayek,P001,Dorcas,Consultation,Cardiology,Pending, , , , , 
