@@ -145,25 +145,157 @@ public class AppointmentsRepository implements IRepository <String,String,Appoin
 	@Override
 	public void createRecord(Object... attributes) {
 		// TODO Auto-generated method stub
-		
+		// Convert attributes into an Appointment object
+	    Appointment newAppointment = new Appointment(
+	            (Boolean) attributes[0],
+	            (String) attributes[1],
+	            (String) attributes[2],
+	            (String) attributes[3],
+	            (String) attributes[4],
+	            (String) attributes[5],
+	            (String) attributes[6],
+	            (Purpose) attributes[7],
+	            (Department) attributes[8],
+	            (Status) attributes[9],
+	            (String) attributes[10],
+	            (String) attributes[11],
+	            (String) attributes[12],
+	            (String) attributes[13],
+	            (String) attributes[14]
+	    );
+
+	    // Append the new appointment directly to the CSV file
+	    try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_NAME, true))) {
+	        writer.write(String.join(",", convertAppointmentToArray(newAppointment)) + "\n");
+	    } catch (IOException e) {
+	        System.out.println("An error occurred while creating the record.");
+	        e.printStackTrace();
+	    }
 	}
 
 	@Override
 	public Appointment readRecord(String identifier) {
 		// TODO Auto-generated method stub
-		return null;
+		try (BufferedReader reader = new BufferedReader(new FileReader(FILE_NAME))) {
+	        String row;
+	        while ((row = reader.readLine()) != null) {
+	            String[] values = row.split(",");
+	            if (values.length > 1 && values[1].equals(identifier)) { // Assuming the AppointmentID is at index 1
+	                return convertArrayToAppointment(values);
+	            }
+	        }
+	    } catch (IOException e) {
+	        System.out.println("An error occurred while reading the record.");
+	        e.printStackTrace();
+	    }
+	    System.out.println("Appointment not found for ID: " + identifier);
+	    return null;
 	}
 
 	@Override
 	public void updateRecord(Appointment record) {
 		// TODO Auto-generated method stub
-		
+		List<String[]> data = new ArrayList<>();
+	    boolean recordUpdated = false;
+
+	    try (BufferedReader reader = new BufferedReader(new FileReader(FILE_NAME))) {
+	        String row;
+	        while ((row = reader.readLine()) != null) {
+	            String[] values = row.split(",");
+	            if (values.length > 1 && values[1].equals(record.getAppID())) { // Update matching record
+	                data.add(convertAppointmentToArray(record));
+	                recordUpdated = true;
+	            } else {
+	                data.add(values);
+	            }
+	        }
+	    } catch (IOException e) {
+	        System.out.println("An error occurred while updating the record.");
+	        e.printStackTrace();
+	    }
+
+	    if (recordUpdated) {
+	        overwriteCSV(data);
+	    } else {
+	        System.out.println("No matching appointment found to update for ID: " + record.getAppID());
+	    }
 	}
 
 	@Override
 	public void deleteRecord(String record) {
 		// TODO Auto-generated method stub
-		
+		List<String[]> data = new ArrayList<>();
+	    boolean recordDeleted = false;
+
+	    try (BufferedReader reader = new BufferedReader(new FileReader(FILE_NAME))) {
+	        String row;
+	        while ((row = reader.readLine()) != null) {
+	            String[] values = row.split(",");
+	            if (values.length > 1 && values[1].equals(record)) { // Skip the matching record
+	                recordDeleted = true;
+	            } else {
+	                data.add(values);
+	            }
+	        }
+	    } catch (IOException e) {
+	        System.out.println("An error occurred while deleting the record.");
+	        e.printStackTrace();
+	    }
+
+	    if (recordDeleted) {
+	        overwriteCSV(data);
+	    } else {
+	        System.out.println("No matching appointment found to delete for ID: " + record);
+	    }
+	}
+	
+	private String[] convertAppointmentToArray(Appointment appointment) {
+	    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/M/yyyy H:mm");
+	    DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("d/M/yyyy");
+
+	    String[] row = new String[15];
+	    row[0] = String.valueOf(appointment.getAvail());
+	    row[1] = appointment.getAppID();
+	    row[2] = appointment.getTimeOfApp().format(formatter);
+	    row[3] = appointment.getDocID();
+	    row[4] = appointment.getDocName();
+	    row[5] = appointment.getPatID();
+	    row[6] = appointment.getPatName();
+	    row[7] = appointment.getPurposeOfApp() != null ? appointment.getPurposeOfApp().toString() : " ";
+	    row[8] = appointment.getAppointmentDepartment().toString();
+	    row[9] = appointment.getStatusOfApp() != null ? appointment.getStatusOfApp().toString() : " ";
+	    row[10] = appointment.getAppointOutcomeRecord();
+	    row[11] = appointment.getMedicine();
+	    row[12] = appointment.getMedicineIssuedDate() != null ? appointment.getMedicineIssuedDate().format(formatter1) : " ";
+	    row[13] = appointment.getDosage();
+	    row[14] = appointment.getInstructions();
+	    return row;
+	}
+	
+	private Appointment convertArrayToAppointment(String[] row) {
+	    // This method will parse the row array back into an Appointment object.
+	    // Assuming valid parsing and conversions, the process would look similar to what you have in loadAppointments.
+	    Purpose appPur = Purpose.valueOf(row[7]);
+	    Department appDept = Department.valueOf(row[8]);
+	    Status appStatus = Status.valueOf(row[9]);
+
+	    return new Appointment(
+	            Boolean.parseBoolean(row[0]),
+	            row[1],
+	            row[2],
+	            row[3],
+	            row[4],
+	            row[5],
+	            row[6],
+	            appPur,
+	            appDept,
+	            appStatus,
+	            row[10],
+	            row[11],
+	            row[12],
+	            row[13],
+	            row[14]
+	    );
 	}
  }
 
