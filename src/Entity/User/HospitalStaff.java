@@ -10,7 +10,6 @@ public class HospitalStaff implements IUser {
     private int age;
     private Gender gender;
     private Domain domain;
-    private Department department;
 
     public HospitalStaff (String userID, String name, int age, Gender gender, Domain domain) {
     	this.userID = userID;
@@ -65,22 +64,4 @@ public class HospitalStaff implements IUser {
         this.domain = domain;
     }
 
-    // Getter and Setter for department
-    public Department getDepartment() {
-        return department;
-    }
-
-    public void setDepartment(Department department) {
-        this.department = department;
-    }
-
-	@Override
-	public String getUserId() {
-		return this.userID;
-	}
-
-	@Override
-	public void setUserId(String userId) {
-		this.userID = userId;
-	}
 }
