@@ -3,7 +3,6 @@ package Entity.User;
 import Entity.Enums.Department;
 import Entity.Enums.Domain;
 import Entity.Enums.Gender;
-import Entity.MedicalRecord;
 
 import java.util.ArrayList;
 
@@ -12,75 +11,20 @@ import java.util.ArrayList;
  * */
 
 
-public class Doctor implements IUser{
-    String userID;
-    String name;
-    int age;
-    Gender gender;
-    Domain domain = Domain.DOCTOR;
+public class Doctor extends HospitalStaff{
 
-    // Add more attributes as needed
-    Department department;
-
-    ArrayList<Patient> doctorPatients;
-
-    // Getters
-    @Override
-    public String getUserId() {
-        return this.userID;
+    private static ArrayList<Doctor> doctorList;
+    
+    public Doctor(String userID, String name, int age, Gender gender, Department department) {
+    	super(userID, name, age, gender, Domain.DOCTOR);
+    	super.setDepartment(department);
     }
-
-    @Override
-    public String getName() {
-        return this.name;
+    
+    public static void setDoctorList(ArrayList<Doctor> docList) {
+    	Doctor.doctorList = docList;
     }
-
-    @Override
-    public int getAge() {
-        return this.age;
+    
+    public static ArrayList<Doctor> getDoctorList() {
+    	return Doctor.doctorList;
     }
-
-    @Override
-    public Gender getGender() {
-        return this.gender;
-    }
-
-    @Override
-    public Domain getDomain() {
-        return this.domain;
-    }
-
-    public Department getDepartment() {return this.department;}
-
-    public ArrayList<Patient> getDoctorPatient() {return this.doctorPatients; }
-
-    // Setters
-    @Override
-    public void setUserId(String userId) {
-        this.userID = userId;
-    }
-
-    @Override
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    @Override
-    public void setAge(int age) {
-        this.age = age;
-    }
-
-    @Override
-    public void setGender(Gender gender) {
-        this.gender = gender;
-    }
-
-    @Override
-    public void setDomain(Domain domain) {
-        this.domain = domain;
-    }
-
-    public void setDepartment(Department department) {this.department = department;}
-
-    public void setDoctorPatients(ArrayList<Patient> doctorPatients) {this.doctorPatients = doctorPatients;}
 }

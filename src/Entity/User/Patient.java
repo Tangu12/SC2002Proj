@@ -31,11 +31,9 @@ public class Patient implements IUser{
 
 }
 
-
-
     // Getters
     @Override
-    public String getUserId() {
+    public String getUserID() {
         return this.userID;
     }
 
@@ -65,7 +63,7 @@ public class Patient implements IUser{
 
     // Setters
     @Override
-    public void setUserId(String userId) {
+    public void setUserID(String userId) {
         this.userID = userId;
     }
 

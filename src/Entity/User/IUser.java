@@ -9,14 +9,14 @@ import Entity.Enums.Gender;
 
 public interface IUser {
     // Getters
-    String getUserId();
+    String getUserID();
     String getName();
     int getAge();
     Gender getGender();
     Domain getDomain();
 
     // Setters
-    void setUserId(String userId);
+    void setUserID(String userID);
     void setName(String name);
     void setAge(int age);
     void setGender(Gender gender);

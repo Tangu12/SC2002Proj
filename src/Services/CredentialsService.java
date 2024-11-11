@@ -105,4 +105,27 @@ public class CredentialsService {
         return (maxLoginAttempts - userData.getLoginAttempts());
     }
 
+    // Create New Record
+    public void createNewRecord(String userID, String plainTextPassword, String securityQuestion, String plainTextSecurityAnswer) {
+        String salt = generateSalt();
+
+        String hashedPassword = hashPassword(plainTextPassword, salt);
+        String hashedSecurityAnswer = hashPassword(plainTextSecurityAnswer, salt);
+
+        Credentials newCredentials = new Credentials(userID, hashedPassword, salt, securityQuestion, hashedSecurityAnswer,0);
+
+        credentialsRepository.createRecord(newCredentials);
+    }
+
+    public void deleteRecord(String userID){
+        credentialsRepository.deleteRecord(userID);
+    }
+
+    public void updateRecord(Credentials userData){
+        credentialsRepository.updateRecord(userData);
+    }
+
+    public Credentials getRecord(String userID){
+        return credentialsRepository.readRecord(userID);
+    }
 }
