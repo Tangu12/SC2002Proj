@@ -9,7 +9,7 @@ import Entity.User.Patient;
 import java.io.*;
 import java.util.ArrayList;
 
-public class PatientDataRepository implements IRepository <Patient,String,Patient,Patient>{
+public class PatientDataRepository implements IRepository <String,String,Patient,Patient>{
     public final String path;
 
     public PatientDataRepository(String path) {
@@ -26,13 +26,13 @@ public class PatientDataRepository implements IRepository <Patient,String,Patien
         try {
             Patient patient = (Patient) attributes[0];
 
-            if (readRecord(patient.getUserId()) != null) {
+            if (readRecord(patient.getUserID()) != null) {
                 System.out.println("Error!! Patient already exists !!");
                 return;
             }
 
             try (BufferedWriter writer = new BufferedWriter(new FileWriter(path, true))) {
-                writer.write(patient.getUserId() + "," + patient.getName() + "," + patient.getAge() + "," + patient.getGender() + "," + patient.getDomain() + "," + patient.getMedicalHistory());
+                writer.write(patient.getUserID() + "," + patient.getName() + "," + patient.getAge() + "," + patient.getGender() + "," + patient.getDomain() + "," + patient.getMedicalHistory());
                 writer.newLine();
             } catch (Exception e) {
                 System.out.println("Error accessing Patient file !!");
@@ -104,7 +104,7 @@ public class PatientDataRepository implements IRepository <Patient,String,Patien
                 Patient temp = new Patient(patientID, name, age, gender, domain, medicalRecords);
 
                 // Update the record if it matches
-                if (temp.getUserId().equalsIgnoreCase(updatedPatient.getUserId())) {
+                if (temp.getUserID().equalsIgnoreCase(updatedPatient.getUserID())) {
                     tempPatients.add(updatedPatient); // Add the updated record
                     isUpdated = true;
                 } else {
@@ -123,7 +123,7 @@ public class PatientDataRepository implements IRepository <Patient,String,Patien
             writer.newLine();
 
             for (Patient tempPatient : tempPatients) {
-                writer.write(tempPatient.getUserId() + "," + tempPatient.getName() + "," + tempPatient.getAge() + "," +tempPatient.getGender() + "," + tempPatient.getDomain() + "," + tempPatient.getMedicalHistory());
+                writer.write(tempPatient.getUserID() + "," + tempPatient.getName() + "," + tempPatient.getAge() + "," +tempPatient.getGender() + "," + tempPatient.getDomain() + "," + tempPatient.getMedicalHistory());
                 writer.newLine();
             }
             if (!isUpdated) {
@@ -136,7 +136,7 @@ public class PatientDataRepository implements IRepository <Patient,String,Patien
     }
 
     @Override
-    public void deleteRecord(Patient deletePatient) {
+    public void deleteRecord(String deletePatientID) {
         ArrayList<Patient> tempPatients = new ArrayList<>();
         boolean isDeleted = false;
 
@@ -160,7 +160,7 @@ public class PatientDataRepository implements IRepository <Patient,String,Patien
                 Patient temp = new Patient(patientID, name, age, gender, domain, medicalRecords);
 
                 // Update the record if it matches
-                if (temp.getUserId().equalsIgnoreCase(deletePatient.getUserId())) {
+                if (temp.getUserID().equalsIgnoreCase(deletePatientID)) {
                     isDeleted = true;
                 } else {
                     tempPatients.add(temp); // Add existing record unchanged
@@ -178,7 +178,7 @@ public class PatientDataRepository implements IRepository <Patient,String,Patien
             writer.newLine();
 
             for (Patient tempPatient : tempPatients) {
-                writer.write(tempPatient.getUserId() + "," + tempPatient.getName() + "," + tempPatient.getAge() + "," +tempPatient.getGender() + "," + tempPatient.getDomain() + "," + tempPatient.getMedicalHistory());
+                writer.write(tempPatient.getUserID() + "," + tempPatient.getName() + "," + tempPatient.getAge() + "," +tempPatient.getGender() + "," + tempPatient.getDomain() + "," + tempPatient.getMedicalHistory());
                 writer.newLine();
             }
             if (!isDeleted) {
