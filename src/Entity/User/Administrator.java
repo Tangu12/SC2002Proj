@@ -1,12 +1,13 @@
 package Entity.User;
 
+import Entity.Enums.Department;
 import Entity.Enums.Domain;
 import Entity.Enums.Gender;
 import Entity.MedicationInventory;
 
 import java.util.ArrayList;
 
-public class Administrator implements IUser {
+public class Administrator extends HospitalStaff implements IUser {
     String userID;
     String name;
     int age;
@@ -15,6 +16,7 @@ public class Administrator implements IUser {
 
     // Add more attributes as needed
     MedicationInventory medicationInventory;
+    Department department = Department.Administrator;
 
     // Getters
     @Override

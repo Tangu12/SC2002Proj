@@ -7,15 +7,14 @@ import Entity.MedicalRecord;
 
 import java.util.ArrayList;
 
-public class Pharmacist implements IUser{
-
+public class Pharmacist extends HospitalStaff implements IUser{
     String userID;
     String name;
     int age;
     Gender gender;
-    Domain domain = Domain.PHARMACIST;
 
-    Department department; // Automatically Pharmacist
+    Domain domain = Domain.PHARMACIST;
+    Department department = Department.Pharmacy; // Automatically Pharmacist
 
     // Add more attributes as needed
     ArrayList<MedicalRecord> medicalHistory;

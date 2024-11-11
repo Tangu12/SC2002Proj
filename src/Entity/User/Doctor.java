@@ -12,13 +12,13 @@ import java.util.ArrayList;
  * */
 
 
-public class Doctor implements IUser{
+public class Doctor extends HospitalStaff implements IUser{
     String userID;
     String name;
     int age;
     Gender gender;
-    Domain domain = Domain.DOCTOR;
 
+    Domain domain = Domain.DOCTOR;
     // Add more attributes as needed
     Department department;
 
@@ -27,7 +27,7 @@ public class Doctor implements IUser{
     // Getters
     @Override
     public String getUserId() {
-        return this.userID;
+        return super.getUserID();
     }
 
     @Override
