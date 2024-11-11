@@ -8,6 +8,8 @@ public class Credentials {
     private String hashedSecurityAnswer;
     private int loginAttempts;
 
+    public static final int maxLoginAttempts = 3;
+
     // Constructor that only accepts necessary fields
     public Credentials(String userID, String hashedPassword, String salt, String securityQuestion, String hashedSecurityAnswer,int loginAttempts) {
         this.userID = userID;
@@ -61,4 +63,18 @@ public class Credentials {
     public void setLoginAttempts(int loginAttempts) {
         this.loginAttempts = loginAttempts;
     }
+
+    public boolean isAccountLocked(){
+        return loginAttempts == -1;
+    }
+
+    public void lockAccount(){
+        this.loginAttempts = -1;
+    }
+
+    public void unlockAccount(){
+        this.loginAttempts = 0;
+    }
+
+
 }

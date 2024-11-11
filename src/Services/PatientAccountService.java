@@ -1,5 +1,6 @@
 package Services;
 
+import Entity.Credentials;
 import Entity.Repository.CredentialsRepository;
 import Entity.Repository.PatientDataRepository;
 import Entity.User.Patient;
@@ -13,31 +14,64 @@ public class PatientAccountService {
         this.patientDataRepository = patientDataRepository;
     }
 
+    /*
+    Creates a new entry in the credentials file and the patient data file
+    */
     public void createPatientAccount(Patient patient,String plainTextPassword,String securityQuestion,String plainTextSecurityAnswer){
         String userID = patient.getUserID();
         credentialsService.createNewRecord(userID,plainTextPassword,securityQuestion,plainTextSecurityAnswer);
         patientDataRepository.createRecord(patient);
     }
 
-    // Delete Account
+    /*
+    Deletes a patient from the patient data file and the credentials file
+    */
     public void deletePatientAccount(String userID){
         credentialsService.deleteRecord(userID);
         patientDataRepository.deleteRecord(userID);
     }
 
-    // Create new hospital staff class
-    // Doctor, pharmacist and admin inherit from this class
-    // Refactor Inherit HospitalStaff return super.getID
+    /*
+    Updates a patient record in the PatientData file
+    */
+    public void updatePatientData(Patient patient){
+        patientDataRepository.updateRecord(patient);
+    }
 
-    // UpdateDetails
+    /*
+    Verifies if the answer given to a security question is correct or not
+    */
+    public boolean verifySecurityQuestion(String userID, String plainTextSecurityAnswer){
+        return credentialsService.verifySecurityQuestion(userID,plainTextSecurityAnswer);
+    }
 
-    // VerifySecurityQuestion
-    // Get remaining logins
+    /*
+    Returns the remaining logins that the user has before the user is locked out
+    */
+    public int getNumberOfTriesLeft(String userID){
+        return credentialsService.getNumberOfTriesLeft(userID);
+    }
 
-    // Change Password via correct securityAnswer
+    /*
+    Change Password of Patient in the Credentials File
+    */
+    public void changePassword(String userID, String newPassword){
+        credentialsService.changePassword(userID,newPassword);
+    }
 
-    // Lock account (system)
-    // Unlock account after too many attempts (admin)
+    /*
+    Lock account (system)
+    */
+    public void incrementNumberOfTries(String userID){
+        if(credentialsService.isAccountLocked(userID)){
+            return; // Return if the account is already Locked
+        }
+        credentialsService.incrementLoginAttempts(userID);
+    }
 
+    /* Unlock account after too many attempts (to be done by admin) */
+    public void unlockAccount(String userID){
+        credentialsService.unlockAccount(userID);
+    }
 
 }
