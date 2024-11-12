@@ -19,11 +19,6 @@ import java.util.ArrayList;
 import java.util.Optional;
 
 public class AdministratorMainPage {
-//    public void viewAndManageHospitalStaff(){}
-//    public void viewAppointmentDetails(){}
-//    public void viewAndManageMedicationInventory(){}
-//    public void approveReplenishmentRequest(){}
-//    public void logout(){}
 	private AdministratorController adminController;
 	private final int columnWidth = 20;
 	

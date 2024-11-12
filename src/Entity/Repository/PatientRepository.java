@@ -1,16 +1,16 @@
-package Entity.Repository;
-
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
-import Entity.User.Patient;
-
-public class PatientRepository {
-private static String PATIENT_FILE_NAME = "program_files/patients.csv";
-	
+//package Entity.Repository;
+//
+//import java.io.BufferedReader;
+//import java.io.FileReader;
+//import java.io.IOException;
+//import java.util.ArrayList;
+//import java.util.List;
+//
+//import Entity.User.Patient;
+//
+//public class PatientRepository {
+//private static String PATIENT_FILE_NAME = "program_files/patients.csv";
+//	
 //	public static void loadPatientlist() {
 //		List<String[]> data = new ArrayList<>();
 //
@@ -36,8 +36,8 @@ private static String PATIENT_FILE_NAME = "program_files/patients.csv";
 //			}
 //		}
 //    }
-	
-	public static void updatePatientlist() {
-		
-	}
-}
+////	
+//	public static void updatePatientlist() {
+//		
+//	}
+//}
