@@ -9,9 +9,11 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.Base64;
 
+import static Entity.Credentials.maxLoginAttempts;
+
 public class CredentialsService {
     private CredentialsRepository credentialsRepository;
-    final int maxLoginAttempts = 3;
+
 
     // Dependency Injection of CredentialsRepository
     public CredentialsService(CredentialsRepository credentialsRepository) {
@@ -76,13 +78,17 @@ public class CredentialsService {
         credentialsRepository.updateHashedPassword(userID,hashedPassword,salt);
     }
 
-    // Get security Question
+    /*
+    Returns Security Question
+    */
     public String getSecurityQuestion(String userID){
         Credentials userData = credentialsRepository.readRecord(userID);
         return userData.getSecurityQuestion();
     }
 
-    // Verify Security Question
+    /*
+    Verifies the Security Question based on the input Answer
+    */
     public boolean verifySecurityQuestion(String userID, String inputAnswer){
         boolean successful = false;
         Credentials userData = credentialsRepository.readRecord(userID);
@@ -99,13 +105,17 @@ public class CredentialsService {
         return successful;
     }
 
-    // Get Tries Left
+    /*
+    Get Number of Tries Left for User
+    */
     public int getNumberOfTriesLeft(String userID){
         Credentials userData = credentialsRepository.readRecord(userID);
         return (maxLoginAttempts - userData.getLoginAttempts());
     }
 
-    // Create New Record
+    /*
+    Create a new record in the credentials file
+    */
     public void createNewRecord(String userID, String plainTextPassword, String securityQuestion, String plainTextSecurityAnswer) {
         String salt = generateSalt();
 
@@ -117,15 +127,66 @@ public class CredentialsService {
         credentialsRepository.createRecord(newCredentials);
     }
 
+    /*
+    Delete a record from the credentials file
+    */
     public void deleteRecord(String userID){
         credentialsRepository.deleteRecord(userID);
     }
 
+    /*
+    Update a record from the credentials file
+    */
     public void updateRecord(Credentials userData){
         credentialsRepository.updateRecord(userData);
     }
 
+    /*
+    Return a record from the credentials file based on UserID
+    */
     public Credentials getRecord(String userID){
         return credentialsRepository.readRecord(userID);
     }
+
+
+    /*
+    Locks the User Account by setting the number of attempts to -1
+    */
+    public void lockAccount(String userID){
+        Credentials temp = credentialsRepository.readRecord(userID);
+        temp.lockAccount();
+        credentialsRepository.updateRecord(temp);
+    }
+
+    public void unlockAccount(String userID){
+        Credentials temp = credentialsRepository.readRecord(userID);
+        temp.unlockAccount();
+        credentialsRepository.updateRecord(temp);
+    }
+
+    /*
+    Method to check if userAccount is locked
+    */
+    public boolean isAccountLocked(String userID){
+        Credentials temp = credentialsRepository.readRecord(userID);
+        return temp.isAccountLocked();
+    }
+
+    /*
+    Method to increment the number of login attempts. Locks Account if number of attempts exceed 3
+    */
+    public void incrementLoginAttempts(String userID){
+        if(isAccountLocked(userID)){
+            return;
+        }
+        Credentials temp = credentialsRepository.readRecord(userID);
+        int tries = temp.getLoginAttempts();
+        if(++tries>maxLoginAttempts){
+            temp.lockAccount();
+        }
+        credentialsRepository.updateRecord(temp);
+    }
+
+
+
 }

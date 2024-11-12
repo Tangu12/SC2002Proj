@@ -10,7 +10,8 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PatientDataRepository implements IRepository <Patient,String,Patient,Patient>{
+
+public class PatientDataRepository implements IRepository <String,String,Patient,Patient>{
     public static String path;
 
     public PatientDataRepository(String path) {
@@ -137,7 +138,7 @@ public class PatientDataRepository implements IRepository <Patient,String,Patien
     }
 
     @Override
-    public void deleteRecord(Patient deletePatient) {
+    public void deleteRecord(String deletePatientID) {
         ArrayList<Patient> tempPatients = new ArrayList<>();
         boolean isDeleted = false;
 
@@ -161,7 +162,7 @@ public class PatientDataRepository implements IRepository <Patient,String,Patien
                 Patient temp = new Patient(patientID, name, age, gender, domain, medicalRecords);
 
                 // Update the record if it matches
-                if (temp.getUserID().equalsIgnoreCase(deletePatient.getUserID())) {
+                if (temp.getUserID().equalsIgnoreCase(deletePatientID)) {
                     isDeleted = true;
                 } else {
                     tempPatients.add(temp); // Add existing record unchanged
