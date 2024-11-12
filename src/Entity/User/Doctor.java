@@ -13,11 +13,11 @@ import java.util.ArrayList;
 
 public class Doctor extends HospitalStaff{
 
-    private static ArrayList<Doctor> doctorList;
+    private static ArrayList<Doctor> doctorList = new ArrayList<>();
+    private Department department;
     
-    public Doctor(String userID, String name, int age, Gender gender, Department department) {
+    public Doctor(String userID, String name, int age, Gender gender) {
     	super(userID, name, age, gender, Domain.DOCTOR);
-    	super.setDepartment(department);
     }
     
     public static void setDoctorList(ArrayList<Doctor> docList) {
@@ -26,5 +26,13 @@ public class Doctor extends HospitalStaff{
     
     public static ArrayList<Doctor> getDoctorList() {
     	return Doctor.doctorList;
+    }
+    
+    public void setDepartment(Department dep) {
+    	this.department = dep;
+    }
+    
+    public Department getDepartment() {
+    	return this.department;
     }
 }

@@ -1,5 +1,6 @@
 package Entity.Repository;
 
+import Entity.MedicationInventory;
 import Entity.Medicine;
 
 import java.io.*;

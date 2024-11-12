@@ -20,22 +20,13 @@ import Services.InputService;
 public class PatientMainPage {
 	private DoctorController doctorController;
 	private PatientController patientController;
+	
 	public PatientMainPage(DoctorController docCon, PatientController patCon) {
 		this.doctorController = docCon;
 		this.patientController = patCon;
 	}
 	
 	private static int columnWidth = 20;
-	
-//    public void viewMedicalRecord(){}
-//    public void updatePersonalInformation(){}
-//    public void viewAvailableAppointmentSlots(){}
-//    //public void scheduleAppointment(){}
-//    public void rescheduleAppointment(){}
-//    public void cancelAppointment(){}
-//    public void viewScheduledAppointment(){}
-//    public void viewPastAppointmentOutcomeRecords(){}
-//    public void logout(){}
     
     public void mainpage() throws Exception {
     	int choice;
@@ -167,7 +158,7 @@ public class PatientMainPage {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/M/yyyy H:mm");
         int i = 1;
         for (Appointment appointments : appointmentList) {
-            if (appointments.getPatID().equals(pat.getUserId()) && appointments.getStatusOfApp() == Status.Confirmed) {
+            if (appointments.getPatID().equals(pat.getUserID()) && appointments.getStatusOfApp() == Status.Confirmed) {
             	System.out.println("|" + formatCell(String.valueOf(i), 5)
 						+ "|" + formatCell(appointments.getPurposeOfApp().toString(), columnWidth)
 						+ "|" + formatCell(appointments.getTimeOfApp().format(formatter), columnWidth)
@@ -178,7 +169,7 @@ public class PatientMainPage {
 						+ "-".repeat(40) + "+");
 		        i++;
             }
-            if (appointments.getPatID().equals(pat.getUserId()) && appointments.getStatusOfApp() == Status.Pending) {
+            if (appointments.getPatID().equals(pat.getUserID()) && appointments.getStatusOfApp() == Status.Pending) {
             	System.out.println("|" + formatCell(String.valueOf(i), 5)
 						+ "|" + formatCell(appointments.getPurposeOfApp().toString(), columnWidth)
 						+ "|" + formatCell(appointments.getTimeOfApp().format(formatter), columnWidth)
@@ -213,7 +204,7 @@ public class PatientMainPage {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/M/yyyy H:mm");
         int i = 1;
         for (Appointment appointments : appointmentList) {
-            if (Objects.equals(appointments.getPatID(), pat.getUserId()) && (appointments.getStatusOfApp() == Status.Completed || appointments.getStatusOfApp() == Status.PendingPrescription)) {
+            if (Objects.equals(appointments.getPatID(), pat.getUserID()) && (appointments.getStatusOfApp() == Status.Completed || appointments.getStatusOfApp() == Status.PendingPrescription)) {
             	System.out.println("|" + formatCell(String.valueOf(i), 5)
 						+ "|" + formatCell(appointments.getPurposeOfApp().toString(), columnWidth)
 						+ "|" + formatCell(appointments.getTimeOfApp().format(formatter), columnWidth)
@@ -283,7 +274,7 @@ public class PatientMainPage {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/M/yyyy H:mm");
         List<Integer> possibleAppsIndices = new ArrayList<>();
         for (Appointment appointments : appointmentList) {
-            if (Objects.equals(appointments.getPatID(), patientController.getPatient().getUserId()) && (appointments.getStatusOfApp() == Status.Confirmed || appointments.getStatusOfApp() == Status.Pending)) {
+            if (Objects.equals(appointments.getPatID(), patientController.getPatient().getUserID()) && (appointments.getStatusOfApp() == Status.Confirmed || appointments.getStatusOfApp() == Status.Pending)) {
                 System.out.println(i + ". " + appointments.getTimeOfApp().format(formatter));
                 i++;
                 possibleAppsIndices.add(index);

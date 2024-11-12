@@ -3,11 +3,11 @@ package Entity;
 import java.util.ArrayList;
 
 public class MedicationInventory {
-    private ArrayList<Medicine> inventory;
+    private static ArrayList<Medicine> inventory;
     private static MedicationInventory instance;
 
     private MedicationInventory() {
-        this.inventory = new ArrayList<>();
+        MedicationInventory.inventory = new ArrayList<>();
     }
 
     /*
@@ -21,13 +21,13 @@ public class MedicationInventory {
     }
 
     // Get list of all medicines in the inventory
-    public ArrayList<Medicine> getInventory() {
+    public static ArrayList<Medicine> getInventory() {
         return inventory;
     }
 
     // Set Inventory
     public void setInventory(ArrayList<Medicine> inventory) {
-        this.inventory = inventory;
+    	MedicationInventory.inventory = inventory;
     }
 
     /*
@@ -193,14 +193,16 @@ public class MedicationInventory {
     */
     public boolean updateMedicine(String medicineName, Medicine updatedMedicine) {
         // Input Checking
-        if(updatedMedicine.getCurrentStock()<0||updatedMedicine.getRequestAmount()<0||updatedMedicine.getLowStockLevelAlert()<0){
+        if(updatedMedicine.getCurrentStock() < 0 || updatedMedicine.getRequestAmount() < 0 || updatedMedicine.getLowStockLevelAlert()<0){
             System.out.println("Error, updated amount is not valid, please input a number >= 0!");
             return false;
         }
 
         for (int i = 0; i < inventory.size(); i++) {
             if (inventory.get(i).getNameOfMedicine().equals(medicineName)) {
-                inventory.set(i, updatedMedicine);
+                //inventory.set(i, updatedMedicine);
+                inventory.remove(i);
+                inventory.add(updatedMedicine);
                 System.out.println("Medicine updated successfully.");
                 return true;
             }

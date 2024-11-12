@@ -137,4 +137,8 @@ public class MedicalInventoryService {
         saveInventoryToFile(); // Save changes
         return true;
     }
+    
+    public void updateMedicine(Medicine med) {
+    	medicationInventory.updateMedicine(med.getNameOfMedicine(), med);
+    }
 }

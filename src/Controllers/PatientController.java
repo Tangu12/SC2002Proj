@@ -12,10 +12,11 @@ import Services.AppointmentService;
 
 public class PatientController {
 	private Patient patient;
-	private AppointmentService patientService = new AppointmentService();
+	private AppointmentService appointmentService;
 	
-	public PatientController(Patient pat) {
+	public PatientController(Patient pat, AppointmentService appService) {
 		this.patient = pat;
+		this.appointmentService = appService;
 	}
 	
 	public int selectionOfTimeSlot(ArrayList<Appointment> appointmentList, List<Integer> timeSlotsIndices, int selection) {
@@ -45,11 +46,11 @@ public class PatientController {
 	
 	
 	public void scheduleAppointment(Patient pat, int appIndex, Purpose pur) {
-		patientService.scheduleAppointment(pat, appIndex, pur);
+		appointmentService.scheduleAppointment(pat, appIndex, pur);
 	}
 	
 	public void cancelAppointment(int oldIndex) {
-		patientService.cancelAppointment(oldIndex);
+		appointmentService.cancelAppointment(oldIndex);
 	}
 	
 	public Patient getPatient() {

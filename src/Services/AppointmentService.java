@@ -9,7 +9,7 @@ public class AppointmentService {
 	
 	public void scheduleAppointment(Patient pat, int appIndex, Purpose pur) {
 		AppointmentList.getInstance().getAppointmentList().get(appIndex).setAvail(false);
-		AppointmentList.getInstance().getAppointmentList().get(appIndex).setPatID(pat.getUserId());
+		AppointmentList.getInstance().getAppointmentList().get(appIndex).setPatID(pat.getUserID());
 		AppointmentList.getInstance().getAppointmentList().get(appIndex).setPatName(pat.getName());
 		AppointmentList.getInstance().getAppointmentList().get(appIndex).setPurposeOfApp(pur);
 		AppointmentList.getInstance().getAppointmentList().get(appIndex).setStatusOfApp(Status.Pending);

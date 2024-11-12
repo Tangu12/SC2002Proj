@@ -1,16 +1,158 @@
 package Entity.Repository;
 
 import Entity.Enums.Department;
+import Entity.Enums.Domain;
 import Entity.Enums.Gender;
+import Entity.User.Administrator;
+import Entity.User.Doctor;
+import Entity.User.Pharmacist;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.List;
 
 public class HospitalStaffRepository implements IRepository<String,String,String[],String[]>{
-    public final String path;
+    public static String path;
 
     public HospitalStaffRepository(String path) {
-        this.path = path;
+    	HospitalStaffRepository.path = path;
+    }
+    
+    public static void updateHospitalStaffFile(List<Administrator> admList, List<Doctor> docList, List<Pharmacist> phList) {
+        List<String[]> data = new ArrayList<>();
+        
+        String[] values = new String[6];
+        values[0] = "Staff ID";
+        values[1] = "Name";
+        values[2] = "Role";
+        values[3] = "Gender";
+        values[4] = "Age";
+        values[5] = "Department";
+        data.add(values);
+        
+        for(Administrator adm : admList) {
+        	String[] row = new String[6];
+        	row[0] = adm.getUserID();
+            row[1] = adm.getName();
+            row[2] = "Administrator";
+            row[3] = adm.getGender().toString();
+            row[4] = String.valueOf(adm.getAge());
+            row[5] = "NotApplicable";
+            data.add(row);
+        }
+        
+        for(Doctor doc : docList) {
+        	String[] row = new String[6];
+        	row[0] = doc.getUserID();
+            row[1] = doc.getName();
+            row[2] = "Doctor";
+            row[3] = doc.getGender().toString();
+            row[4] = String.valueOf(doc.getAge());
+            row[5] = doc.getDepartment().toString();
+            data.add(row);
+        }
+        
+        for(Pharmacist ph : phList) {
+        	String[] row = new String[6];
+        	row[0] = ph.getUserID();
+            row[1] = ph.getName();
+            row[2] = "Pharmacist";
+            row[3] = ph.getGender().toString();
+            row[4] = String.valueOf(ph.getAge());
+            row[5] = "NotApplicable";
+            data.add(row);
+        }
+        updateFile(data);
+    }
+    
+    private static void updateFile(List<String[]> data) {
+		try {
+			BufferedWriter writer = new BufferedWriter(new FileWriter(path));
+			for(String[] row : data) writer.write(String.join(",", row) + "\n");
+			writer.close();
+		} catch(IOException e) {
+			System.out.println("An error occurred.");
+			e.printStackTrace();
+		}
+	}
+    
+    public static void loadDoctorList() {
+    	List<String[]> data = new ArrayList<>();
+
+		//Read the CSV file
+		try (BufferedReader reader = new BufferedReader(new FileReader(path))) {
+			String row;
+			while ((row = reader.readLine()) != null) {
+				String[] values = row.split(",");
+				data.add(values);
+			}
+		} catch (IOException e) {
+			//e.printStackTrace();
+			System.out.println("File is not created yet!!");
+		}
+		boolean headerRow = true;
+		for(String[] row : data) {
+			if(headerRow) headerRow = false;
+			else if(row[2].equals("Doctor"))
+			{
+				//String userID, String name, int age, Gender gender
+				Doctor doctor = new Doctor(row[0], row[1], Integer.valueOf(row[4]), Gender.valueOf(row[3]) );
+				doctor.setDepartment(Department.valueOf(row[5]));
+				Doctor.getDoctorList().add(doctor);
+			}
+		}
+    }
+    
+    public static void loadPharmacistList() {
+    	List<String[]> data = new ArrayList<>();
+
+		//Read the CSV file
+		try (BufferedReader reader = new BufferedReader(new FileReader(path))) {
+			String row;
+			while ((row = reader.readLine()) != null) {
+				String[] values = row.split(",");
+				data.add(values);
+			}
+		} catch (IOException e) {
+			//e.printStackTrace();
+			System.out.println("File is not created yet!!");
+		}
+		boolean headerRow = true;
+		for(String[] row : data) {
+			if(headerRow) headerRow = false;
+			else if(row[2].equals("Pharmacist"))
+			{
+				//String userID, String name, int age, Gender gender, Domain domain
+				Pharmacist pharmacist = new Pharmacist(row[0], row[1], Integer.valueOf(row[4]), Gender.valueOf(row[3]), Domain.PHARMACIST);
+				Pharmacist.getPharmacistList().add(pharmacist);
+			}
+		}
+    }
+    
+    public static void loadAdministrator() {
+    	List<String[]> data = new ArrayList<>();
+
+		//Read the CSV file
+		try (BufferedReader reader = new BufferedReader(new FileReader(path))) {
+			String row;
+			while ((row = reader.readLine()) != null) {
+				String[] values = row.split(",");
+				data.add(values);
+			}
+		} catch (IOException e) {
+			//e.printStackTrace();
+			System.out.println("File is not created yet!!");
+		}
+		boolean headerRow = true;
+		for(String[] row : data) {
+			if(headerRow) headerRow = false;
+			else if(row[2].equals("Administrator"))
+			{
+				//String UserID,String name,int age,Gender gender
+				Administrator administrator = new Administrator(row[0], row[1], Integer.valueOf(row[4]), Gender.valueOf(row[3]));
+				Administrator.getAdministratorList().add(administrator);
+			}
+		}
     }
 
     /*

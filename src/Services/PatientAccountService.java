@@ -1,6 +1,5 @@
 package Services;
 
-import Entity.Repository.CredentialsRepository;
 import Entity.Repository.PatientDataRepository;
 import Entity.User.Patient;
 
@@ -14,7 +13,7 @@ public class PatientAccountService {
     }
 
     public void createPatientAccount(Patient patient,String plainTextPassword,String securityQuestion,String plainTextSecurityAnswer){
-        String userID = patient.getUserId();
+        String userID = patient.getUserID();
         credentialsService.createNewRecord(userID,plainTextPassword,securityQuestion,plainTextSecurityAnswer);
         patientDataRepository.createRecord(patient);
     }

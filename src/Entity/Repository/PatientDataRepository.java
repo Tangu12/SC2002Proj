@@ -8,12 +8,13 @@ import Entity.User.Patient;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.List;
 
 public class PatientDataRepository implements IRepository <Patient,String,Patient,Patient>{
-    public final String path;
+    public static String path;
 
     public PatientDataRepository(String path) {
-        this.path = path;
+    	PatientDataRepository.path = path;
     }
 
     @Override
@@ -26,13 +27,13 @@ public class PatientDataRepository implements IRepository <Patient,String,Patien
         try {
             Patient patient = (Patient) attributes[0];
 
-            if (readRecord(patient.getUserId()) != null) {
+            if (readRecord(patient.getUserID()) != null) {
                 System.out.println("Error!! Patient already exists !!");
                 return;
             }
 
             try (BufferedWriter writer = new BufferedWriter(new FileWriter(path, true))) {
-                writer.write(patient.getUserId() + "," + patient.getName() + "," + patient.getAge() + "," + patient.getGender() + "," + patient.getDomain() + "," + patient.getMedicalHistory());
+                writer.write(patient.getUserID() + "," + patient.getName() + "," + patient.getAge() + "," + patient.getGender() + "," + patient.getDomain() + "," + patient.getMedicalHistory());
                 writer.newLine();
             } catch (Exception e) {
                 System.out.println("Error accessing Patient file !!");
@@ -104,7 +105,7 @@ public class PatientDataRepository implements IRepository <Patient,String,Patien
                 Patient temp = new Patient(patientID, name, age, gender, domain, medicalRecords);
 
                 // Update the record if it matches
-                if (temp.getUserId().equalsIgnoreCase(updatedPatient.getUserId())) {
+                if (temp.getUserID().equalsIgnoreCase(updatedPatient.getUserID())) {
                     tempPatients.add(updatedPatient); // Add the updated record
                     isUpdated = true;
                 } else {
@@ -123,7 +124,7 @@ public class PatientDataRepository implements IRepository <Patient,String,Patien
             writer.newLine();
 
             for (Patient tempPatient : tempPatients) {
-                writer.write(tempPatient.getUserId() + "," + tempPatient.getName() + "," + tempPatient.getAge() + "," +tempPatient.getGender() + "," + tempPatient.getDomain() + "," + tempPatient.getMedicalHistory());
+                writer.write(tempPatient.getUserID() + "," + tempPatient.getName() + "," + tempPatient.getAge() + "," +tempPatient.getGender() + "," + tempPatient.getDomain() + "," + tempPatient.getMedicalHistory());
                 writer.newLine();
             }
             if (!isUpdated) {
@@ -160,7 +161,7 @@ public class PatientDataRepository implements IRepository <Patient,String,Patien
                 Patient temp = new Patient(patientID, name, age, gender, domain, medicalRecords);
 
                 // Update the record if it matches
-                if (temp.getUserId().equalsIgnoreCase(deletePatient.getUserId())) {
+                if (temp.getUserID().equalsIgnoreCase(deletePatient.getUserID())) {
                     isDeleted = true;
                 } else {
                     tempPatients.add(temp); // Add existing record unchanged
@@ -178,7 +179,7 @@ public class PatientDataRepository implements IRepository <Patient,String,Patien
             writer.newLine();
 
             for (Patient tempPatient : tempPatients) {
-                writer.write(tempPatient.getUserId() + "," + tempPatient.getName() + "," + tempPatient.getAge() + "," +tempPatient.getGender() + "," + tempPatient.getDomain() + "," + tempPatient.getMedicalHistory());
+                writer.write(tempPatient.getUserID() + "," + tempPatient.getName() + "," + tempPatient.getAge() + "," +tempPatient.getGender() + "," + tempPatient.getDomain() + "," + tempPatient.getMedicalHistory());
                 writer.newLine();
             }
             if (!isDeleted) {
@@ -188,5 +189,31 @@ public class PatientDataRepository implements IRepository <Patient,String,Patien
             System.out.println("Error writing to Patient file!");
             e.printStackTrace();
         }
+    }
+    
+    public static void loadPatientlist() {
+		List<String[]> data = new ArrayList<>();
+
+		//Read the CSV file
+		try (BufferedReader reader = new BufferedReader(new FileReader(path))) {
+			String row;
+			while ((row = reader.readLine()) != null) {
+				String[] values = row.split(",");
+				data.add(values);
+			}
+		} catch (IOException e) {
+			//e.printStackTrace();
+			System.out.println("File is not created yet!!");
+		}
+		boolean headerRow = true;
+		for(String[] row : data) {
+			if(headerRow) headerRow = false;
+			else {
+				String[] addingPatient = new String[2];
+				addingPatient[0] = row[0];
+				addingPatient[1] = row[1];
+				Patient.getPatientList().add(addingPatient);
+			}
+		}
     }
 }
