@@ -119,7 +119,7 @@ public class Schedule {
 				+ "-".repeat(columnWidth) + "+"
 				+ "-".repeat(columnWidth) + "+"
 				+ "-".repeat(columnWidth) + "+");
-		
+
 		for(Appointment app : appointmentList) {
 			if(app.getTimeOfApp().format(formatter).startsWith(date) && app.getDocID().equals(docID)) {
 				System.out.println("|" + formatCell(app.getAppID(), columnWidth)
@@ -156,7 +156,7 @@ public class Schedule {
 				"-".repeat(columnWidth) + "+" + "-".repeat(columnWidth) + "+" + "-".repeat(50) + "+" +
 				"-".repeat(columnWidth) + "+" + "-".repeat(columnWidth) + "+" +
 				"-".repeat(columnWidth) + "+" + "-".repeat(30) + "+");
-		
+
 		System.out.println("|" + formatCell("Appointment ID", columnWidth)
 				+ "|" + formatCell("App Date and Time", columnWidth)
 				+ "|" + formatCell("Doctor ID", columnWidth)
@@ -166,12 +166,12 @@ public class Schedule {
 				+ "|" + formatCell("Purpose", columnWidth)
 				+ "|" + formatCell("Department", columnWidth)
 				+ "|" + formatCell("Status", columnWidth)
-				+ "|" + formatCell("Appointment Outcomes", 50) 
-				+ "|" + formatCell("Medicine", columnWidth) 
+				+ "|" + formatCell("Appointment Outcomes", 50)
+				+ "|" + formatCell("Medicine", columnWidth)
 				+ "|" + formatCell("Issued Date", columnWidth)
 				+ "|" + formatCell("Dosage", columnWidth)
 				+ "|" + formatCell("Instructions", 30) + "|");
-		
+
 		System.out.println("+" + "-".repeat(columnWidth) + "+" +
 				"-".repeat(columnWidth) + "+" + "-".repeat(columnWidth) + "+" +
 				"-".repeat(columnWidth) + "+" + "-".repeat(columnWidth) + "+" +
@@ -179,7 +179,7 @@ public class Schedule {
 				"-".repeat(columnWidth) + "+" + "-".repeat(columnWidth) + "+" + "-".repeat(50) + "+" +
 				"-".repeat(columnWidth) + "+" + "-".repeat(columnWidth) + "+" +
 				"-".repeat(columnWidth) + "+" + "-".repeat(30) + "+");
-		
+
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/M/yyyy H:mm");
 		DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("d/M/yyyy");
 		for (Appointment row : appointmentList) {
@@ -192,12 +192,12 @@ public class Schedule {
 					+ "|" + formatCell((row.getPurposeOfApp() != null) ? row.getPurposeOfApp().toString() : " ", columnWidth)
 					+ "|" + formatCell(row.getAppointmentDepartment().toString(), columnWidth)
 					+ "|" + formatCell((row.getStatusOfApp() != null) ? row.getStatusOfApp().toString() : " ", columnWidth)
-					+ "|" + formatCell(row.getAppointOutcomeRecord(), 50) 
+					+ "|" + formatCell(row.getAppointOutcomeRecord(), 50)
 					+ "|" + formatCell(row.getMedicine(), columnWidth)
 					+ "|" + formatCell((row.getMedicineIssuedDate() != null) ? row.getMedicineIssuedDate().format(formatter1) : " ", columnWidth)
 					+ "|" + formatCell(row.getDosage(), columnWidth)
 					+ "|" + formatCell(row.getInstructions(), 30) + "|");
-			
+
 			System.out.println("+" + "-".repeat(columnWidth) + "+"
 					+ "-".repeat(columnWidth) + "+"
 					+ "-".repeat(columnWidth) + "+"
@@ -287,7 +287,7 @@ public class Schedule {
 		}
 		return data;
 	}
-	
+
 	public static void loadAppointments() {
 		int i = 0;
 		List<String[]> data = getAllRows();
@@ -331,53 +331,53 @@ public class Schedule {
 			i++;
 		}
 	}
-	
+
 	// Update file function
-    public static void updateAppointmentFile(ArrayList<Appointment> appointmentList) {
-        Schedule schedule = new Schedule();
-        List<String[]> data = new ArrayList<>();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/M/yyyy H:mm");
-        DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("d/M/yyyy");
-        String[] values = new String[15];
-        values[0] = "Availability";
-        values[1] = "AppointmentID";
-        values[2] = "TimeOfAppointment";
-        values[3] = "DoctorID";
-        values[4] = "DoctorName";
-        values[5] = "PatientID";
-        values[6] = "PatientName";
-        values[7] = "PurposeOfAppointment";
-        values[8] = "Department";
-        values[9] = "StatusOfAppointment";
-        values[10] = "Appointment Outcomes";
-        values[11] = "Medicine";
-        values[12] = "Date Issued";
-        values[13] = "Dosage";
-        values[14] = "Instructions";
-        data.add(values);
-        
-        for(Appointment appointment : appointmentList) {
-        	String[] row = new String[15];
-        	row[0] = String.valueOf(appointment.getAvail());
-            row[1] = appointment.getAppID();
-            row[2] = appointment.getTimeOfApp().format(formatter);
-            row[3] = appointment.getDocID();
-            row[4] = appointment.getDocName();
-            row[5] = appointment.getPatID();
-            row[6] = appointment.getPatName();
-            if(appointment.getPurposeOfApp() != null) row[7] = appointment.getPurposeOfApp().toString(); else row[7] = " ";
-            row[8] = appointment.getAppointmentDepartment().toString();
-            if(appointment.getStatusOfApp() != null) row[9] = appointment.getStatusOfApp().toString(); else row[9] = " ";
-            row[10] = appointment.getAppointOutcomeRecord();
-            row[11] = appointment.getMedicine();
-            if(appointment.getMedicineIssuedDate() != null) row[12] = appointment.getMedicineIssuedDate().format(formatter1); else row[12] = " ";
-            row[13] = appointment.getDosage();
-            row[14] = appointment.getInstructions();
-            
-            data.add(row);
-        }
-        schedule.updateFile(data);
-    }
+	public static void updateAppointmentFile(ArrayList<Appointment> appointmentList) {
+		Schedule schedule = new Schedule();
+		List<String[]> data = new ArrayList<>();
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/M/yyyy H:mm");
+		DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("d/M/yyyy");
+		String[] values = new String[15];
+		values[0] = "Availability";
+		values[1] = "AppointmentID";
+		values[2] = "TimeOfAppointment";
+		values[3] = "DoctorID";
+		values[4] = "DoctorName";
+		values[5] = "PatientID";
+		values[6] = "PatientName";
+		values[7] = "PurposeOfAppointment";
+		values[8] = "Department";
+		values[9] = "StatusOfAppointment";
+		values[10] = "Appointment Outcomes";
+		values[11] = "Medicine";
+		values[12] = "Date Issued";
+		values[13] = "Dosage";
+		values[14] = "Instructions";
+		data.add(values);
+
+		for(Appointment appointment : appointmentList) {
+			String[] row = new String[15];
+			row[0] = String.valueOf(appointment.getAvail());
+			row[1] = appointment.getAppID();
+			row[2] = appointment.getTimeOfApp().format(formatter);
+			row[3] = appointment.getDocID();
+			row[4] = appointment.getDocName();
+			row[5] = appointment.getPatID();
+			row[6] = appointment.getPatName();
+			if(appointment.getPurposeOfApp() != null) row[7] = appointment.getPurposeOfApp().toString(); else row[7] = " ";
+			row[8] = appointment.getAppointmentDepartment().toString();
+			if(appointment.getStatusOfApp() != null) row[9] = appointment.getStatusOfApp().toString(); else row[9] = " ";
+			row[10] = appointment.getAppointOutcomeRecord();
+			row[11] = appointment.getMedicine();
+			if(appointment.getMedicineIssuedDate() != null) row[12] = appointment.getMedicineIssuedDate().format(formatter1); else row[12] = " ";
+			row[13] = appointment.getDosage();
+			row[14] = appointment.getInstructions();
+
+			data.add(row);
+		}
+		schedule.updateFile(data);
+	}
 
 	private void overwriteCSV(List<String[]> data) {
 		try {
@@ -393,7 +393,7 @@ public class Schedule {
 	public void updateFile(List<String[]> data) {
 		overwriteCSV(data);
 	}
-	
+
 	public static ArrayList<Appointment> getAppointmentList(){
 		return appointmentList;
 	}

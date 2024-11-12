@@ -67,7 +67,7 @@ public class MedicationInventory {
     }
 
     // Helper method to find a medicine by its name
-    private Medicine findMedicineByName(String name) {
+    public Medicine findMedicineByName(String name) {
         for (Medicine medicine : inventory) {
             if (medicine.getName().equalsIgnoreCase(name)) {
                 return medicine;
@@ -220,11 +220,10 @@ public class MedicationInventory {
     }
 
     // Submit a replenishment request for a specific medicine
-    public void submitReplenishmentRequest(String medicineName, int requestAmount) {
-        Medicine medicine = findMedicineByName(medicineName);
+    public void submitReplenishmentRequest(Medicine medicine, int requestAmount) {
         if (medicine != null) {
             medicine.setRequestAmount(requestAmount);
-            System.out.println("Replenishment request of " + requestAmount + " units submitted for " + medicineName + ".");
+            System.out.println("Replenishment request of " + requestAmount + " units submitted for " + medicine.getName() + ".");
         } else {
             System.out.println("Medicine not found in the inventory.");
         }
