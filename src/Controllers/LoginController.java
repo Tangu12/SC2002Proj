@@ -1,7 +1,7 @@
 package Controllers;
 
 import Boundary.ForgotPasswordUI;
-import Services.PasswordService;
+import Services.CredentialsService;
 
 public class LoginController {
     /*

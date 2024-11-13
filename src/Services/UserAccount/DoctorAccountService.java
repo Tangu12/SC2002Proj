@@ -1,25 +1,27 @@
-package Services;
+package Services.UserAccount;
 
 import Entity.Repository.HospitalStaffRepository;
-import Entity.User.Pharmacist;
+import Entity.User.Doctor;
+import Services.CredentialsService;
 
-public class PharmacistAccountService implements IUserAccountService<Pharmacist> {
+public class DoctorAccountService implements IUserAccountService<Doctor> {
     private CredentialsService credentialsService;
     private HospitalStaffRepository hospitalStaffRepository;
 
     // Dependency Injection
-    public PharmacistAccountService(CredentialsService credentialsService,HospitalStaffRepository hospitalStaffRepository) {
+    public DoctorAccountService(CredentialsService credentialsService,HospitalStaffRepository hospitalStaffRepository) {
         this.credentialsService = credentialsService;
         this.hospitalStaffRepository = hospitalStaffRepository;
     }
 
+
     // attributes -> (Staff ID,Name,Role,Gender,Age)
-    // Creates a new Pharmacist Account
+    // Creates a new Administrator Account
     @Override
-    public void createUserAccount(Pharmacist pharmacist, String plainTextPassword, String securityQuestion, String plainTextSecurityAnswer) {
-        String userID = pharmacist.getUserID();
+    public void createUserAccount(Doctor doctor, String plainTextPassword, String securityQuestion, String plainTextSecurityAnswer) {
+        String userID = doctor.getUserID();
         credentialsService.createNewRecord(userID,plainTextPassword,securityQuestion,plainTextSecurityAnswer);
-        hospitalStaffRepository.createRecord(userID,pharmacist.getName(),pharmacist.getDomain(),pharmacist.getGender(),pharmacist.getAge());
+        hospitalStaffRepository.createRecord(userID,doctor.getName(),doctor.getDomain(),doctor.getGender(),doctor.getAge());
     }
 
     // Deletes a User Account
@@ -32,18 +34,21 @@ public class PharmacistAccountService implements IUserAccountService<Pharmacist>
     // Updates User Data
     // (Staff ID,Name,Role,Gender,Age)
     @Override
-    public void updateUserData(Pharmacist pharmacist) {
-        String userID = pharmacist.getUserID();
-        String name = pharmacist.getName();
-        String role = String.valueOf(pharmacist.getDomain());
-        String gender = String.valueOf(pharmacist.getGender());
-        String age = String.valueOf(pharmacist.getAge());
+    public void updateUserData(Doctor doctor) {
+        String userID = doctor.getUserID();
+        String name = doctor.getName();
+        String role = String.valueOf(doctor.getDomain());
+        String gender = String.valueOf(doctor.getGender());
+        String age = String.valueOf(doctor.getAge());
 
         String[] user = {userID,name,role,gender,age};
 
         hospitalStaffRepository.updateRecord(user);
     }
-
+    @Override
+    public boolean verifyPassword(String UserID, String plainTextPassword) {
+        return credentialsService.checkPassword(UserID,plainTextPassword);
+    }
     /*
     Verifies if the answer given to a security question is correct or not
     */
@@ -59,7 +64,7 @@ public class PharmacistAccountService implements IUserAccountService<Pharmacist>
     }
 
     /*
-    Change Password of Pharmacist in the Credentials File
+    Change Password of Doctor in the Credentials File
     */
     public void changePassword(String userID, String newPassword){
         credentialsService.changePassword(userID,newPassword);

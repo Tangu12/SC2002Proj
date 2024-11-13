@@ -1,9 +1,8 @@
-package Services;
+package Services.UserAccount;
 
-import Entity.Credentials;
-import Entity.Repository.CredentialsRepository;
 import Entity.Repository.PatientDataRepository;
 import Entity.User.Patient;
+import Services.CredentialsService;
 
 
 public class PatientAccountService implements IUserAccountService<Patient> {
@@ -37,6 +36,11 @@ public class PatientAccountService implements IUserAccountService<Patient> {
     */
     public void updateUserData(Patient patient){
         patientDataRepository.updateRecord(patient);
+    }
+
+    @Override
+    public boolean verifyPassword(String UserID, String plainTextPassword) {
+        return credentialsService.checkPassword(UserID,plainTextPassword);
     }
 
     /*

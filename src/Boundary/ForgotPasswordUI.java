@@ -1,7 +1,7 @@
 package Boundary;
 
 import Services.InputService;
-import Services.PasswordService;
+import Services.CredentialsService;
 
 public class ForgotPasswordUI {
     public static void askToRetry() {
@@ -11,10 +11,10 @@ public class ForgotPasswordUI {
     public static void forgotPassword(String inputID) {
         System.out.println("To change your password, please answer this security question: ");
         int sqAttenpts = 0;
-        if (PasswordService.askSecurityQuestion(inputID)) {
+        if (CredentialsService.askSecurityQuestion(inputID)) {
             System.out.println("Enter your new password: ");
             String newPassword = InputService.inputString();
-            PasswordService.changePassword(inputID, newPassword);
+            CredentialsService.changePassword(inputID, newPassword);
         }
         else {
             System.out.println("Exceeded number of tries. You have been logged out. ");

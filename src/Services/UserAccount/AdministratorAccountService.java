@@ -1,10 +1,10 @@
-package Services;
+package Services.UserAccount;
 
-import Entity.Enums.Department;
 import Entity.Repository.HospitalStaffRepository;
 import Entity.User.Administrator;
+import Services.CredentialsService;
 
-public class AdministratorAccountService implements IUserAccountService<Administrator>{
+public class AdministratorAccountService implements IUserAccountService<Administrator> {
     private CredentialsService credentialsService;
     private HospitalStaffRepository hospitalStaffRepository;
 
@@ -44,6 +44,11 @@ public class AdministratorAccountService implements IUserAccountService<Administ
         String[] user = {userID,name,role,gender,age};
 
         hospitalStaffRepository.updateRecord(user);
+    }
+
+    @Override
+    public boolean verifyPassword(String UserID, String plainTextPassword) {
+        return credentialsService.checkPassword(UserID,plainTextPassword);
     }
 
     /*
