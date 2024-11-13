@@ -6,7 +6,7 @@ import Entity.Repository.PatientDataRepository;
 import Entity.User.Patient;
 
 
-public class PatientAccountService {
+public class PatientAccountService implements IUserAccountService<Patient> {
     private CredentialsService credentialsService;
     private PatientDataRepository patientDataRepository;
 
@@ -18,7 +18,7 @@ public class PatientAccountService {
     /*
     Creates a new entry in the credentials file and the patient data file
     */
-    public void createPatientAccount(Patient patient,String plainTextPassword,String securityQuestion,String plainTextSecurityAnswer){
+    public void createUserAccount(Patient patient,String plainTextPassword,String securityQuestion,String plainTextSecurityAnswer){
         String userID = patient.getUserID();
         credentialsService.createNewRecord(userID,plainTextPassword,securityQuestion,plainTextSecurityAnswer);
         patientDataRepository.createRecord(patient);
@@ -27,7 +27,7 @@ public class PatientAccountService {
     /*
     Deletes a patient from the patient data file and the credentials file
     */
-    public void deletePatientAccount(String userID){
+    public void deleteUserAccount(String userID){
         credentialsService.deleteRecord(userID);
         patientDataRepository.deleteRecord(userID);
     }
@@ -35,7 +35,7 @@ public class PatientAccountService {
     /*
     Updates a patient record in the PatientData file
     */
-    public void updatePatientData(Patient patient){
+    public void updateUserData(Patient patient){
         patientDataRepository.updateRecord(patient);
     }
 
