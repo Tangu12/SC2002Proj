@@ -21,6 +21,7 @@ public class PatientRegistrationUI {
         System.out.println("Welcome to Hospital Management System !");
         System.out.print("Your assigned PatientID is : ");
         System.out.print(patientRegistrationController.getUserName()+"\n");
+
         System.out.println("Please enter your password : ");
         String plainTextPassword = InputService.inputString();
         System.out.println("Please enter your Security Question : ");

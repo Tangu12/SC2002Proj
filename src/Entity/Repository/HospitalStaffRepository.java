@@ -166,7 +166,18 @@ public class HospitalStaffRepository implements IRepository<String,String,String
         }
         String staffID = (String) attributes[0];
         String name = (String) attributes[1];
-        Department role = (Department) attributes[2];
+
+        Object role = attributes[2];
+        String roleString;
+        if (role instanceof Department) {
+            roleString = ((Department) role).toString();
+        } else if (role instanceof Domain) {
+            roleString = ((Domain) role).toString();
+        } else {
+            System.out.println("Error: Unsupported type for role attribute.");
+            return;
+        }
+
         Gender gender = (Gender) attributes[3];
         int age = (int) attributes[4];
 

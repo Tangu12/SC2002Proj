@@ -24,7 +24,7 @@ public class DoctorAccountService implements IUserAccountService<Doctor> {
     public void createUserAccount(Doctor doctor, String plainTextPassword, String securityQuestion, String plainTextSecurityAnswer) {
         String userID = doctor.getUserID();
         credentialsService.createNewRecord(userID,plainTextPassword,securityQuestion,plainTextSecurityAnswer);
-        hospitalStaffRepository.createRecord(userID,doctor.getName(),doctor.getDomain(),doctor.getGender(),doctor.getAge());
+        hospitalStaffRepository.createRecord(userID,doctor.getName(),doctor.getDepartment(),doctor.getGender(),doctor.getAge());
     }
 
     //.  Staff ID,Name,Role,Gender,Age,Department

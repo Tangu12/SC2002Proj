@@ -2,6 +2,7 @@ package Tests;
 
 import Boundary.UserUI.AdministratorMainPage;
 import Controllers.AdministratorController;
+import Controllers.HospitalStaffRegistrationService;
 import Entity.MedicationInventory;
 import Entity.Enums.Gender;
 import Entity.Repository.*;
@@ -83,7 +84,8 @@ public class TestAdminFunction {
 		AppointmentsRepository.loadAppointments();
 
 		// Create Repository
-		HospitalStaffRepository hospitalStaffRepository = new HospitalStaffRepository("program_files/HospitalStaff.csv");
+		//HospitalStaffRepository hospitalStaffRepository = new HospitalStaffRepository("program_files/HospitalStaff.csv");
+		HospitalStaffRepository hospitalStaffRepository = new HospitalStaffRepository("src/Tests/TestingFiles/HospitalStaff.csv");
 		HospitalStaffRepository.loadAdministrator();
 		HospitalStaffRepository.loadDoctorList();
 		HospitalStaffRepository.loadPharmacistList();
@@ -95,16 +97,22 @@ public class TestAdminFunction {
 		PatientDataRepository patientRepository = new PatientDataRepository("src/Tests/TestingFiles/patientsData.txt");
 
 		// Create Services
-		StaffManagementService staffManagementService = new StaffManagementService();
-		MedicalInventoryService medicalInventoryService = new MedicalInventoryService(MedicationInventory.getInstance(), medicationInventoryRepository);
-		medicalInventoryService.loadInventoryFromFile();
-
 		CredentialsService credentialsService = new CredentialsService(credentialsRepository);
 
 		IUserAccountService<Patient> patientService = new PatientAccountService(credentialsService,patientRepository);
 		IUserAccountService<Doctor> doctorService = new DoctorAccountService(credentialsService,hospitalStaffRepository);
 		IUserAccountService<Pharmacist> pharmacistService = new PharmacistAccountService(credentialsService,hospitalStaffRepository);
 		IUserAccountService<Administrator> administratorService = new AdministratorAccountService(credentialsService,hospitalStaffRepository);
+
+		HospitalStaffRegistrationService hospitalStaffRegistrationService = new HospitalStaffRegistrationService(credentialsRepository,(DoctorAccountService) doctorService
+				,(PharmacistAccountService) pharmacistService,(AdministratorAccountService)administratorService);
+
+		StaffManagementService staffManagementService = new StaffManagementService((DoctorAccountService) doctorService,
+				(AdministratorAccountService) administratorService,(PharmacistAccountService) pharmacistService,hospitalStaffRegistrationService);
+		MedicalInventoryService medicalInventoryService = new MedicalInventoryService(MedicationInventory.getInstance(), medicationInventoryRepository);
+		medicalInventoryService.loadInventoryFromFile();
+
+
 
 		AccountManager accountManager = new AccountManager(patientService,doctorService,pharmacistService,administratorService,credentialsService);
 
@@ -115,7 +123,7 @@ public class TestAdminFunction {
 		AdministratorController controller = new AdministratorController(admin, staffManagementService, medicalInventoryService,accountManager);
 
 		// Create Boundary
-		AdministratorMainPage mainPage = new AdministratorMainPage(controller);
+		AdministratorMainPage mainPage = new AdministratorMainPage(controller,hospitalStaffRegistrationService);
 		mainPage.homePage();
 
 		// Testing Functions

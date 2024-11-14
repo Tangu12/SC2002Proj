@@ -1,6 +1,7 @@
 package Boundary.UserUI;
 
 import Controllers.AdministratorController;
+import Controllers.HospitalStaffRegistrationService;
 import Entity.Appointment;
 import Entity.AppointmentList;
 import Entity.MedicationInventory;
@@ -20,10 +21,12 @@ import java.util.Optional;
 
 public class AdministratorMainPage {
 	private AdministratorController adminController;
+	private HospitalStaffRegistrationService hospitalStaffRegistrationService;
 	private final int columnWidth = 20;
 	
-    public AdministratorMainPage(AdministratorController adnController) {
+    public AdministratorMainPage(AdministratorController adnController, HospitalStaffRegistrationService hospitalStaffRegistrationService) {
     	this.adminController = adnController;
+		this.hospitalStaffRegistrationService = hospitalStaffRegistrationService;
     }
 	
 	public void homePage() {
@@ -130,15 +133,16 @@ public class AdministratorMainPage {
 
 	//TODO :  Add Register Staff Function
 	public void addStaffMember() {
-		System.out.print("Enter name: ");
-        String name = InputService.inputString();
+		/*
         System.out.print("Enter hospital ID: ");
         String hospitalId = InputService.inputString();
+
         Optional<? extends HospitalStaff> staffToadd = adminController.findStaffById(hospitalId);
         if(staffToadd.isPresent()) {
         	System.out.println("ID already exists!!!");
         	return;
-        }
+        }*/
+
         System.out.print("Enter role: \n(1). Doctor\n(2). Pharmacist\n(3). Administrator\n");
         int choice = InputService.inputInteger();
         Domain role;
@@ -156,6 +160,18 @@ public class AdministratorMainPage {
 	        	System.out.println("Please only select available options!!");
 	        	return;
         }
+
+		String hospitalId = hospitalStaffRegistrationService.getUserName(role);
+		System.out.println("Your Assigned Hospital ID is : \n"+ hospitalId +"\n");
+
+
+		System.out.println("Please enter your password : ");
+		String plainTextPassword = InputService.inputString();
+		System.out.println("Please enter your Security Question : ");
+		String securityQuestion = InputService.inputString();
+		System.out.println("Please enter the answer to your Security Question : ");
+		String plainTextSecurityAnswer = InputService.inputString().toLowerCase();
+
         System.out.print("Enter gender:\n(1). Male\n(2). Female\n");
         int choice1 = InputService.inputInteger();
         Gender gender;
@@ -170,7 +186,11 @@ public class AdministratorMainPage {
 	        	System.out.println("Please only select available options!!");
 	        	return;
 	    }
-        System.out.println("Enter Age: ");
+
+		System.out.print("Enter name: ");
+		String name = InputService.inputString();
+
+		System.out.println("Enter Age: ");
         int age = InputService.inputInteger();
         switch (role) {
         case DOCTOR -> {
@@ -202,23 +222,24 @@ public class AdministratorMainPage {
             else dept = Department.Others;
             Doctor doc = new Doctor(hospitalId, name, age, gender);
             doc.setDepartment(dept);
-            adminController.addStaffMember(doc);
+            adminController.addStaffMember(doc,plainTextPassword,securityQuestion,plainTextSecurityAnswer);
             System.out.println("Doctor added: " + doc.getName());
         }
         case PHARMACIST -> {
             Pharmacist phar = new Pharmacist(hospitalId, name, age, gender, Domain.PHARMACIST);
-            adminController.addStaffMember(phar);
+            adminController.addStaffMember(phar,plainTextPassword,securityQuestion,plainTextSecurityAnswer);
             System.out.println("Pharmacist added: " + phar.getName());
         }
         case ADMINISTRATOR -> {
             Administrator admin = new Administrator(hospitalId, name, age, gender);
-            adminController.addStaffMember(admin);
+            adminController.addStaffMember(admin,plainTextPassword,securityQuestion,plainTextSecurityAnswer);
             System.out.println("Administrator added: " + admin.getName());
         }
         default -> throw new IllegalArgumentException("Invalid role");
         }
 	}
-	
+
+
 	public void removeStaffMember() {
     	displayAllStaff();
         System.out.print("Enter the hospital ID to remove: ");

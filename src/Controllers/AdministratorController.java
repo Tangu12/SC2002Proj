@@ -38,8 +38,8 @@ public class AdministratorController {
 		return this.admin;
 	}
 	
-    public void addStaffMember(HospitalStaff staff) {
-        staffManagementService.addStaffMember(staff);
+    public void addStaffMember(HospitalStaff staff, String plainTextPassword,String securityQuestion,String plainTextSecurityAnswer) {
+        staffManagementService.addStaffMember(staff, plainTextPassword, securityQuestion, plainTextSecurityAnswer);
     }
     
     public Optional<HospitalStaff> findStaffById(String hospitalId) {
