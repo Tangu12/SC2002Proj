@@ -1,5 +1,6 @@
 package Tests;
 
+import Boundary.LogoutUI;
 import Boundary.PatientRegistrationUI;
 import Boundary.WelcomeUI;
 import Controllers.PatientRegistrationController;
@@ -29,7 +30,8 @@ public class TestLoginRegister {
 
         // Create Boundaries
         PatientRegistrationUI patientRegistrationUI = new PatientRegistrationUI(patientRegistrationController);
-        WelcomeUI welcomeUI = new WelcomeUI(patientRegistrationUI);
+        LogoutUI logoutUI = new LogoutUI();
+        WelcomeUI welcomeUI = new WelcomeUI(patientRegistrationUI,logoutUI);
 
         // Initialise
         //LocalDate dob = LocalDate.of(2002, 5, 14);
