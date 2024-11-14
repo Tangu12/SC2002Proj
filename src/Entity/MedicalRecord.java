@@ -42,7 +42,8 @@ public class MedicalRecord {
     }
 
     public void setMedicineIssueDate(String medicineIssueDate) {
-        this.medicineIssueDate = medicineIssueDate;
+        DateTimeFormatter formatterDate = DateTimeFormatter.ofPattern("d/M/yyyy");
+        this.medicineIssueDate = LocalDate.parse(medicineIssueDate, formatterDate);
     }
 
     public void setDosage(String dosage) {
@@ -69,7 +70,7 @@ public class MedicalRecord {
         return medicine;
     }
 
-    public String getMedicineIssueDate() {
+    public LocalDate getMedicineIssueDate() {
         return medicineIssueDate;
     }
 
