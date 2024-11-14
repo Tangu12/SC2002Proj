@@ -43,12 +43,12 @@ public class PatientRegistrationController {
     }
 
     // Helper method
-    private static String getIdFormat() {
+    private String getIdFormat() {
         int digits = String.valueOf(IUser.MAX_USERS).length();
         return "%s%0" + digits + "d";  // This creates format like "%s%04d" for 9999
     }
 
-    public static int calculateAge(LocalDate dob) {
+    public int calculateAge(LocalDate dob) {
         LocalDate currentDate = LocalDate.now();
         return Period.between(dob, currentDate).getYears();
     }
