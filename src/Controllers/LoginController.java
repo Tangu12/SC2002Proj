@@ -4,63 +4,30 @@ import Boundary.ForgotPasswordUI;
 import Services.CredentialsService;
 
 public class LoginController {
-    /*
-    public static void login(String hospitalID, String password) {
-        if (PasswordService.checkPassword(hospitalID, password)) {
+    private CredentialsService credentialsService;
 
-            // Dependency Injection? -> instead of instantiating a new User, use a constructor and getters and setters
+    // Login Function, checks if account is locked, then if password matches
+    public boolean login(String userID, String plainTextPassword) {
+        if (credentialsService.isAccountLocked(userID)) {
+            System.out.println("Account is locked due to too many failed attempts.");
+            return false;
+        }
 
-            // AccountManager creates user
+        if (credentialsService.checkPassword(userID, plainTextPassword)) {
+            credentialsService.unlockAccount(userID);
+            return true;
+        } else {
+            credentialsService.incrementLoginAttempts(userID);
+            int attemptsLeft = credentialsService.getNumberOfTriesLeft(userID);
+            System.out.println("Incorrect password. Attempts left: " + attemptsLeft);
 
-            switch(user.getDomain()) {
-                //case PATIENT-> PatientMainPage.patientMainPage
-                break;
-
-                // case DOCTOR-> DoctorMainPage.doctorMainPage
-                break;
-
-                // case PHARMACIST-> PharmacistMainPage.pharmacistMainPage
-                break;
-
-                // case ADMINISTRATOR-> AdministratorMainPage.administratorMainPage
-                break;
-
-                default:
-                    System.out.println("ERROR GETTING DOMAIN");
-                    break;
+            if (attemptsLeft <= 0) {
+                System.out.println("Account is now locked due to too many failed attempts.");
+                credentialsService.lockAccount(userID);
             }
+            return false;
         }
-
-        else {
-            ForgotPasswordUI.askToRetry();
-        }
-
-
-
-
-
-
-        if (!successfulLogin) {
-            System.out.println("Wrong Password!");
-            login_attempts++;
-            if (login_attempts >= 3) {
-                System.out.println("Too many attempts. Please change your password: ");
-                // Ask security question, if fail kick out to main page
-                securitycheck = Credentials.askSecurityQuestion(inputID);
-                if (!securitycheck) {
-                    System.out.println("Wrong answer to security question. You have been logged out. ");
-                    return null;
-                }
-                System.out.println("Please enter your new password: ");
-                String new_password = InputScanner.sc.nextLine().trim();
-                changePassword(inputID, new_password);
-                return null;
-            }
-        }
-        break;
-
-
-
     }
-     */
+
 }
+

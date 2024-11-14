@@ -187,6 +187,34 @@ public class CredentialsService {
         credentialsRepository.updateRecord(temp);
     }
 
+    public String getUserDomain(String userID) {
+        if (userID == null || userID.isEmpty()) {
+            System.out.println("Invalid userID.");
+            return null;
+        }
 
+        char userType = userID.charAt(0);
+        String domain;
+
+        switch (userType) {
+            case 'D':
+                domain = "DOCTOR";
+                break;
+            case 'P':
+                domain = "PATIENT";
+                break;
+            case 'R':
+                domain = "PHARMACIST";
+                break;
+            case 'A':
+                domain = "ADMINISTRATOR";
+                break;
+
+            default:
+                System.out.println("Unknown user type.");
+                return null;
+        }
+        return domain;
+    }
 
 }
