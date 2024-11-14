@@ -1,11 +1,38 @@
 package Boundary;
 
 import Controllers.LoginController;
+import Entity.Enums.Domain;
 import Services.InputService;
 import Services.CredentialsService;
 
 public class LoginUI {
-    public static void loginUI() {
+
+
+    private LoginController loginController;
+
+    public LoginUI(LoginController loginController) {
+        this.loginController = loginController;
+    }
+
+    public void loginUI() {
+        String inputID;
+
+        do {
+            System.out.print("Please enter your unique Hospital ID : ");
+            inputID = InputService.inputString();
+            validUserID = true; // function to check valid ID
+            if (!validUserID) {
+                System.out.println("User does not exist!");
+            }
+        } while (!validUserID);
+
+
+
+
+
+
+
+
         /*
         int choice = 0;
         String inputID;

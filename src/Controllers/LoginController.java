@@ -2,9 +2,11 @@ package Controllers;
 
 import Boundary.ForgotPasswordUI;
 import Services.CredentialsService;
+import Services.UserAccount.AccountManager;
 
 public class LoginController {
     private CredentialsService credentialsService;
+    private AccountManager accountManager;
 
     // Login Function, checks if account is locked, then if password matches
     public boolean login(String userID, String plainTextPassword) {
@@ -28,6 +30,12 @@ public class LoginController {
             return false;
         }
     }
+
+    // Check if UserID is Valid
+    public boolean validUserID(){
+
+    }
+
 
 }
 
