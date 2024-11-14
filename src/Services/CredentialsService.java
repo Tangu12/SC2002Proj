@@ -188,6 +188,7 @@ public class CredentialsService {
         if(++tries>maxLoginAttempts){
             temp.lockAccount();
         }
+        temp.setLoginAttempts(tries);
         credentialsRepository.updateRecord(temp);
     }
 

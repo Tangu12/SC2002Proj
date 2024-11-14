@@ -10,4 +10,5 @@ public interface IUserAccountService <T> {
     void changePassword(String userID,String newPassword);
     void incrementNumberOfTries(String userID);
     void unlockAccount(String userID);
+    T getAccount(String userID);
 }

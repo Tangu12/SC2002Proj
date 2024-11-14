@@ -23,6 +23,11 @@ public class PatientAccountService implements IUserAccountService<Patient> {
         patientDataRepository.createRecord(patient);
     }
 
+    // Reads and return Patient Object with matching HospitalID
+    public Patient getAccount(String userID) {
+        return patientDataRepository.readRecord(userID);
+    }
+
     /*
     Deletes a patient from the patient data file and the credentials file
     */

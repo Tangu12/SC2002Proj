@@ -1,10 +1,18 @@
 package Controllers;
 
 import Boundary.ForgotPasswordUI;
+import Entity.Credentials;
 import Services.CredentialsService;
+import Services.UserAccount.AccountManager;
 
 public class LoginController {
     private CredentialsService credentialsService;
+    private AccountManager accountManager;
+
+    public LoginController(CredentialsService credentialsService, AccountManager accountManager) {
+        this.credentialsService = credentialsService;
+        this.accountManager = accountManager;
+    }
 
     // Login Function, checks if account is locked, then if password matches
     public boolean login(String userID, String plainTextPassword) {
@@ -12,7 +20,6 @@ public class LoginController {
             System.out.println("Account is locked due to too many failed attempts.");
             return false;
         }
-
         if (credentialsService.checkPassword(userID, plainTextPassword)) {
             credentialsService.unlockAccount(userID);
             return true;
@@ -27,6 +34,15 @@ public class LoginController {
             }
             return false;
         }
+    }
+
+    // Check if UserID is Valid
+    public boolean validUserID(String userID){
+        Credentials userCredentials = credentialsService.getRecord(userID);
+        if (userCredentials == null) {
+            return false;
+        }
+        return true;
     }
 
 }
