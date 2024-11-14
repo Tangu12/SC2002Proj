@@ -32,6 +32,20 @@ public class AccountManager {
         }
     }
 
+    public void readUser(String userID) {
+        if (user instanceof Patient) {
+            patientService.createUserAccount((Patient) user, plainTextPassword, securityQuestion, plainTextSecurityAnswer);
+        } else if (user instanceof Doctor) {
+            doctorService.createUserAccount((Doctor) user, plainTextPassword, securityQuestion, plainTextSecurityAnswer);
+        } else if (user instanceof Pharmacist) {
+            pharmacistService.createUserAccount((Pharmacist) user, plainTextPassword, securityQuestion, plainTextSecurityAnswer);
+        } else if (user instanceof Administrator) {
+            administratorService.createUserAccount((Administrator) user, plainTextPassword, securityQuestion, plainTextSecurityAnswer);
+        } else {
+            System.out.println("Error!! User Type not supported.");
+        }
+    }
+
     public void updateUserInfo(Object user) {
         if (user instanceof Patient) {
             patientService.updateUserData((Patient) user);

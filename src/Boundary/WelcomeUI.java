@@ -5,10 +5,12 @@ import Services.InputService;
 public class WelcomeUI {
     private PatientRegistrationUI patientRegistrationUI;
     private LogoutUI logoutUI;
+    private LoginUI loginUI;
     boolean quit = false;
 
-    public WelcomeUI(PatientRegistrationUI patientRegistrationUI, LogoutUI logoutUI) {
+    public WelcomeUI(PatientRegistrationUI patientRegistrationUI, LogoutUI logoutUI,LoginUI loginUI) {
         this.patientRegistrationUI = patientRegistrationUI;
+        this.loginUI = loginUI;
         this.logoutUI = logoutUI;
     }
 
@@ -32,7 +34,7 @@ public class WelcomeUI {
                 int choice = InputService.inputInteger();
                 switch (choice) {
                     case 1 -> patientRegistrationUI.registrationUI();
-                    //case 2 -> LoginUI.loginUI();
+                    case 2 -> loginUI.loginUI();
                     case 3-> quit = logoutUI.logoutUI();
                     default -> System.out.println("Invalid choice. Please try again.");
                 }

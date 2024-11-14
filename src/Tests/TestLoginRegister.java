@@ -1,8 +1,10 @@
 package Tests;
 
+import Boundary.LoginUI;
 import Boundary.LogoutUI;
 import Boundary.PatientRegistrationUI;
 import Boundary.WelcomeUI;
+import Controllers.LoginController;
 import Controllers.PatientRegistrationController;
 import Entity.Repository.CredentialsRepository;
 import Entity.Repository.PatientDataRepository;
@@ -27,11 +29,13 @@ public class TestLoginRegister {
 
         // Setup Controllers
         PatientRegistrationController patientRegistrationController= new PatientRegistrationController(credentialsRepository,patientAccountService);
+        LoginController loginController = new LoginController();
 
         // Create Boundaries
         PatientRegistrationUI patientRegistrationUI = new PatientRegistrationUI(patientRegistrationController);
         LogoutUI logoutUI = new LogoutUI();
-        WelcomeUI welcomeUI = new WelcomeUI(patientRegistrationUI,logoutUI);
+        LoginUI loginUI = new LoginUI(loginController);
+        WelcomeUI welcomeUI = new WelcomeUI(patientRegistrationUI,logoutUI,loginUI);
 
         // Initialise
         //LocalDate dob = LocalDate.of(2002, 5, 14);
