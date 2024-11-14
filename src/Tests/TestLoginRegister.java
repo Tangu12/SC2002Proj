@@ -7,9 +7,14 @@ import Boundary.WelcomeUI;
 import Controllers.LoginController;
 import Controllers.PatientRegistrationController;
 import Entity.Repository.CredentialsRepository;
+import Entity.Repository.HospitalStaffRepository;
 import Entity.Repository.PatientDataRepository;
+import Entity.User.Administrator;
+import Entity.User.Doctor;
+import Entity.User.Patient;
+import Entity.User.Pharmacist;
 import Services.CredentialsService;
-import Services.UserAccount.PatientAccountService;
+import Services.UserAccount.*;
 
 import java.time.LocalDate;
 
@@ -18,23 +23,29 @@ public class TestLoginRegister {
         String workingDir = System.getProperty("user.dir");
         String credentialsPath = workingDir + "/src/Tests/TestingFiles/credentials.txt";
         String patientsDataPath = workingDir + "/src/Tests/TestingFiles/patientsData.txt";
+        String hospitalDataPath = workingDir + "program_files/HospitalStaff.csv";
 
         // Setup Repositories
         CredentialsRepository credentialsRepository = new CredentialsRepository(credentialsPath);
         CredentialsService credentialsService = new CredentialsService(credentialsRepository);
         PatientDataRepository patientDataRepository = new PatientDataRepository(patientsDataPath);
+        HospitalStaffRepository hospitalStaffRepository = new HospitalStaffRepository(hospitalDataPath);
 
         // Create Services
-        PatientAccountService patientAccountService = new PatientAccountService(credentialsService,patientDataRepository);
+        IUserAccountService<Patient> patientAccountService = new PatientAccountService(credentialsService, patientDataRepository);
+        IUserAccountService<Doctor> doctorAccountService = new DoctorAccountService(credentialsService, hospitalStaffRepository);
+        IUserAccountService<Pharmacist> pharmacistAccountService = new PharmacistAccountService(credentialsService, hospitalStaffRepository);
+        IUserAccountService<Administrator> administratorAccountService = new AdministratorAccountService(credentialsService, hospitalStaffRepository);
+        AccountManager accountManager = new AccountManager(patientAccountService, doctorAccountService, pharmacistAccountService, administratorAccountService);
 
         // Setup Controllers
-        PatientRegistrationController patientRegistrationController= new PatientRegistrationController(credentialsRepository,patientAccountService);
-        LoginController loginController = new LoginController();
+        PatientRegistrationController patientRegistrationController= new PatientRegistrationController(credentialsRepository, (PatientAccountService) patientAccountService);
+        LoginController loginController = new LoginController(credentialsService, accountManager);
 
         // Create Boundaries
         PatientRegistrationUI patientRegistrationUI = new PatientRegistrationUI(patientRegistrationController);
         LogoutUI logoutUI = new LogoutUI();
-        LoginUI loginUI = new LoginUI(loginController);
+        LoginUI loginUI = new LoginUI(loginController, accountManager, credentialsService);
         WelcomeUI welcomeUI = new WelcomeUI(patientRegistrationUI,logoutUI,loginUI);
 
         // Initialise
@@ -50,6 +61,5 @@ public class TestLoginRegister {
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // Clean Up
         //patientAccountService.deleteUserAccount("P006");
-
     }
 }

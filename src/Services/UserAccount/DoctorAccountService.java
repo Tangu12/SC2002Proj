@@ -1,7 +1,10 @@
 package Services.UserAccount;
 
+import Entity.Enums.Domain;
+import Entity.Enums.Gender;
 import Entity.Repository.HospitalStaffRepository;
 import Entity.User.Doctor;
+import Entity.User.Patient;
 import Services.CredentialsService;
 
 public class DoctorAccountService implements IUserAccountService<Doctor> {
@@ -22,6 +25,15 @@ public class DoctorAccountService implements IUserAccountService<Doctor> {
         String userID = doctor.getUserID();
         credentialsService.createNewRecord(userID,plainTextPassword,securityQuestion,plainTextSecurityAnswer);
         hospitalStaffRepository.createRecord(userID,doctor.getName(),doctor.getDomain(),doctor.getGender(),doctor.getAge());
+    }
+
+    //.  Staff ID,Name,Role,Gender,Age,Department
+
+    // Reads and return Doctor Object with matching HospitalID
+    public Doctor getAccount(String userID) {
+        String[] doctorParameters = hospitalStaffRepository.readRecord(userID);
+        Doctor doctor = new Doctor(doctorParameters[0], doctorParameters[1], Integer.valueOf(doctorParameters[4]), Gender.valueOf(doctorParameters[3]));
+        return doctor;
     }
 
     // Deletes a User Account

@@ -38,8 +38,9 @@ public class WelcomeUI {
                     case 3-> quit = logoutUI.logoutUI();
                     default -> System.out.println("Invalid choice. Please try again.");
                 }
-            }while (!quit);
+            } while (!quit);
         } catch (Exception e) {
+            System.out.println(e.getMessage());
             welcomeUI();
         }
     }

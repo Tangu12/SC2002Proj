@@ -1,8 +1,14 @@
 package Services.UserAccount;
 
+import Entity.Enums.Domain;
+import Entity.Enums.Gender;
+import Entity.MedicalRecord;
 import Entity.Repository.HospitalStaffRepository;
+import Entity.User.Doctor;
 import Entity.User.Pharmacist;
 import Services.CredentialsService;
+
+import java.util.ArrayList;
 
 public class PharmacistAccountService implements IUserAccountService<Pharmacist> {
     private CredentialsService credentialsService;
@@ -22,6 +28,15 @@ public class PharmacistAccountService implements IUserAccountService<Pharmacist>
         credentialsService.createNewRecord(userID,plainTextPassword,securityQuestion,plainTextSecurityAnswer);
         hospitalStaffRepository.createRecord(userID,pharmacist.getName(),pharmacist.getDomain(),pharmacist.getGender(),pharmacist.getAge());
     }
+
+    // Reads and return Pharmacist Object with matching HospitalID
+    public Pharmacist getAccount(String userID) {
+        String[] pharmacistParameters = hospitalStaffRepository.readRecord(userID);
+        ArrayList<MedicalRecord> medicalRecords = new ArrayList<MedicalRecord>(); // how to get array of medical records?
+        Pharmacist pharmacist = new Pharmacist(pharmacistParameters[0], pharmacistParameters[1], Integer.valueOf(pharmacistParameters[4]), Gender.valueOf(pharmacistParameters[3]), Domain.PHARMACIST, medicalRecords);
+        return pharmacist;
+    }
+
 
     // Deletes a User Account
     @Override

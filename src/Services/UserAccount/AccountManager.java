@@ -1,60 +1,64 @@
 package Services.UserAccount;
 
-import Entity.User.Administrator;
-import Entity.User.Doctor;
-import Entity.User.Patient;
-import Entity.User.Pharmacist;
+import Entity.User.*;
 
 public class AccountManager {
-    private IUserAccountService<Patient> patientService;   // Service for Patient
-    private IUserAccountService<Doctor> doctorService;
-    private IUserAccountService<Pharmacist> pharmacistService;
-    private IUserAccountService<Administrator> administratorService;
+    private IUserAccountService<Patient> patientAccountService;   // Service for Patient
+    private IUserAccountService<Doctor> doctorAccountService;
+    private IUserAccountService<Pharmacist> pharmacistAccountService;
+    private IUserAccountService<Administrator> administratorAccountService;
 
-    public AccountManager(IUserAccountService<Patient> patientService, IUserAccountService<Doctor> doctorService,IUserAccountService<Pharmacist> pharmacistService,IUserAccountService<Administrator> administratorService) {
-        this.patientService = patientService;
-        this.doctorService = doctorService;
-        this.pharmacistService = pharmacistService;
-        this.administratorService = administratorService;
+    public AccountManager(IUserAccountService<Patient> patientAccountService, IUserAccountService<Doctor> doctorAccountService, IUserAccountService<Pharmacist> pharmacistAccountService, IUserAccountService<Administrator> administratorAccountService) {
+        this.patientAccountService = patientAccountService;
+        this.doctorAccountService = doctorAccountService;
+        this.pharmacistAccountService = pharmacistAccountService;
+        this.administratorAccountService = administratorAccountService;
     }
 
     public void addUser(Object user, String plainTextPassword, String securityQuestion, String plainTextSecurityAnswer) {
         if (user instanceof Patient) {
-            patientService.createUserAccount((Patient) user, plainTextPassword, securityQuestion, plainTextSecurityAnswer);
+            patientAccountService.createUserAccount((Patient) user, plainTextPassword, securityQuestion, plainTextSecurityAnswer);
         } else if (user instanceof Doctor) {
-            doctorService.createUserAccount((Doctor) user, plainTextPassword, securityQuestion, plainTextSecurityAnswer);
+            doctorAccountService.createUserAccount((Doctor) user, plainTextPassword, securityQuestion, plainTextSecurityAnswer);
         } else if (user instanceof Pharmacist) {
-            pharmacistService.createUserAccount((Pharmacist) user, plainTextPassword, securityQuestion, plainTextSecurityAnswer);
+            pharmacistAccountService.createUserAccount((Pharmacist) user, plainTextPassword, securityQuestion, plainTextSecurityAnswer);
         } else if (user instanceof Administrator) {
-            administratorService.createUserAccount((Administrator) user, plainTextPassword, securityQuestion, plainTextSecurityAnswer);
+            administratorAccountService.createUserAccount((Administrator) user, plainTextPassword, securityQuestion, plainTextSecurityAnswer);
         } else {
             System.out.println("Error!! User Type not supported.");
         }
     }
 
-    public void readUser(String userID) {
-        if (user instanceof Patient) {
-            patientService.createUserAccount((Patient) user, plainTextPassword, securityQuestion, plainTextSecurityAnswer);
-        } else if (user instanceof Doctor) {
-            doctorService.createUserAccount((Doctor) user, plainTextPassword, securityQuestion, plainTextSecurityAnswer);
-        } else if (user instanceof Pharmacist) {
-            pharmacistService.createUserAccount((Pharmacist) user, plainTextPassword, securityQuestion, plainTextSecurityAnswer);
-        } else if (user instanceof Administrator) {
-            administratorService.createUserAccount((Administrator) user, plainTextPassword, securityQuestion, plainTextSecurityAnswer);
-        } else {
-            System.out.println("Error!! User Type not supported.");
+    public IUser readUser(String userID) {
+        String role = String.valueOf(userID.charAt(0));
+        switch (role) {
+            case "P":
+                Patient patient = patientAccountService.getAccount(userID);
+                return patient;
+            case "D":
+                Doctor doctor = doctorAccountService.getAccount(userID);
+                return doctor;
+            case "R":
+                Pharmacist pharmacist = pharmacistAccountService.getAccount(userID);
+                return pharmacist;
+            case "A":
+                Administrator administrator = administratorAccountService.getAccount(userID);
+                return administrator;
+            default:
+                System.out.println("Error!! User Type not supported.");
+                return null;
         }
     }
 
     public void updateUserInfo(Object user) {
         if (user instanceof Patient) {
-            patientService.updateUserData((Patient) user);
+            patientAccountService.updateUserData((Patient) user);
         } else if (user instanceof Doctor) {
-            doctorService.updateUserData((Doctor) user);
+            doctorAccountService.updateUserData((Doctor) user);
         } else if (user instanceof Pharmacist) {
-            pharmacistService.updateUserData((Pharmacist) user);
+            pharmacistAccountService.updateUserData((Pharmacist) user);
         } else if (user instanceof Administrator) {
-            administratorService.updateUserData((Administrator) user);
+            administratorAccountService.updateUserData((Administrator) user);
         } else {
             System.out.println("Error!! User Type not supported.");
         }
@@ -62,13 +66,13 @@ public class AccountManager {
 
     public void deleteUser(String userID, Object userType) {
         if (userType instanceof Patient) {
-            patientService.deleteUserAccount(userID);
+            patientAccountService.deleteUserAccount(userID);
         } else if (userType instanceof Doctor) {
-            doctorService.deleteUserAccount(userID);
+            doctorAccountService.deleteUserAccount(userID);
         } else if (userType instanceof Pharmacist) {
-            pharmacistService.deleteUserAccount(userID);
+            pharmacistAccountService.deleteUserAccount(userID);
         } else if (userType instanceof Administrator) {
-            administratorService.deleteUserAccount(userID);
+            administratorAccountService.deleteUserAccount(userID);
         } else {
             System.out.println("Error!! User Type not supported.");
         }
