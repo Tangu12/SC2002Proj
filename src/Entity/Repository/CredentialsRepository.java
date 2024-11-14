@@ -1,6 +1,8 @@
 package Entity.Repository;
 
 import Entity.Credentials;
+import Entity.Enums.Domain;
+import Entity.User.IUser;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -94,6 +96,9 @@ public class CredentialsRepository implements IRepository <String,String, Creden
             if (!isDeleted) {
                 System.out.println("Error, user not found, file is unchanged !");
             }
+            else{
+                System.out.println("User deleted from credentials file successfully!");
+            }
         } catch (IOException e) {
             System.out.println("Error writing to Credentials file!");
             e.printStackTrace();
@@ -120,7 +125,7 @@ public class CredentialsRepository implements IRepository <String,String, Creden
             try (BufferedWriter writer = new BufferedWriter(new FileWriter(path, true))) {
                 writer.write(record);
                 writer.newLine();
-                System.out.println("Record added successfully!");
+                System.out.println("User added to credentials file successfully!");
             } catch (IOException e) {
                 System.out.println("Error while writing to the credentials file.");
                 e.printStackTrace();
@@ -129,7 +134,6 @@ public class CredentialsRepository implements IRepository <String,String, Creden
             System.out.println("Error: Invalid data type or missing Credentials object for creating record.");
         }
     }
-
 
     /*
     Updates the row corresponding to the UserID with the attributes given
@@ -186,7 +190,6 @@ public class CredentialsRepository implements IRepository <String,String, Creden
         }
     }
 
-
     /*
     More specific update operation than updateRecord, which updates all. This only updates the hashedPassword and Salt
     */
@@ -209,6 +212,62 @@ public class CredentialsRepository implements IRepository <String,String, Creden
         }
     }
 
+    public int countUsersByType(Domain userDomain){
+        int count = 0;
+        try {
+            String line;
 
+            BufferedReader br = new BufferedReader(new FileReader(path));
+
+            switch (userDomain) {
+                case PATIENT:
+                    while ((line = br.readLine()) != null) {
+                        String[] credentials = line.split(",");
+                        String username = credentials[0].trim();
+                        if (username.startsWith(IUser.PATIENT_PREFIX)) {
+                            count++;
+                        }
+                    }
+                    break;
+
+                case PHARMACIST:
+                    while ((line = br.readLine()) != null) {
+                        String[] credentials = line.split(",");
+                        String username = credentials[0].trim();
+                        if (username.startsWith(IUser.PHARMACIST_PREFIX)) {
+                            count++;
+                        }
+                    }
+                    break;
+
+                case DOCTOR:
+                    while ((line = br.readLine()) != null) {
+                        String[] credentials = line.split(",");
+                        String username = credentials[0].trim();
+                        if (username.startsWith(IUser.DOCTOR_PREFIX)) {
+                            count++;
+                        }
+                    }
+                    break;
+
+                case ADMINISTRATOR:
+                    while ((line = br.readLine()) != null) {
+                        String[] credentials = line.split(",");
+                        String username = credentials[0].trim();
+                        if (username.startsWith(IUser.ADMIN_PREFIX)) {
+                            count++;
+                        }
+                    }
+                    break;
+            }
+
+            br.close();
+        }
+        catch (IOException e) {
+            System.out.println("Error reading the Credentials file.");
+            e.printStackTrace();
+        }
+        return count;
+    }
 }
 

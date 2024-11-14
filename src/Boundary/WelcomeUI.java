@@ -3,7 +3,13 @@ package Boundary;
 import Services.InputService;
 
 public class WelcomeUI {
-    public static void welcomeUI() {
+    private PatientRegistrationUI patientRegistrationUI;
+
+    public WelcomeUI(PatientRegistrationUI patientRegistrationUI) {
+        this.patientRegistrationUI = patientRegistrationUI;
+    }
+
+    public void welcomeUI() {
         System.out.printf(
                 " _  _                 _  _          _   __  __                                                 _     ___            _               \r\n"
                         + "| || | ___  ___ _ __ (_)| |_  __ _ | | |  \\/  | __ _  _ _   __ _  __ _  ___  _ __   ___  _ _  | |_  / __| _  _  ___| |_  ___  _ __  \r\n"
@@ -23,8 +29,7 @@ public class WelcomeUI {
             while (true) {
                 int choice = InputService.inputInteger();
                 switch (choice) {
-
-//                  case 1 -> Log in as new User
+                    case 1 -> patientRegistrationUI.registrationUI();
                     //case 2 -> LoginUI.loginUI();
 //                  case 3 -> ExitPage.exitPage();
                     default -> System.out.println("Invalid choice. Please try again.");

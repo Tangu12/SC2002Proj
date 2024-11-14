@@ -2,7 +2,7 @@ package Boundary;
 
 import Controllers.LoginController;
 import Services.InputService;
-import Services.PasswordService;
+import Services.CredentialsService;
 
 public class LoginUI {
     public static void loginUI() {

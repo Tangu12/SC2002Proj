@@ -1,8 +1,11 @@
 package Entity.User;
 
+import Entity.Enums.BloodType;
 import Entity.Enums.Domain;
 import Entity.Enums.Gender;
 import Entity.MedicalRecord;
+
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 /*
@@ -11,25 +14,31 @@ import java.util.ArrayList;
 
 public class Patient implements IUser{
 	
-    String userID;
-    String name;
-    int age;
-    Gender gender;
-    Domain domain = Domain.PATIENT;
+    private String userID;
+    private String name;
+    private int age;
+    private Gender gender;
+    private Domain domain = Domain.PATIENT;
+    private String contactInfo;
+    private LocalDate dateOfBirth;
+    private BloodType bloodType;
+
     private static ArrayList<String[]> patientList = new ArrayList<>();
 
     // Add more attributes as needed
     ArrayList<MedicalRecord> medicalHistory;
 
-    public Patient(String userID, String name, int age, Gender gender, Domain domain, ArrayList<MedicalRecord> medicalHistory) {
+    public Patient(String userID, String name, int age, Gender gender, Domain domain, ArrayList<MedicalRecord> medicalHistory, String contactInfo, LocalDate dateOfBirth, BloodType bloodType) {
         this.userID = userID;
         this.name = name;
         this.age = age;
         this.gender = gender;
         this.domain = domain;
         this.medicalHistory = medicalHistory;
-
-}
+        this.contactInfo = contactInfo;
+        this.dateOfBirth = dateOfBirth;
+        this.bloodType = bloodType;
+    }
 
     // Getters
     @Override
@@ -59,6 +68,18 @@ public class Patient implements IUser{
 
     public ArrayList<MedicalRecord> getMedicalHistory() {
         return this.medicalHistory;
+    }
+
+    public String getContactInfo() {
+        return contactInfo;
+    }
+
+    public LocalDate getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public BloodType getBloodType() {
+        return bloodType;
     }
 
     // Setters
@@ -98,9 +119,21 @@ public class Patient implements IUser{
     public void updateMedicalHistory(MedicalRecord medicalRecord){
         // uses medical history repository
     }
-    
+
+
+    public void setContactInfo(String contactInfo) {
+        this.contactInfo = contactInfo;
+    }
+
     public static ArrayList<String[]> getPatientList(){
     	return Patient.patientList;
     }
 
+    public void setDateOfBirth(LocalDate dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+    }
+
+    public void setBloodType(BloodType bloodType) {
+        this.bloodType = bloodType;
+    }
 }

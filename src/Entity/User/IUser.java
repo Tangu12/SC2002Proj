@@ -21,4 +21,11 @@ public interface IUser {
     void setAge(int age);
     void setGender(Gender gender);
     void setDomain(Domain domain);
+
+    String PATIENT_PREFIX = "P";    // Define prefix here
+    String PHARMACIST_PREFIX = "PH";
+    String DOCTOR_PREFIX = "D";
+    String ADMIN_PREFIX = "A";
+
+    int MAX_USERS = 999;
 }
