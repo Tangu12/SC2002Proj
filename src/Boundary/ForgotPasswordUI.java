@@ -4,9 +4,10 @@ import Services.InputService;
 import Services.CredentialsService;
 
 public class ForgotPasswordUI {
-    public static void askToRetry() {
+    public static void forgotPassword() {
         System.out.println("Wrong Password!");
     }
+
     /*
     public static void forgotPassword(String inputID) {
         System.out.println("To change your password, please answer this security question: ");

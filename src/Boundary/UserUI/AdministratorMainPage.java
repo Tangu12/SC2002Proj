@@ -220,8 +220,7 @@ public class AdministratorMainPage {
             else if (choiceDep == 9) dept = Department.Rheumatology;
             else if (choiceDep == 10) dept = Department.ObstetricsGynecology;
             else dept = Department.Others;
-            Doctor doc = new Doctor(hospitalId, name, age, gender);
-            doc.setDepartment(dept);
+            Doctor doc = new Doctor(hospitalId, name, age, gender,dept);
             adminController.addStaffMember(doc,plainTextPassword,securityQuestion,plainTextSecurityAnswer);
             System.out.println("Doctor added: " + doc.getName());
         }

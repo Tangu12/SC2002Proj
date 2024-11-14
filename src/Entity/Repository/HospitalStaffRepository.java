@@ -96,7 +96,7 @@ public class HospitalStaffRepository implements IRepository<String,String,String
 			else if(row[2].equals("Doctor"))
 			{
 				//String userID, String name, int age, Gender gender
-				Doctor doctor = new Doctor(row[0], row[1], Integer.valueOf(row[4]), Gender.valueOf(row[3]) );
+				Doctor doctor = new Doctor(row[0], row[1], Integer.valueOf(row[4]), Gender.valueOf(row[3]),Department.valueOf(row[4]));
 				doctor.setDepartment(Department.valueOf(row[5]));
 				Doctor.getDoctorList().add(doctor);
 			}

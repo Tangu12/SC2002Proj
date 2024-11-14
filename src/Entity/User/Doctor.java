@@ -16,8 +16,9 @@ public class Doctor extends HospitalStaff{
     private static ArrayList<Doctor> doctorList = new ArrayList<>();
     private Department department;
     
-    public Doctor(String userID, String name, int age, Gender gender) {
+    public Doctor(String userID, String name, int age, Gender gender,Department department) {
     	super(userID, name, age, gender, Domain.DOCTOR);
+        this.department = department;
     }
     
     public static void setDoctorList(ArrayList<Doctor> docList) {

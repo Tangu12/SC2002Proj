@@ -1,5 +1,6 @@
 package Services.UserAccount;
 
+import Entity.Enums.Department;
 import Entity.Enums.Domain;
 import Entity.Enums.Gender;
 import Entity.Repository.HospitalStaffRepository;
@@ -32,7 +33,14 @@ public class DoctorAccountService implements IUserAccountService<Doctor> {
     // Reads and return Doctor Object with matching HospitalID
     public Doctor getAccount(String userID) {
         String[] doctorParameters = hospitalStaffRepository.readRecord(userID);
-        Doctor doctor = new Doctor(doctorParameters[0], doctorParameters[1], Integer.valueOf(doctorParameters[4]), Gender.valueOf(doctorParameters[3]));
+
+        String id = doctorParameters[0];
+        String name = doctorParameters[1];
+        Department department = Department.valueOf(doctorParameters[2]);
+        Gender gender = Gender.valueOf(doctorParameters[3]);
+        int age = Integer.valueOf(doctorParameters[4]);
+
+        Doctor doctor = new Doctor(id,name,age,gender,department);
         return doctor;
     }
 

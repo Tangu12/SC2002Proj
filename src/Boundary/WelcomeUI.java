@@ -40,6 +40,7 @@ public class WelcomeUI {
                 }
             } while (!quit);
         } catch (Exception e) {
+            e.printStackTrace();
             System.out.println(e.getMessage());
             welcomeUI();
         }

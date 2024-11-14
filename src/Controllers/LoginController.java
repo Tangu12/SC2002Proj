@@ -3,15 +3,19 @@ package Controllers;
 import Boundary.ForgotPasswordUI;
 import Entity.Credentials;
 import Services.CredentialsService;
+import Services.ForgotPasswordService;
+import Services.InputService;
 import Services.UserAccount.AccountManager;
 
 public class LoginController {
     private CredentialsService credentialsService;
     private AccountManager accountManager;
+    private ForgotPasswordService forgotPasswordService;
 
-    public LoginController(CredentialsService credentialsService, AccountManager accountManager) {
+    public LoginController(CredentialsService credentialsService, AccountManager accountManager,ForgotPasswordService forgotPasswordService) {
         this.credentialsService = credentialsService;
         this.accountManager = accountManager;
+        this.forgotPasswordService = forgotPasswordService;
     }
 
     // Login Function, checks if account is locked, then if password matches
@@ -30,8 +34,17 @@ public class LoginController {
 
             if (attemptsLeft <= 0) {
                 System.out.println("Account is now locked due to too many failed attempts.");
+                // Ask security Question
+                boolean sucess = forgotPasswordService.verifySecurityQuestion(userID);
+
+                if(sucess) {
+                    System.out.println("Successfully verified.");
+                    forgotPasswordService.resetPassword(userID);
+                    return true;
+                }
                 credentialsService.lockAccount(userID);
             }
+            System.out.println("Your Account is now locked due to giving the wrong answer");
             return false;
         }
     }
@@ -44,6 +57,7 @@ public class LoginController {
         }
         return true;
     }
+
 
 }
 
