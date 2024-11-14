@@ -37,7 +37,11 @@ public class AdministratorController {
 	public Administrator getAdministrator() {
 		return this.admin;
 	}
-	
+
+    public ArrayList<Medicine> getMedicationInventory(){
+        return medicalInventoryService.viewInventory();
+    }
+
     public void addStaffMember(HospitalStaff staff, String plainTextPassword,String securityQuestion,String plainTextSecurityAnswer) {
         staffManagementService.addStaffMember(staff, plainTextPassword, securityQuestion, plainTextSecurityAnswer);
     }

@@ -3,7 +3,6 @@ package Services;
 public class ForgotPasswordService {
     private CredentialsService credentialsService;
 
-
     public ForgotPasswordService(CredentialsService credentialsService) {
         this.credentialsService = credentialsService;
     }

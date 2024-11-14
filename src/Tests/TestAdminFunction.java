@@ -90,7 +90,7 @@ public class TestAdminFunction {
 		HospitalStaffRepository.loadDoctorList();
 		HospitalStaffRepository.loadPharmacistList();
 
-		MedicationInventoryRepository medicationInventoryRepository = new MedicationInventoryRepository("program_files/MedicationInventory.csv");
+		MedicationInventoryRepository medicationInventoryRepository = new MedicationInventoryRepository("src/Tests/TestingFiles/MedicationInventory.csv");
 
 		CredentialsRepository credentialsRepository = new CredentialsRepository("src/Tests/TestingFiles/credentials.txt");
 
