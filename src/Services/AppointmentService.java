@@ -19,4 +19,6 @@ public class AppointmentService {
 		AppointmentList.getInstance().getAppointmentList().get(oldID).setStatusOfApp(Status.Cancelled);
 		AppointmentList.getInstance().getAppointmentList().get(oldID).setAvail(true);
     }
+
+
 }

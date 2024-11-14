@@ -20,7 +20,7 @@ public class MedicalRecordRepository implements IRepository<MedicalRecord,String
         MedicalRecord medicalRecord = (MedicalRecord) attributes[0];
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(path, true))) {
-            writer.write(medicalRecord.getAppointmentID() + "," + medicalRecord.getPatientId() + "," + medicalRecord.getName() + "," + medicalRecord.getDateOfBirth() + "," + medicalRecord.getGender() + "," + medicalRecord.getBloodType() + "," + medicalRecord.getPhoneNumber() + "," + medicalRecord.getEmailAddress() + "," + medicalRecord.getDiagnosis() + "," + medicalRecord.getPrescriptions());
+            writer.write(medicalRecord.getAppointmentID() + "," + medicalRecord.getPatientId() + "," + medicalRecord.getAppointmentOutcomeRecord() + "," + medicalRecord.getMedicine() + medicalRecord.getMedicineIssueDate() + "," + medicalRecord.getDosage() + "," + medicalRecord.getInstructions());
             writer.newLine();
         } catch (Exception e) {
             System.out.println("Error accessing MedicationRecord file !!");
@@ -42,17 +42,15 @@ public class MedicalRecordRepository implements IRepository<MedicalRecord,String
 
                 if (targetID.equals(inputID)) {
                     // Create and return Medicine Object
-                    String patientID = data[1].trim();
-                    String name = data[2].trim();
-                    String dateOfBirth = data[3].trim();
-                    String gender = data[4].trim(); // is gender now a String? or Enum?
-                    String bloodType = data[5].trim();
-                    String phoneNumber = data[6].trim();
-                    String emailAddress = data[7].trim();
-                    String diagnosis = data[8].trim();
-                    String prescription = data[9].trim();
 
-                    return new MedicalRecord(inputID, patientID, name, dateOfBirth, gender, bloodType, phoneNumber, emailAddress, diagnosis, prescription);
+                    String patientID = data[1].trim();
+                    String appointmentOutcomeRecord = data[2].trim();
+                    String medicine = data[3].trim();
+                    String medicineIssueDate = data[4].trim();
+                    String dosage = data[5].trim();
+                    String instructions = data[6].trim();
+
+                    return new MedicalRecord(inputID, patientID, appointmentOutcomeRecord, medicine, medicineIssueDate, dosage, instructions);
                 }
             }
 
@@ -79,16 +77,13 @@ public class MedicalRecordRepository implements IRepository<MedicalRecord,String
                 String[] data = line.split(",");
                 String appointmentID = data[0].trim();
                 String patientID = data[1].trim();
-                String name = data[2].trim();
-                String dateOfBirth = data[3].trim();
-                String gender = data[4].trim(); // is gender now a String? or Enum?
-                String bloodType = data[5].trim();
-                String phoneNumber = data[6].trim();
-                String emailAddress = data[7].trim();
-                String diagnosis = data[8].trim();
-                String prescription = data[9].trim();
+                String appointmentOutcomeRecord = data[2].trim();
+                String medicine = data[3].trim();
+                String medicineIssueDate = data[4].trim();
+                String dosage = data[5].trim();
+                String instructions = data[6].trim();
 
-                MedicalRecord temp = new MedicalRecord(appointmentID, patientID, name, dateOfBirth, gender, bloodType, phoneNumber, emailAddress, diagnosis, prescription);
+                MedicalRecord temp = new MedicalRecord(appointmentID, patientID, appointmentOutcomeRecord, medicine, medicineIssueDate, dosage, instructions);
 
                 // Update the record if it matches
                 if (temp.getAppointmentID().equalsIgnoreCase(updatedRecord.getAppointmentID())) {
@@ -106,11 +101,11 @@ public class MedicalRecordRepository implements IRepository<MedicalRecord,String
         // Once the whole file is read, we copy the file back
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(path))) {
-            writer.write("HospitalID,Name,DateOfBirth,Gender,BloodType,PhoneNumber,Email,Diagnosis,Prescription\n");
+            writer.write("AppointmentID,HospitalID,Appointment Outcome Record,Medicine,Medicine Issue Date,Dosage,Instructions\n");
             writer.newLine();
 
             for (MedicalRecord medicalRecord : tempMedicalRecords) {
-                writer.write(medicalRecord.getPatientId() + "," + medicalRecord.getName() + "," + medicalRecord.getDateOfBirth() + "," + medicalRecord.getGender() + medicalRecord.getBloodType() + "," + medicalRecord.getPhoneNumber() + "," + medicalRecord.getEmailAddress() + "," + medicalRecord.getDiagnosis() + "," + medicalRecord.getPrescriptions());
+                writer.write(medicalRecord.getAppointmentID() + "," + medicalRecord.getPatientId() + "," + medicalRecord.getAppointmentOutcomeRecord() + "," + medicalRecord.getMedicine() + medicalRecord.getMedicineIssueDate() + "," + medicalRecord.getDosage() + "," + medicalRecord.getInstructions());
                 writer.newLine();
             }
             if (!isUpdated) {
@@ -139,16 +134,13 @@ public class MedicalRecordRepository implements IRepository<MedicalRecord,String
                 String[] data = line.split(",");
                 String appointmentID = data[0].trim();
                 String patientID = data[1].trim();
-                String name = data[2].trim();
-                String dateOfBirth = data[3].trim();
-                String gender = data[4].trim(); // is gender now a String? or Enum?
-                String bloodType = data[5].trim();
-                String phoneNumber = data[6].trim();
-                String emailAddress = data[7].trim();
-                String diagnosis = data[8].trim();
-                String prescription = data[9].trim();
+                String appointmentOutcomeRecord = data[2].trim();
+                String medicine = data[3].trim();
+                String medicineIssueDate = data[4].trim();
+                String dosage = data[5].trim();
+                String instructions = data[6].trim();
 
-                MedicalRecord temp = new MedicalRecord(appointmentID, patientID, name, dateOfBirth, gender, bloodType, phoneNumber, emailAddress, diagnosis, prescription);
+                MedicalRecord temp = new MedicalRecord(appointmentID, patientID, appointmentOutcomeRecord, medicine, medicineIssueDate, dosage, instructions);
 
                 // Update the record if it matches
                 if (temp.getAppointmentID().equalsIgnoreCase(deleteRecord.getAppointmentID())) {
@@ -165,11 +157,11 @@ public class MedicalRecordRepository implements IRepository<MedicalRecord,String
         // Once the whole file is read, we copy the file back
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(path))) {
-            writer.write("HospitalID,Name,DateOfBirth,Gender,BloodType,PhoneNumber,Email,Diagnosis,Prescription\n");
+            writer.write("AppointmentID,HospitalID,Appointment Outcome Records,Medicine,Medicine Issue Date,Dosage,Instructions\n");
             writer.newLine();
 
             for (MedicalRecord medicalRecord : tempMedicalRecords) {
-                writer.write(medicalRecord.getAppointmentID() + "," +medicalRecord.getPatientId() + "," + medicalRecord.getName() + "," + medicalRecord.getDateOfBirth() + "," + medicalRecord.getGender() + medicalRecord.getBloodType() + "," + medicalRecord.getPhoneNumber() + "," + medicalRecord.getEmailAddress() + "," + medicalRecord.getDiagnosis() + "," + medicalRecord.getPrescriptions());
+                writer.write(medicalRecord.getAppointmentID() + "," + medicalRecord.getPatientId() + "," + medicalRecord.getAppointmentOutcomeRecord() + "," + medicalRecord.getMedicine() + medicalRecord.getMedicineIssueDate() + "," + medicalRecord.getDosage() + "," + medicalRecord.getInstructions());
                 writer.newLine();
             }
             if (!isDeleted) {

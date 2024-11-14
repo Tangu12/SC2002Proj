@@ -21,6 +21,7 @@ import java.util.Objects;
 public class AppointmentsRepository implements IRepository <String,String,Appointment,Appointment> {
 	
 	private static final String FILE_NAME = "program_files/appointments.csv";
+
 	public static void loadAppointments() {
 		int i = 0;
 		List<String[]> data = getAllRows();
@@ -248,7 +249,48 @@ public class AppointmentsRepository implements IRepository <String,String,Appoin
 	        System.out.println("No matching appointment found to delete for ID: " + record);
 	    }
 	}
-	
+
+
+	public ArrayList<Appointment> findAppointmentsByPatientId(String patientId) {
+		ArrayList<Appointment> appointments = new ArrayList<Appointment>();
+		try (BufferedReader reader = new BufferedReader(new FileReader(FILE_NAME))) {
+			String row;
+			while ((row = reader.readLine()) != null) {
+				String[] values = row.split(",");
+				if (values.length > 1 && values[5].equals(patientId)) { // Assuming the patientID is at index 5
+					appointments.add(convertArrayToAppointment(values));
+				}
+			}
+		} catch (IOException e) {
+			System.out.println("An error occurred while reading the record.");
+			e.printStackTrace();
+		}
+		return appointments;
+	}
+
+
+	public Appointment findAppointmentsByAppointmentId(String appointmentID) {
+		try (BufferedReader reader = new BufferedReader(new FileReader(FILE_NAME))) {
+			String row;
+			while ((row = reader.readLine()) != null) {
+				String[] values = row.split(",");
+				if (values.length > 1 && values[1].equals(appointmentID)) { // Assuming the patientID is at index 5
+					return convertArrayToAppointment(values);
+				}
+			}
+		} catch (IOException e) {
+			System.out.println("An error occurred while reading the record.");
+			e.printStackTrace();
+		}
+		System.out.println("The appointment that you are looking for does not exist.");
+		return null;
+	}
+
+
+
+
+
+
 	private String[] convertAppointmentToArray(Appointment appointment) {
 	    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/M/yyyy H:mm");
 	    DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("d/M/yyyy");
