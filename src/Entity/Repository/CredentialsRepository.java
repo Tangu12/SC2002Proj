@@ -216,7 +216,6 @@ public class CredentialsRepository implements IRepository <String,String, Creden
         int count = 0;
         try {
             String line;
-
             BufferedReader br = new BufferedReader(new FileReader(path));
 
             switch (userDomain) {
@@ -268,6 +267,25 @@ public class CredentialsRepository implements IRepository <String,String, Creden
             e.printStackTrace();
         }
         return count;
+    }
+
+    public ArrayList<String> getAllUserIDs() {
+        ArrayList<String> users = new ArrayList<>();
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(path))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] row = line.split(",");
+                if (row.length > 0) {
+                    users.add(row[0]);
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Error reading the Credentials file.");
+            e.printStackTrace();
+        }
+
+        return users;
     }
 }
 

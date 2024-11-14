@@ -4,6 +4,7 @@ package Services;
 import Entity.Credentials;
 import Entity.Enums.Domain;
 import Entity.Repository.CredentialsRepository;
+import Entity.User.IUser;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -11,6 +12,7 @@ import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.util.ArrayList;
 import java.util.Base64;
 
 import static Entity.Credentials.maxLoginAttempts;
@@ -152,7 +154,6 @@ public class CredentialsService {
         return credentialsRepository.readRecord(userID);
     }
 
-
     /*
     Locks the User Account by setting the number of attempts to -1
     */
@@ -192,34 +193,31 @@ public class CredentialsService {
         credentialsRepository.updateRecord(temp);
     }
 
-    public String getUserDomain(String userID) {
+    public Domain getUserDomain(String userID) {
         if (userID == null || userID.isEmpty()) {
             System.out.println("Invalid userID.");
             return null;
         }
 
         char userType = userID.charAt(0);
-        String domain;
-
         switch (userType) {
             case 'D':
-                domain = "DOCTOR";
-                break;
+                return Domain.DOCTOR;
             case 'P':
-                domain = "PATIENT";
-                break;
+                return Domain.PATIENT;
             case 'R':
-                domain = "PHARMACIST";
-                break;
+                return Domain.PHARMACIST;
             case 'A':
-                domain = "ADMINISTRATOR";
-                break;
+                return Domain.ADMINISTRATOR;
 
             default:
                 System.out.println("Unknown user type.");
                 return null;
         }
-        return domain;
+    }
+
+    public ArrayList<String> getAllUserIDs() {
+        return credentialsRepository.getAllUserIDs();
     }
 
 }

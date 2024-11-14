@@ -22,10 +22,10 @@ public interface IUser {
     void setGender(Gender gender);
     void setDomain(Domain domain);
 
-    String PATIENT_PREFIX = "P";    // Define prefix here
-    String PHARMACIST_PREFIX = "PH";
-    String DOCTOR_PREFIX = "D";
-    String ADMIN_PREFIX = "A";
+    public static final String PATIENT_PREFIX = "P";    // Define prefix here
+    public static final String PHARMACIST_PREFIX = "R";
+    public static final String DOCTOR_PREFIX = "D";
+    public static final String ADMIN_PREFIX = "A";
 
     int MAX_USERS = 999;
 }

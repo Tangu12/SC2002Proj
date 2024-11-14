@@ -36,7 +36,7 @@ public class TestLoginRegister {
         IUserAccountService<Doctor> doctorAccountService = new DoctorAccountService(credentialsService, hospitalStaffRepository);
         IUserAccountService<Pharmacist> pharmacistAccountService = new PharmacistAccountService(credentialsService, hospitalStaffRepository);
         IUserAccountService<Administrator> administratorAccountService = new AdministratorAccountService(credentialsService, hospitalStaffRepository);
-        AccountManager accountManager = new AccountManager(patientAccountService, doctorAccountService, pharmacistAccountService, administratorAccountService);
+        AccountManager accountManager = new AccountManager(patientAccountService, doctorAccountService, pharmacistAccountService, administratorAccountService,credentialsService);
 
         // Setup Controllers
         PatientRegistrationController patientRegistrationController= new PatientRegistrationController(credentialsRepository, (PatientAccountService) patientAccountService);

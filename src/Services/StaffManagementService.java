@@ -55,4 +55,5 @@ public class StaffManagementService {
             System.out.println("Invalid role. Please enter DOCTOR, PHARMACIST, or ADMINISTRATOR.");
         }
 	}
+
 }

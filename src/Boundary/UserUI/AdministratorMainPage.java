@@ -56,7 +56,8 @@ public class AdministratorMainPage {
             System.out.println("(2) Remove Staff Member");
             System.out.println("(3) Update Staff Information");
             System.out.println("(4) View All Staff");
-            System.out.println("(5) Return to Main Menu");
+			System.out.println("(5) Manage User Account Lock");
+            System.out.println("(6) Return to Main Menu");
 
             choice = InputService.inputInteger();
 
@@ -65,10 +66,11 @@ public class AdministratorMainPage {
                 case 2 -> removeStaffMember();
                 case 3 -> updateStaffMember();
                 case 4 -> displayAllStaff();
-                case 5 -> System.out.println("Returning to Main Menu.");
+				case 5 -> manageUserAccountLock();
+                case 6 -> System.out.println("Returning to Main Menu.");
                 default -> System.out.println("Invalid choice, please try again.");
             }
-        } while (choice != 5);
+        } while (choice != 6);
     }
 	
 	private void viewAppointmentDetails() {
@@ -97,7 +99,7 @@ public class AdministratorMainPage {
         } while (choice != 6);
     }
 	
-	 private void manageInventorySystem() {
+	private void manageInventorySystem() {
 	        int choice;
 	        do {
 	            System.out.println("\n--- Medication Inventory System ---");
@@ -125,7 +127,8 @@ public class AdministratorMainPage {
 	            }
 	        } while (choice != 8);
 	    }
-	
+
+	//TODO :  Add Register Staff Function
 	public void addStaffMember() {
 		System.out.print("Enter name: ");
         String name = InputService.inputString();
@@ -660,4 +663,81 @@ public class AdministratorMainPage {
 		}
 		return String.format("%-" + width + "s", value);  // Left-align the text within the specified width
 	}
+
+	public void manageUserAccountLock(){
+		int choice;
+
+		do {
+			System.out.println("\n--- Hospital Staff Management ---");
+
+
+			// Show Locked Users
+			ArrayList<String> lockedUsers = adminController.getAllLockedUserIDs();
+
+			System.out.println("Locked Users :");
+			for (String lockedUser : lockedUsers) {
+				System.out.println(lockedUser);
+			}
+			System.out.println("---------------------------------");
+
+			System.out.println("(1) Lock an Account");
+			System.out.println("(2) Unlock an Account");
+			System.out.println("(3) Return to Main Menu");
+
+			choice = InputService.inputInteger();
+
+			switch (choice) {
+				case 1 -> lockAccount();
+				case 2 -> unlockAccount();
+				case 3 -> System.out.println("Returning to Main Menu.");
+				default -> System.out.println("Invalid choice, please try again.");
+			}
+		} while (choice != 3);
+	}
+
+	public void lockAccount() {
+		ArrayList<String> lockedUsers = adminController.getAllLockedUserIDs();
+		ArrayList<String> allUserIDs = adminController.getAllUserIDs();
+		String input;
+
+		do {
+			System.out.println("Please Enter The Account That You Want To Lock: ");
+			input = InputService.inputString();
+
+			if (lockedUsers.contains(input)) {
+				System.out.println("This account is already locked.");
+			}
+			if (!allUserIDs.contains(input)) {
+				System.out.println("This account does not exist.");
+			}
+		} while (lockedUsers.contains(input)||!allUserIDs.contains(input));
+
+		adminController.lockAccount(input);
+		System.out.println("Account " + input + " is locked.");
+	}
+
+	public void unlockAccount() {
+		ArrayList<String> lockedUsers = adminController.getAllLockedUserIDs();
+		ArrayList<String> allUserIDs = adminController.getAllUserIDs();
+		String input;
+
+		do {
+			System.out.println("Please Enter The Account That You Want To Unlock: ");
+			input = InputService.inputString();
+
+			if (!lockedUsers.contains(input)) {
+				System.out.println("This account is already unlocked.");
+			}
+			else if (!allUserIDs.contains(input)) {
+				System.out.println("This account does not exist.");
+			}
+		} while (!lockedUsers.contains(input)||!allUserIDs.contains(input));
+
+		adminController.unlockAccount(input);
+		System.out.println("Account " + input + " is unlocked.");
+	}
+
+
+
+
 }

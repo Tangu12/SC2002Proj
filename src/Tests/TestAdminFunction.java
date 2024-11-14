@@ -1,29 +1,20 @@
 package Tests;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-
 import Boundary.UserUI.AdministratorMainPage;
-import Boundary.UserUI.PatientMainPage;
 import Controllers.AdministratorController;
-import Entity.Appointment;
-import Entity.AppointmentList;
 import Entity.MedicationInventory;
-import Entity.Enums.Department;
 import Entity.Enums.Gender;
-import Entity.Enums.Purpose;
-import Entity.Enums.Status;
-import Entity.Repository.AppointmentsRepository;
-import Entity.Repository.HospitalStaffRepository;
-import Entity.Repository.MedicationInventoryRepository;
+import Entity.Repository.*;
 import Entity.User.Administrator;
 import Entity.User.Doctor;
+import Entity.User.Patient;
 import Entity.User.Pharmacist;
+import Services.CredentialsService;
 import Services.MedicalInventoryService;
 import Services.StaffManagementService;
+import Services.UserAccount.*;
 
-public class TestPatientFunction {
+public class TestAdminFunction {
 
 	public static void main(String[] args) throws Exception {
 //		AppointmentsRepository.loadAppointments();
@@ -87,19 +78,47 @@ public class TestPatientFunction {
 ////			    dosage,
 ////			    instructions);
 //		appRepo.deleteRecord(appID);
+
+
 		AppointmentsRepository.loadAppointments();
-		HospitalStaffRepository repo = new HospitalStaffRepository("program_files/HospitalStaff.csv");
+
+		// Create Repository
+		HospitalStaffRepository hospitalStaffRepository = new HospitalStaffRepository("program_files/HospitalStaff.csv");
 		HospitalStaffRepository.loadAdministrator();
 		HospitalStaffRepository.loadDoctorList();
 		HospitalStaffRepository.loadPharmacistList();
+
 		MedicationInventoryRepository medicationInventoryRepository = new MedicationInventoryRepository("program_files/MedicationInventory.csv");
+
+		CredentialsRepository credentialsRepository = new CredentialsRepository("src/Tests/TestingFiles/credentials.txt");
+
+		PatientDataRepository patientRepository = new PatientDataRepository("src/Tests/TestingFiles/patientsData.txt");
+
+		// Create Services
 		StaffManagementService staffManagementService = new StaffManagementService();
 		MedicalInventoryService medicalInventoryService = new MedicalInventoryService(MedicationInventory.getInstance(), medicationInventoryRepository);
 		medicalInventoryService.loadInventoryFromFile();
+
+		CredentialsService credentialsService = new CredentialsService(credentialsRepository);
+
+		IUserAccountService<Patient> patientService = new PatientAccountService(credentialsService,patientRepository);
+		IUserAccountService<Doctor> doctorService = new DoctorAccountService(credentialsService,hospitalStaffRepository);
+		IUserAccountService<Pharmacist> pharmacistService = new PharmacistAccountService(credentialsService,hospitalStaffRepository);
+		IUserAccountService<Administrator> administratorService = new AdministratorAccountService(credentialsService,hospitalStaffRepository);
+
+		AccountManager accountManager = new AccountManager(patientService,doctorService,pharmacistService,administratorService,credentialsService);
+
+		// Create Entity
 		Administrator admin = new Administrator("Checking", "Checking", 33,Gender.MALE);
-		AdministratorController controller = new AdministratorController(admin, staffManagementService, medicalInventoryService);
+
+		// Create Controller
+		AdministratorController controller = new AdministratorController(admin, staffManagementService, medicalInventoryService,accountManager);
+
+		// Create Boundary
 		AdministratorMainPage mainPage = new AdministratorMainPage(controller);
 		mainPage.homePage();
+
+		// Testing Functions
 		HospitalStaffRepository.updateHospitalStaffFile(Administrator.getAdministratorList(), Doctor.getDoctorList(), Pharmacist.getPharmacistList());
 	}
 

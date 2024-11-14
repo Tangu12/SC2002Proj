@@ -16,6 +16,7 @@ import Entity.User.HospitalStaff;
 import Entity.User.Pharmacist;
 import Services.MedicalInventoryService;
 import Services.StaffManagementService;
+import Services.UserAccount.AccountManager;
 
 public class AdministratorController {
     //public static void operation(){}
@@ -23,11 +24,14 @@ public class AdministratorController {
 	private Administrator admin;
 	private StaffManagementService staffManagementService;
 	private MedicalInventoryService medicalInventoryService;
+    private AccountManager accountManager;
 	
-	public AdministratorController(Administrator admin, StaffManagementService staffManagementService, MedicalInventoryService medicalInventoryService) {
+	public AdministratorController(Administrator admin, StaffManagementService staffManagementService,
+                                   MedicalInventoryService medicalInventoryService, AccountManager accountManager) {
 		this.admin = admin;
 		this.staffManagementService = staffManagementService;
 		this.medicalInventoryService = medicalInventoryService;
+        this.accountManager = accountManager;
 	}
 	
 	public Administrator getAdministrator() {
@@ -156,5 +160,20 @@ public class AdministratorController {
     public void decrementStock(Medicine med, int usedAmount) {
     	medicalInventoryService.decrementStock(med.getNameOfMedicine(), usedAmount);
     }
-    
+
+    public ArrayList<String> getAllLockedUserIDs() {
+        return accountManager.getAllLockedUserIDs();
+    }
+
+    public ArrayList<String> getAllUserIDs() {
+        return accountManager.getAllUserIDs();
+    }
+
+    public void lockAccount(String userID) {
+        accountManager.lockAccount(userID);
+    }
+
+    public void unlockAccount(String userID){
+        accountManager.unlockAccount(userID);
+    }
 }

@@ -1,18 +1,22 @@
 package Services.UserAccount;
 
 import Entity.User.*;
+import java.util.ArrayList;
+import Services.CredentialsService;
 
 public class AccountManager {
     private IUserAccountService<Patient> patientAccountService;   // Service for Patient
     private IUserAccountService<Doctor> doctorAccountService;
     private IUserAccountService<Pharmacist> pharmacistAccountService;
     private IUserAccountService<Administrator> administratorAccountService;
+    private CredentialsService credentialsService;
 
-    public AccountManager(IUserAccountService<Patient> patientAccountService, IUserAccountService<Doctor> doctorAccountService, IUserAccountService<Pharmacist> pharmacistAccountService, IUserAccountService<Administrator> administratorAccountService) {
+    public AccountManager(IUserAccountService<Patient> patientAccountService, IUserAccountService<Doctor> doctorAccountService, IUserAccountService<Pharmacist> pharmacistAccountService, IUserAccountService<Administrator> administratorAccountService, CredentialsService credentialsService) {
         this.patientAccountService = patientAccountService;
         this.doctorAccountService = doctorAccountService;
         this.pharmacistAccountService = pharmacistAccountService;
         this.administratorAccountService = administratorAccountService;
+        this.credentialsService = credentialsService;
     }
 
     public void addUser(Object user, String plainTextPassword, String securityQuestion, String plainTextSecurityAnswer) {
@@ -78,4 +82,30 @@ public class AccountManager {
         }
     }
 
+    // Returns all the Locked Accounts
+    public ArrayList<String> getAllLockedUserIDs() {
+        ArrayList<String> lockedAccounts = new ArrayList<>();
+
+        ArrayList<String> allUserIDs = credentialsService.getAllUserIDs();
+
+        for(String userID : allUserIDs){
+            if(credentialsService.isAccountLocked(userID)){
+                lockedAccounts.add(userID);
+            }
+        }
+
+        return lockedAccounts;
+    }
+
+    public ArrayList<String> getAllUserIDs() {
+        return credentialsService.getAllUserIDs();
+    }
+
+    public void lockAccount(String userID) {
+        credentialsService.lockAccount(userID);
+    }
+
+    public void unlockAccount(String userID){
+        credentialsService.unlockAccount(userID);
+    }
 }
