@@ -131,7 +131,6 @@ public class AdministratorMainPage {
 	        } while (choice != 8);
 	    }
 
-	//TODO :  Add Register Staff Function
 	public void addStaffMember() {
 		/*
         System.out.print("Enter hospital ID: ");
@@ -237,7 +236,6 @@ public class AdministratorMainPage {
         default -> throw new IllegalArgumentException("Invalid role");
         }
 	}
-
 
 	public void removeStaffMember() {
     	displayAllStaff();
@@ -540,7 +538,7 @@ public class AdministratorMainPage {
 	
 	public void viewInventory() {
 		int i = 1;
-        if (MedicationInventory.getInventory().isEmpty()) {
+        if (adminController.getMedicationInventory().isEmpty()) {
             System.out.println("Inventory is empty.");
         } else {
             System.out.println("Current Inventory:");
@@ -555,7 +553,7 @@ public class AdministratorMainPage {
     		System.out.println("+" + "-".repeat(3) + "+"
     				+ "-".repeat(30) + "+"
     				+ "-".repeat(15) + "+");
-            for (Medicine medicine : MedicationInventory.getInventory()) {
+            for (Medicine medicine :adminController.getMedicationInventory()) {
                 //System.out.println(i + ". " + medicine);
                 System.out.println("|" + formatCell(String.valueOf(i), 3)
 						+ "|" + formatCell(medicine.getNameOfMedicine(), 30)
