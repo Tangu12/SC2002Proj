@@ -535,35 +535,41 @@ public class AdministratorMainPage {
 
         displayAppointmentList(adminController.getAppointmentsByDoctorID(doctorID));
 	}
-	
+
 	public void viewInventory() {
 		int i = 1;
-        if (adminController.getMedicationInventory().isEmpty()) {
-            System.out.println("Inventory is empty.");
-        } else {
-            System.out.println("Current Inventory:");
-            System.out.println("+" + "-".repeat(3) + "+"
-    				+ "-".repeat(30) + "+"
-    				+ "-".repeat(15));
+		if (adminController.getMedicationInventory().isEmpty()) {
+			System.out.println("Inventory is empty.");
+		} else {
+			System.out.println("Current Inventory:");
+			System.out.println("+" + "-".repeat(3) + "+"
+					+ "-".repeat(30) + "+"
+					+ "-".repeat(15) + "+"
+					+ "-".repeat(15) + "+");
 
-    		System.out.println("|" + formatCell("No.", 3)
-    				+ "|" + formatCell("Medicine Name", 30)
-    				+ "|" + formatCell("Current Stock", 15) + "|");
+			System.out.println("|" + formatCell("No.", 3)
+					+ "|" + formatCell("Medicine Name", 30)
+					+ "|" + formatCell("Current Stock", 15)
+					+ "|" + formatCell("Low Stock Alert", 15) + "|");
 
-    		System.out.println("+" + "-".repeat(3) + "+"
-    				+ "-".repeat(30) + "+"
-    				+ "-".repeat(15) + "+");
-            for (Medicine medicine :adminController.getMedicationInventory()) {
-                //System.out.println(i + ". " + medicine);
-                System.out.println("|" + formatCell(String.valueOf(i), 3)
+			System.out.println("+" + "-".repeat(3) + "+"
+					+ "-".repeat(30) + "+"
+					+ "-".repeat(15) + "+"
+					+ "-".repeat(15) + "+");
+
+			for (Medicine medicine : adminController.getMedicationInventory()) {
+				System.out.println("|" + formatCell(String.valueOf(i), 3)
 						+ "|" + formatCell(medicine.getNameOfMedicine(), 30)
-						+ "|" + formatCell(String.valueOf(medicine.getCurrentStock()), 15) + "|");
+						+ "|" + formatCell(String.valueOf(medicine.getCurrentStock()), 15)
+						+ "|" + formatCell(String.valueOf(medicine.getLowStockLevelAlert()), 15) + "|");
+
 				System.out.println("+" + "-".repeat(3) + "+"
 						+ "-".repeat(30) + "+"
+						+ "-".repeat(15) + "+"
 						+ "-".repeat(15) + "+");
 				i++;
-            }
-        }
+			}
+		}
 	}
 	
 	public void addOrIncrementMedicine() {
@@ -649,7 +655,7 @@ public class AdministratorMainPage {
         boolean lowStockFound = false;
         for (Medicine medicine : MedicationInventory.getInventory()) {
             if (medicine.needsReplenishment()) {
-                System.out.println("Low stock alert: " + medicine.getNameOfMedicine());
+                System.out.println("Low stock alert: " + medicine.getNameOfMedicine() +"Current Stock Level : "+ medicine.getCurrentStock() + " Low Stock alert is set at : " + medicine.getLowStockLevelAlert());
                 lowStockFound = true;
             }
         }

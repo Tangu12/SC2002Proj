@@ -40,9 +40,13 @@ public class LoginController {
                     forgotPasswordService.resetPassword(userID);
                     return true;
                 }
+                System.out.println("Wrong answer to the security question!");
                 credentialsService.lockAccount(userID);
             }
-            //System.out.println("Your Account is now locked due to giving the wrong answer");
+
+
+
+
             return false;
         }
     }
