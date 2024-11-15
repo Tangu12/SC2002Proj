@@ -127,7 +127,7 @@ public class HospitalStaffRepository implements IRepository<String,String,String
 		boolean headerRow = true;
 		for(String[] row : data) {
 			if(headerRow) headerRow = false;
-			else if(row[2].equals("PHARMACIST"))
+			else if(row[0].charAt(0)=='R')
 			{
 				//String userID, String name, int age, Gender gender, Domain domain
 				Pharmacist pharmacist = new Pharmacist(row[0], row[1], Integer.valueOf(row[4]), Gender.valueOf(row[3]), Domain.PHARMACIST);
@@ -153,7 +153,7 @@ public class HospitalStaffRepository implements IRepository<String,String,String
 		boolean headerRow = true;
 		for(String[] row : data) {
 			if(headerRow) headerRow = false;
-			else if(row[2].equals("ADMINISTRATOR"))
+			else if(row[0].charAt(0)=='A')
 			{
 				//String UserID,String name,int age,Gender gender
 				Administrator administrator = new Administrator(row[0], row[1], Integer.valueOf(row[4]), Gender.valueOf(row[3]));

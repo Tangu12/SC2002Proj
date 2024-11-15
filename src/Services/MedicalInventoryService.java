@@ -141,4 +141,13 @@ public class MedicalInventoryService {
     public void updateMedicine(Medicine med) {
     	medicationInventory.updateMedicine(med.getNameOfMedicine(), med);
     }
+    
+    public void processReplenishmentRequests(int selection, int amount) {
+    		int originalAmount = MedicationInventory.getInventory().get(selection).getCurrentStock();
+    		int originalRequestedAmount =  MedicationInventory.getInventory().get(selection).getRequestAmount();
+    		MedicationInventory.getInventory().get(selection).setCurrentStock(originalAmount + amount);
+        System.out.println("Processed replenishment for " + MedicationInventory.getInventory().get(selection).getNameOfMedicine() + ". New stock: " + (originalAmount + amount));
+       if(amount>originalRequestedAmount) MedicationInventory.getInventory().get(selection).setRequestAmount(0); // Reset request amount
+       else MedicationInventory.getInventory().get(selection).setRequestAmount(originalRequestedAmount - amount);
+    }
 }

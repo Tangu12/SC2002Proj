@@ -67,7 +67,7 @@ public class AppointmentsRepository implements IRepository <String,String,Appoin
 			else if (Objects.equals(row[9], "Unavailable")) appStatus = Status.Unavailable;
 			else if (Objects.equals(row[9], "PendingPrescription")) appStatus = Status.PendingPrescription;
 
-			Appointment apps = new Appointment(Boolean.valueOf(row[0]),row[1],row[2],row[3],row[4],row[5],row[6],appPur,appDept,appStatus, " ", row[11], row[12], row[13], row[14]);
+			Appointment apps = new Appointment(Boolean.valueOf(row[0]),row[1],row[2],row[3],row[4],row[5],row[6],appPur,appDept,appStatus, row[10], row[11], row[12], row[13], row[14]);
 			AppointmentList.getInstance().getAppointmentList().add(apps);
 			i++;
 		}

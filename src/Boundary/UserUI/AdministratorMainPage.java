@@ -17,6 +17,7 @@ import Services.InputService;
 
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 public class AdministratorMainPage {
@@ -666,19 +667,15 @@ public class AdministratorMainPage {
     
     // Process all pending replenishment requests
     public void processReplenishmentRequests() {
-        boolean hasRequests = false;
-        for (Medicine medicine : MedicationInventory.getInventory()) {
-            if (medicine.getRequestAmount() > 0) {
-                hasRequests = true;
-                int newStock = medicine.getCurrentStock() + medicine.getRequestAmount();
-                medicine.setCurrentStock(newStock);
-                System.out.println("Processed replenishment for " + medicine.getNameOfMedicine() + ". New stock: " + newStock);
-                medicine.setRequestAmount(0); // Reset request amount
-            }
-        }
-        if (!hasRequests) {
-            System.out.println("No pending replenishment requests.");
-        }
+    		List<Integer> medicineIndices = viewMedicineForReplenishmentRequests();
+    		System.out.println("Select the medicine to replenish (-1 to exit): ");
+    		int choice = InputService.inputInteger();
+    		if (choice == -1) return;
+    		if (choice<=0 || choice>medicineIndices.size()) {System.out.println("Please only select from the available choices"); return;}
+    		System.out.println("How much you want to replenish: ");
+    		int amount = InputService.inputInteger();
+    		if (amount<0) {System.out.println("Unavailable amount!!"); return;}
+    		adminController.processReplenishmentRequests(medicineIndices.get(choice-1), amount);
     }
     
     private static String formatCell(String value, int width) {
@@ -759,6 +756,47 @@ public class AdministratorMainPage {
 
 		adminController.unlockAccount(input);
 		System.out.println("Account " + input + " is unlocked.");
+	}
+	
+	public List<Integer> viewMedicineForReplenishmentRequests(){
+		List<Integer> indices = new ArrayList<>();
+		int i = 1;
+		int index = 0;
+        if (adminController.getMedicationInventory().isEmpty()) {
+            System.out.println("Inventory is empty.");
+        } else {
+            System.out.println("Current Inventory:");
+            System.out.println("+" + "-".repeat(3) + "+"
+                    + "-".repeat(30) + "+"
+                    + "-".repeat(15) + "+"
+                    + "-".repeat(15) + "+");
+
+            System.out.println("|" + formatCell("No.", 3)
+                    + "|" + formatCell("Medicine Name", 30)
+                    + "|" + formatCell("Current Stock", 15)
+                    + "|" + formatCell("Requested Amount", 15) + "|");
+
+            System.out.println("+" + "-".repeat(3) + "+"
+                    + "-".repeat(30) + "+"
+                    + "-".repeat(15) + "+"
+                    + "-".repeat(15) + "+");
+            for (Medicine medicine : adminController.getMedicationInventory()) {
+                if(medicine.getRequestAmount() > 0) {
+	                	System.out.println("|" + formatCell(String.valueOf(i), 3)
+	                    + "|" + formatCell(medicine.getNameOfMedicine(), 30)
+	                    + "|" + formatCell(String.valueOf(medicine.getCurrentStock()), 15)
+	                    + "|" + formatCell(String.valueOf(medicine.getRequestAmount()), 15)+ "|");
+		            System.out.println("+" + "-".repeat(3) + "+"
+		                    + "-".repeat(30) + "+"
+		                    + "-".repeat(15) + "+"
+		                    + "-".repeat(15) + "+");
+		            i++;
+		            indices.add(index);
+                }
+                index++;
+            }
+        }
+		return indices;
 	}
 
 

@@ -38,12 +38,13 @@ public class TestDoctorFunction {
 		HospitalStaffRepository.loadDoctorList();
 		HospitalStaffRepository.loadPharmacistList();
 		
+		
 		MedicationInventoryRepository medicationInventoryRepository = new MedicationInventoryRepository("src/Tests/TestingFiles/MedicationInventory.csv");
 
 		CredentialsRepository credentialsRepository = new CredentialsRepository("src/Tests/TestingFiles/credentials.txt");
 
 		PatientDataRepository patientRepository = new PatientDataRepository("src/Tests/TestingFiles/patientsData.txt");
-		
+		PatientDataRepository.loadPatientlist();
 		AppointmentsRepository appRepo = new AppointmentsRepository("src/Tests/TestingFiles/appointments.csv");
 		AppointmentsRepository.loadAppointments();
 		// Create Services

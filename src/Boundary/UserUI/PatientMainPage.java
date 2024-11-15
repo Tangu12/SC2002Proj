@@ -47,10 +47,10 @@ public class PatientMainPage {
                 choice = InputService.inputInteger();
                 switch (choice) {
                     case 1:
-                        //MedicalRecord.viewMedicalRecord();
+                        viewMedicalRecord(this.patientController.getPatient());
                         break;
                     case 2:
-                        //MedicalRecord.updatePersonalInformation();
+                        updatePersonalInformation(this.patientController.getPatient());
                         break;
                     case 3:
                         // View available appointment slots
@@ -303,6 +303,87 @@ public class PatientMainPage {
         }
         selection = InputService.inputInteger();
         return patientController.selectionOfTimeSlot(appointmentList, timeSlotsIndices, selection);
+	}
+	
+	public void viewMedicalRecord(Patient pat) {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d-M-yyyy");
+        System.out.println("+" + "-".repeat(columnWidth) + "+"
+				+ "-".repeat(columnWidth) + "+"
+				+ "-".repeat(columnWidth) + "+"
+				+ "-".repeat(columnWidth) + "+"
+				+ "-".repeat(columnWidth) + "+"
+				+ "-".repeat(columnWidth) + "+"
+				+ "-".repeat(columnWidth) + "+"
+				+ "-".repeat(50) + "+"
+				+ "-".repeat(50) + "+"
+				+ "-".repeat(columnWidth) + "+"
+				+ "-".repeat(columnWidth) + "+"
+				+ "-".repeat(columnWidth) + "+");
+
+		System.out.println("|" + formatCell("Appointment ID", columnWidth)
+				+ "|" + formatCell("Patient Name", columnWidth)
+				+ "|" + formatCell("Date of Birth", columnWidth)
+				+ "|" + formatCell("Gender", columnWidth)
+				+ "|" + formatCell("Blood Type", columnWidth)
+				+ "|" + formatCell("Email", columnWidth)
+				+ "|" + formatCell("Doctor Name", columnWidth) 
+				+ "|" + formatCell("Appointment Outcomes", 50) 
+				+ "|" + formatCell("Medicine", 50) 
+				+ "|" + formatCell("Date Issued", columnWidth) 
+				+ "|" + formatCell("Dosage", columnWidth) 
+				+ "|" + formatCell("Instructions", columnWidth)+ "|");
+
+		System.out.println("+" + "-".repeat(columnWidth) + "+"
+				+ "-".repeat(columnWidth) + "+"
+				+ "-".repeat(columnWidth) + "+"
+				+ "-".repeat(columnWidth) + "+"
+				+ "-".repeat(columnWidth) + "+"
+				+ "-".repeat(columnWidth) + "+"
+				+ "-".repeat(columnWidth) + "+"
+				+ "-".repeat(50) + "+"
+				+ "-".repeat(50) + "+"
+				+ "-".repeat(columnWidth) + "+"
+				+ "-".repeat(columnWidth) + "+"
+				+ "-".repeat(columnWidth) + "+");
+
+		for(Appointment appointments : AppointmentList.getInstance().getAppointmentList()) {
+			if(appointments.getPatID().equals(pat.getUserID()) && (appointments.getStatusOfApp() == Status.Completed || appointments.getStatusOfApp() == Status.PendingPrescription)) {
+				System.out.println("|" + formatCell(appointments.getAppID(), columnWidth)
+				+ "|" + formatCell(pat.getName(), columnWidth)
+				+ "|" + formatCell(pat.getDateOfBirth().format(formatter), columnWidth)
+				+ "|" + formatCell(pat.getGender().toString(), columnWidth)
+				+ "|" + formatCell(pat.getBloodType().toString(), columnWidth)
+				+ "|" + formatCell(pat.getContactInfo(), columnWidth)
+				+ "|" + formatCell(appointments.getDocName(), columnWidth) 
+				+ "|" + formatCell(appointments.getAppointOutcomeRecord(), 50) 
+				+ "|" + formatCell(appointments.getMedicine(), 50) 
+				+ "|" + formatCell((appointments.getMedicineIssuedDate() != null) ? appointments.getMedicineIssuedDate().format(formatter): "N/A", columnWidth) 
+				+ "|" + formatCell(appointments.getDosage(), columnWidth) 
+				+ "|" + formatCell(appointments.getInstructions(), columnWidth)+ "|");
+				
+				System.out.println("+" + "-".repeat(columnWidth) + "+"
+						+ "-".repeat(columnWidth) + "+"
+						+ "-".repeat(columnWidth) + "+"
+						+ "-".repeat(columnWidth) + "+"
+						+ "-".repeat(columnWidth) + "+"
+						+ "-".repeat(columnWidth) + "+"
+						+ "-".repeat(columnWidth) + "+"
+						+ "-".repeat(50) + "+"
+						+ "-".repeat(50) + "+"
+						+ "-".repeat(columnWidth) + "+"
+						+ "-".repeat(columnWidth) + "+"
+						+ "-".repeat(columnWidth) + "+");
+			}
+		}
+	}
+	
+	public void updatePersonalInformation(Patient pat) {
+		System.out.println("Updating email address: ");
+        //System.out.println("1. Phone Number");
+        //System.out.println("2. Email Address");
+        String email = InputService.inputEmail();
+        this.patientController.updatePersonalInformation(pat.getUserID(), email);
+        this.patientController.getPatient().setContactInfo(email);
 	}
 	
 	private static String formatCell(String value, int width) {

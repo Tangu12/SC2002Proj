@@ -80,9 +80,6 @@ public class TestAdminFunction {
 ////			    instructions);
 //		appRepo.deleteRecord(appID);
 
-
-		AppointmentsRepository.loadAppointments();
-
 		// Create Repository
 		//HospitalStaffRepository hospitalStaffRepository = new HospitalStaffRepository("program_files/HospitalStaff.csv");
 		HospitalStaffRepository hospitalStaffRepository = new HospitalStaffRepository("src/Tests/TestingFiles/HospitalStaff.csv");
@@ -95,6 +92,9 @@ public class TestAdminFunction {
 		CredentialsRepository credentialsRepository = new CredentialsRepository("src/Tests/TestingFiles/credentials.txt");
 
 		PatientDataRepository patientRepository = new PatientDataRepository("src/Tests/TestingFiles/patientsData.txt");
+		
+		AppointmentsRepository appRepo = new AppointmentsRepository("src/Tests/TestingFiles/appointments.csv");
+		AppointmentsRepository.loadAppointments();
 
 		// Create Services
 		CredentialsService credentialsService = new CredentialsService(credentialsRepository);

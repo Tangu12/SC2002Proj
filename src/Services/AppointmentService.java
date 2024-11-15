@@ -76,5 +76,12 @@ public class AppointmentService {
 		AppointmentList.getInstance().getAppointmentList().get(index).setStatusOfApp(status);
 		AppointmentList.getInstance().getAppointmentList().get(index).setAppointOutcomeRecord(notes);
 	}
-
+	
+	public void addNewPrescription(Appointment appointment, String dateIssued, String medicine, String dosage, String instructions) {
+        appointment.setLocalDate(dateIssued);
+        appointment.setMedicine(medicine);
+        appointment.setDosage(dosage);
+        appointment.setInstructions(instructions);
+        System.out.println("New prescription added successfully.");
+    }
 }

@@ -14,6 +14,7 @@ import Entity.AppointmentList;
 import Entity.Enums.Department;
 import Entity.Enums.Status;
 import Entity.User.Doctor;
+import Entity.User.Patient;
 import Services.InputService;
 
 public class DoctorMainPage {
@@ -38,46 +39,42 @@ public class DoctorMainPage {
         do {
             System.out.println("Choose the number of function:\n"
                     + "(1) View Patient Medical Records\n"
-                    + "(2) Update Patient Medical Records\n"
-                    + "(3) View Personal Schedule\n"
-                    + "(4) Set Availability for Appointments\n"
-                    + "(5) Accept or Decline Appointment Requests\n"
-                    + "(6) View Upcoming Appointments\n"
-                    + "(7) Record Appointment Outcome\n"
-                    + "(8) Exit\n");
+                    // + "(2) Update Patient Medical Records\n" already updating in below choices
+                    + "(2) View Personal Schedule\n"
+                    + "(3) Set Availability for Appointments\n"
+                    + "(4) Accept or Decline Appointment Requests\n"
+                    + "(5) View Upcoming Appointments\n"
+                    + "(6) Record Appointment Outcome\n"
+                    + "(7) Exit\n");
 
             try {
                 choice = InputService.inputInteger();
 
                 switch (choice) {
                     case 1:
-                        //MedicalRecord.viewMedicalRecord();
+                        viewMedicalRecord();
                         break;
                     case 2:
-                        // Update Medical Records
-                        //updateMedicalRecords();
-                        break;
-                    case 3:
                         // View Personal Schedule
                         viewPersonalSchedule(doctorController.getDoctor());
                         break;
-                    case 4:
+                    case 3:
                         // Set availability for appointments
                         setAvailability();
                         break;
-                    case 5:
+                    case 4:
                         // Accept or decline appointments
                         acceptOrDeclinePendingApp();
                         break;
-                    case 6:
+                    case 5:
                         // View upcoming appointments
                         viewDoctorScheduledAppointments();
                         break;
-                    case 7:
+                    case 6:
                         // Record Appt Outcome Records
                         updateApptOutcomeRecords();
                         break;
-                    case 8:
+                    case 7:
                         System.out.println("Thank you for using our service!!");
                         break;
                     default:
@@ -88,7 +85,7 @@ public class DoctorMainPage {
                 System.out.println("Invalid input. Please enter a number between 1 and 5.");
                 choice = -1;
             }
-        } while (choice != 8);
+        } while (choice != 7);
     }
 	 
 	 public void viewPersonalSchedule(Doctor doc) {
@@ -390,4 +387,78 @@ public class DoctorMainPage {
 		        		return;
 	     }
 	 }
+	 
+	 public void viewMedicalRecord() {
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d-M-yyyy");
+	        System.out.println("+" + "-".repeat(columnWidth) + "+"
+					+ "-".repeat(columnWidth) + "+"
+					+ "-".repeat(columnWidth) + "+"
+					+ "-".repeat(columnWidth) + "+"
+					+ "-".repeat(columnWidth) + "+"
+					+ "-".repeat(columnWidth) + "+"
+					+ "-".repeat(columnWidth) + "+"
+					+ "-".repeat(50) + "+"
+					+ "-".repeat(50) + "+"
+					+ "-".repeat(columnWidth) + "+"
+					+ "-".repeat(columnWidth) + "+"
+					+ "-".repeat(columnWidth) + "+");
+
+			System.out.println("|" + formatCell("Appointment ID", columnWidth)
+					+ "|" + formatCell("Patient Name", columnWidth)
+					+ "|" + formatCell("Date of Birth", columnWidth)
+					+ "|" + formatCell("Gender", columnWidth)
+					+ "|" + formatCell("Blood Type", columnWidth)
+					+ "|" + formatCell("Email", columnWidth)
+					+ "|" + formatCell("Doctor Name", columnWidth) 
+					+ "|" + formatCell("Appointment Outcomes", 50) 
+					+ "|" + formatCell("Medicine", 50) 
+					+ "|" + formatCell("Date Issued", columnWidth) 
+					+ "|" + formatCell("Dosage", columnWidth) 
+					+ "|" + formatCell("Instructions", columnWidth)+ "|");
+
+			System.out.println("+" + "-".repeat(columnWidth) + "+"
+					+ "-".repeat(columnWidth) + "+"
+					+ "-".repeat(columnWidth) + "+"
+					+ "-".repeat(columnWidth) + "+"
+					+ "-".repeat(columnWidth) + "+"
+					+ "-".repeat(columnWidth) + "+"
+					+ "-".repeat(columnWidth) + "+"
+					+ "-".repeat(50) + "+"
+					+ "-".repeat(50) + "+"
+					+ "-".repeat(columnWidth) + "+"
+					+ "-".repeat(columnWidth) + "+"
+					+ "-".repeat(columnWidth) + "+");
+			
+			for(Patient pat : Patient.getPatientList()) {
+				for(Appointment appointments : AppointmentList.getInstance().getAppointmentList()) {
+					if(appointments.getPatID().equals(pat.getUserID()) && (appointments.getStatusOfApp() == Status.Completed || appointments.getStatusOfApp() == Status.PendingPrescription)) {
+						System.out.println("|" + formatCell(appointments.getAppID(), columnWidth)
+						+ "|" + formatCell(pat.getName(), columnWidth)
+						+ "|" + formatCell(pat.getDateOfBirth().format(formatter), columnWidth)
+						+ "|" + formatCell(pat.getGender().toString(), columnWidth)
+						+ "|" + formatCell(pat.getBloodType().toString(), columnWidth)
+						+ "|" + formatCell(pat.getContactInfo(), columnWidth)
+						+ "|" + formatCell(appointments.getDocName(), columnWidth) 
+						+ "|" + formatCell(appointments.getAppointOutcomeRecord(), 50) 
+						+ "|" + formatCell(appointments.getMedicine(), 50) 
+						+ "|" + formatCell((appointments.getMedicineIssuedDate() != null) ? appointments.getMedicineIssuedDate().format(formatter): "N/A", columnWidth) 
+						+ "|" + formatCell(appointments.getDosage(), columnWidth) 
+						+ "|" + formatCell(appointments.getInstructions(), columnWidth)+ "|");
+						
+						System.out.println("+" + "-".repeat(columnWidth) + "+"
+								+ "-".repeat(columnWidth) + "+"
+								+ "-".repeat(columnWidth) + "+"
+								+ "-".repeat(columnWidth) + "+"
+								+ "-".repeat(columnWidth) + "+"
+								+ "-".repeat(columnWidth) + "+"
+								+ "-".repeat(columnWidth) + "+"
+								+ "-".repeat(50) + "+"
+								+ "-".repeat(50) + "+"
+								+ "-".repeat(columnWidth) + "+"
+								+ "-".repeat(columnWidth) + "+"
+								+ "-".repeat(columnWidth) + "+");
+					}
+				}
+			}
+		}
 }

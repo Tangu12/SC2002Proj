@@ -180,4 +180,8 @@ public class AdministratorController {
     public void unlockAccount(String userID){
         accountManager.unlockAccount(userID);
     }
+    
+    public void processReplenishmentRequests(int selection, int amount) {
+    		medicalInventoryService.processReplenishmentRequests(selection, amount);
+    }
 }

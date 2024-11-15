@@ -63,4 +63,13 @@ public class PatientController {
 		}
 		return false;
 	}
+	
+	public void updatePersonalInformation(String patID, String email) {
+		for(Patient patient : Patient.getPatientList()) {
+			if(patient.getUserID().equals(patID)) {
+				patient.setContactInfo(email);
+				return;
+			}
+		}
+	}
 }
