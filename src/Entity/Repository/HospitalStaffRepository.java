@@ -98,7 +98,7 @@ public class HospitalStaffRepository implements IRepository<String,String,String
 				//String userID, String name, int age, Gender gender, Department
                 String userID = row[0];
                 String name = row[1];
-                Department department = Department.valueOf(row[2]);
+                Department department = Department.valueOf(row[5]);
                 Gender gender= Gender.valueOf(row[3]);
                 int age = Integer.parseInt(row[4]);
 

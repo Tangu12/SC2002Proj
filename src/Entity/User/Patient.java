@@ -23,7 +23,7 @@ public class Patient implements IUser{
     private LocalDate dateOfBirth;
     private BloodType bloodType;
 
-    private static ArrayList<String[]> patientList = new ArrayList<>();
+    private static ArrayList<Patient> patientList = new ArrayList<>();
 
     // Add more attributes as needed
     ArrayList<MedicalRecord> medicalHistory;
@@ -125,7 +125,7 @@ public class Patient implements IUser{
         this.contactInfo = contactInfo;
     }
 
-    public static ArrayList<String[]> getPatientList(){
+    public static ArrayList<Patient> getPatientList(){
     	return Patient.patientList;
     }
 

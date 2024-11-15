@@ -8,11 +8,14 @@ import Entity.Enums.Status;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
@@ -20,7 +23,11 @@ import java.util.Objects;
 
 public class AppointmentsRepository implements IRepository <String,String,Appointment,Appointment> {
 	
-	private static final String FILE_NAME = "program_files/appointments.csv";
+	public static String FILE_NAME;
+
+    public AppointmentsRepository(String path) {
+    	AppointmentsRepository.FILE_NAME = path;
+    }
 
 	public static void loadAppointments() {
 		int i = 0;
@@ -35,7 +42,7 @@ public class AppointmentsRepository implements IRepository <String,String,Appoin
 			if (Objects.equals(row[7], "CheckUp")) appPur = Purpose.CheckUp;
 			else if (Objects.equals(row[7], "Surgery")) appPur = Purpose.Surgery;
 			else if (Objects.equals(row[7], "Consultation")) appPur = Purpose.Consultation;
-			else if (Objects.equals(row[7], "Others")) appPur = Purpose.Other;
+			else if (Objects.equals(row[7], "Other")) appPur = Purpose.Other;
 			else appPur = null;
 
 			Department appDept;
@@ -58,7 +65,7 @@ public class AppointmentsRepository implements IRepository <String,String,Appoin
 			else if (Objects.equals(row[9], "Completed")) appStatus = Status.Completed;
 			else if (Objects.equals(row[9], "Pending")) appStatus = Status.Pending;
 			else if (Objects.equals(row[9], "Unavailable")) appStatus = Status.Unavailable;
-			else if (Objects.equals(row[9], "PrescriptionPending")) appStatus = Status.PendingPrescription;
+			else if (Objects.equals(row[9], "PendingPrescription")) appStatus = Status.PendingPrescription;
 
 			Appointment apps = new Appointment(Boolean.valueOf(row[0]),row[1],row[2],row[3],row[4],row[5],row[6],appPur,appDept,appStatus, " ", row[11], row[12], row[13], row[14]);
 			AppointmentList.getInstance().getAppointmentList().add(apps);
@@ -338,6 +345,35 @@ public class AppointmentsRepository implements IRepository <String,String,Appoin
 	            row[13],
 	            row[14]
 	    );
+	}
+	
+	public void createAppointments(String newSlot) {
+		try {
+			File appointmentFile = new File(FILE_NAME);
+			if (appointmentFile.createNewFile()) {
+				FileWriter headerWriter = new FileWriter(appointmentFile);
+				headerWriter.write("Availability,AppointmentID,TimeOfAppointment,DoctorID,DoctorName,PatientID,PatientName,PurposeOfAppointment,Department,StatusOfAppointment,AppointmentOutcomeRecord,Medicine,IssuedDate,Dosage,Instructions\n");
+				headerWriter.close();
+			}
+			BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_NAME,true));
+			writer.write(newSlot);
+			writer.close();
+		} catch(IOException e) {
+			System.out.println("An error occurred.");
+			e.printStackTrace();
+		}
+	}
+	
+	public void sortFile() {
+		List<String[]> data = getAllRows();
+		// Sort data based on the value of row[2]
+		Collections.sort(data.subList(1, data.size()), new Comparator<String[]>() {
+			@Override
+			public int compare(String[] row1, String[] row2) {
+				return row1[1].compareTo(row2[1]);
+			}
+		});
+		overwriteCSV(data);
 	}
  }
 

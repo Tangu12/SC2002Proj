@@ -1,3 +1,2 @@
-D001,Min,Cardiology,MALE,40
-A001,Justin,ADMINISTRATOR,MALE,40
-R001,Hung,PHARMACIST,MALE,40
+Staff ID,Name,Role,Gender,Age,Department
+D001,Min,Doctor,MALE,40,Cardiology

@@ -5,6 +5,7 @@ import Entity.Enums.Domain;
 import Entity.Enums.Gender;
 import Entity.MedicalRecord;
 import Entity.Medicine;
+import Entity.User.Administrator;
 import Entity.User.Patient;
 
 import java.io.*;
@@ -237,11 +238,11 @@ public class PatientDataRepository implements IRepository <String,String,Patient
 		for(String[] row : data) {
 			if(headerRow) headerRow = false;
 			else {
-				String[] addingPatient = new String[2];
-				addingPatient[0] = row[0];
-				addingPatient[1] = row[1];
-				Patient.getPatientList().add(addingPatient);
+				Patient patient = new Patient(row[0], row[1], Integer.valueOf(row[2]), Gender.valueOf(row[3]), Domain.PATIENT, null, row[5], LocalDate.parse(row[6]), BloodType.valueOf(row[7]));
+				Patient.getPatientList().add(patient);
 			}
 		}
     }
+    
+    
 }
