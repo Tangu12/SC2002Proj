@@ -42,7 +42,7 @@ public class LoginController {
                 }
                 credentialsService.lockAccount(userID);
             }
-            System.out.println("Your Account is now locked due to giving the wrong answer");
+            //System.out.println("Your Account is now locked due to giving the wrong answer");
             return false;
         }
     }
