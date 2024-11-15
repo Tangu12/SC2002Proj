@@ -100,4 +100,8 @@ public class PharmacistAccountService implements IUserAccountService<Pharmacist>
     public void unlockAccount(String userID){
         credentialsService.unlockAccount(userID);
     }
+
+    public void loadPharmacistList(){
+        hospitalStaffRepository.loadPharmacistList();
+    }
 }

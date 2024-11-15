@@ -95,4 +95,8 @@ public class AdministratorAccountService implements IUserAccountService<Administ
     public void unlockAccount(String userID){
         credentialsService.unlockAccount(userID);
     }
+
+    public void loadAdministratorList(){
+        hospitalStaffRepository.loadAdministrator();
+    }
 }

@@ -90,14 +90,21 @@ public class HospitalStaffRepository implements IRepository<String,String,String
 			//e.printStackTrace();
 			System.out.println("File is not created yet!!");
 		}
-		boolean headerRow = true;
+		//boolean headerRow = true;
 		for(String[] row : data) {
-			if(headerRow) headerRow = false;
-			else if(row[2].equals("Doctor"))
+			//if(headerRow) headerRow = false;
+			if(row[0].charAt(0)=='D')
 			{
-				//String userID, String name, int age, Gender gender
-				Doctor doctor = new Doctor(row[0], row[1], Integer.valueOf(row[4]), Gender.valueOf(row[3]),Department.valueOf(row[4]));
-				doctor.setDepartment(Department.valueOf(row[5]));
+				//String userID, String name, int age, Gender gender, Department
+                String userID = row[0];
+                String name = row[1];
+                Department department = Department.valueOf(row[2]);
+                Gender gender= Gender.valueOf(row[3]);
+                int age = Integer.parseInt(row[4]);
+
+				Doctor doctor = new Doctor(userID,name,age,gender,department);
+
+				//doctor.setDepartment(Department.valueOf(row[5]));
 				Doctor.getDoctorList().add(doctor);
 			}
 		}
@@ -120,7 +127,7 @@ public class HospitalStaffRepository implements IRepository<String,String,String
 		boolean headerRow = true;
 		for(String[] row : data) {
 			if(headerRow) headerRow = false;
-			else if(row[2].equals("Pharmacist"))
+			else if(row[2].equals("PHARMACIST"))
 			{
 				//String userID, String name, int age, Gender gender, Domain domain
 				Pharmacist pharmacist = new Pharmacist(row[0], row[1], Integer.valueOf(row[4]), Gender.valueOf(row[3]), Domain.PHARMACIST);
@@ -146,7 +153,7 @@ public class HospitalStaffRepository implements IRepository<String,String,String
 		boolean headerRow = true;
 		for(String[] row : data) {
 			if(headerRow) headerRow = false;
-			else if(row[2].equals("Administrator"))
+			else if(row[2].equals("ADMINISTRATOR"))
 			{
 				//String UserID,String name,int age,Gender gender
 				Administrator administrator = new Administrator(row[0], row[1], Integer.valueOf(row[4]), Gender.valueOf(row[3]));

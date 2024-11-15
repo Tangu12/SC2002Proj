@@ -124,6 +124,7 @@ public class TestAdminFunction {
 
 		// Create Boundary
 		AdministratorMainPage mainPage = new AdministratorMainPage(controller,hospitalStaffRegistrationService);
+
 		mainPage.homePage();
 
 		// Testing Functions

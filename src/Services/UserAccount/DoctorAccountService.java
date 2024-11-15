@@ -104,4 +104,8 @@ public class DoctorAccountService implements IUserAccountService<Doctor> {
     public void unlockAccount(String userID){
         credentialsService.unlockAccount(userID);
     }
+
+    public void loadDoctorList(){
+        hospitalStaffRepository.loadDoctorList();
+    }
 }
