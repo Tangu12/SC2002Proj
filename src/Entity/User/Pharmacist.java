@@ -1,5 +1,6 @@
 package Entity.User;
 
+import Entity.Enums.Department;
 import Entity.Enums.Domain;
 import Entity.Enums.Gender;
 import Entity.MedicalRecord;
@@ -19,6 +20,11 @@ public class Pharmacist extends HospitalStaff{
     
     public Pharmacist(String userID, String name, int age, Gender gender, Domain domain) {
         super(userID, name, age, gender, Domain.PHARMACIST);
+    }
+
+    @Override
+    public void updateDepartment(Domain newRole, Department dept) {
+        // null method
     }
 
     // Getters

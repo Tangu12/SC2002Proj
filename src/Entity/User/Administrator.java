@@ -1,5 +1,6 @@
 package Entity.User;
 
+import Entity.Enums.Department;
 import Entity.Enums.Domain;
 import Entity.Enums.Gender;
 import Entity.MedicationInventory;
@@ -34,5 +35,10 @@ public class Administrator extends HospitalStaff{
     // Setters
     public void setMedicationInventory(MedicationInventory medicalInventory) {
         this.medicationInventory = medicalInventory;
+    }
+
+    @Override
+    public void updateDepartment(Domain newRole, Department dept) {
+        // null method
     }
 }

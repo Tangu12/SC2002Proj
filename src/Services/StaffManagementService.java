@@ -90,7 +90,7 @@ public class StaffManagementService {
 		staff.setName(newName);
         staff.setAge(age);
         staff.setGender(gender);
-        if(newRole.equals(Domain.DOCTOR)) ((Doctor) staff).setDepartment(dept);
+		staff.updateDepartment(newRole,dept);
         try {
             staff.setDomain(newRole);
             System.out.println("Updated staff member: " + staff.getName() + " to role " + newRole.toString());
@@ -102,7 +102,6 @@ public class StaffManagementService {
 	public String getUserName(Domain domain){
 		return hospitalStaffRegistrationService.getUserName(domain);
 	}
-
 
 	public void removeDoctorAccount(String userID){
 		doctorAccountService.deleteUserAccount(userID);

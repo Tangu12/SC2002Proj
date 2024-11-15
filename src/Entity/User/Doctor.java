@@ -36,4 +36,11 @@ public class Doctor extends HospitalStaff{
     public Department getDepartment() {
     	return this.department;
     }
+
+    @Override
+    public void updateDepartment(Domain newRole, Department dept) {
+        if (newRole == Domain.DOCTOR) {
+            this.setDepartment(dept);
+        }
+    }
 }

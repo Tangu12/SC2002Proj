@@ -1,9 +1,10 @@
 package Entity.User;
 
+import Entity.Enums.Department;
 import Entity.Enums.Domain;
 import Entity.Enums.Gender;
 
-public class HospitalStaff implements IUser {
+public abstract class HospitalStaff implements IUser {
     private String userID;
     private String name;
     private int age;
@@ -17,7 +18,9 @@ public class HospitalStaff implements IUser {
     	this.gender = gender;
     	this.domain = domain;
     }
-    
+
+    public abstract void updateDepartment(Domain newRole, Department dept);
+
     // Getter and Setter for userID
     public String getUserID() {
         return userID;
