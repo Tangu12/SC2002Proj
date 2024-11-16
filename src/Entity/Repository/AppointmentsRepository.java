@@ -19,16 +19,25 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
-
+/**
+ * The Repository that accesses and changes everything related to appointments into our Appointment database
+ */
 
 public class AppointmentsRepository implements IRepository <String,String,Appointment,Appointment> {
 	
 	public static String FILE_NAME;
 
+	/**
+	 * Determines the file that gets accessed and changed by the Repository
+	 * @param path
+	 */
     public AppointmentsRepository(String path) {
     	AppointmentsRepository.FILE_NAME = path;
     }
 
+	/**
+	 * Loads all the appointments as Appointment objects and adds them into a Array list of Appointments
+	 */
 	public static void loadAppointments() {
 		int i = 0;
 		List<String[]> data = getAllRows();
@@ -72,7 +81,11 @@ public class AppointmentsRepository implements IRepository <String,String,Appoin
 			i++;
 		}
 	}
-	
+
+	/**
+	 * Gathers all the contents of the file
+	 * @return List of Arrays of Strings split row by row, separated by a comma in each row
+	 */
 	public static List<String[]> getAllRows() {
 		List<String[]> data = new ArrayList<>();
 
@@ -89,7 +102,11 @@ public class AppointmentsRepository implements IRepository <String,String,Appoin
 		}
 		return data;
 	}
-	
+
+	/**
+	 * Updates the appointment file based on the current status of the appointments in the list of Appointments
+	 * @param appointmentList
+	 */
 	public static void updateAppointmentFile(ArrayList<Appointment> appointmentList) {
         List<String[]> data = new ArrayList<>();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/M/yyyy H:mm");
@@ -132,9 +149,13 @@ public class AppointmentsRepository implements IRepository <String,String,Appoin
             
             data.add(row);
         }
-        updateFile(data);
+		overwriteCSV(data);;
     }
-	
+
+	/**
+	 * Updates the CSV file
+	 * @param data
+	 */
 	private static void overwriteCSV(List<String[]> data) {
 		try {
 			BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_NAME));
@@ -146,10 +167,10 @@ public class AppointmentsRepository implements IRepository <String,String,Appoin
 		}
 	}
 
-	public static void updateFile(List<String[]> data) {
-		overwriteCSV(data);
-	}
-
+	/**
+	 * Creates a new appointment inside the appointment file
+	 * @param attributes
+	 */
 	@Override
 	public void createRecord(Object... attributes) {
 		// TODO Auto-generated method stub
@@ -181,6 +202,11 @@ public class AppointmentsRepository implements IRepository <String,String,Appoin
 	    }
 	}
 
+	/**
+	 * Finds an appointment inside the appointment file
+	 * @param identifier
+	 * @return The Appointment with the same appointmentID as the identifier
+	 */
 	@Override
 	public Appointment readRecord(String identifier) {
 		// TODO Auto-generated method stub
@@ -200,6 +226,10 @@ public class AppointmentsRepository implements IRepository <String,String,Appoin
 	    return null;
 	}
 
+	/**
+	 * Updates a change made in an appointment in the appointment file
+	 * @param record
+	 */
 	@Override
 	public void updateRecord(Appointment record) {
 		// TODO Auto-generated method stub
@@ -229,6 +259,10 @@ public class AppointmentsRepository implements IRepository <String,String,Appoin
 	    }
 	}
 
+	/**
+	 * Deletes a appointment inside the appointment file
+	 * @param record
+	 */
 	@Override
 	public void deleteRecord(String record) {
 		// TODO Auto-generated method stub
@@ -258,6 +292,11 @@ public class AppointmentsRepository implements IRepository <String,String,Appoin
 	}
 
 
+	/**
+	 * Finds the appointments of a Patient
+	 * @param patientId
+	 * @return Array list of Appointments based on the hospitalID of the patient
+	 */
 	public ArrayList<Appointment> findAppointmentsByPatientId(String patientId) {
 		ArrayList<Appointment> appointments = new ArrayList<Appointment>();
 		try (BufferedReader reader = new BufferedReader(new FileReader(FILE_NAME))) {
@@ -276,6 +315,11 @@ public class AppointmentsRepository implements IRepository <String,String,Appoin
 	}
 
 
+	/**
+	 * Finds a specific appointment
+	 * @param appointmentID
+	 * @return The Appointment with the same Appointment ID as appointmentID
+	 */
 	public Appointment findAppointmentsByAppointmentId(String appointmentID) {
 		try (BufferedReader reader = new BufferedReader(new FileReader(FILE_NAME))) {
 			String row;
@@ -294,10 +338,11 @@ public class AppointmentsRepository implements IRepository <String,String,Appoin
 	}
 
 
-
-
-
-
+	/**
+	 * Converts an Appointment object to array of String storing its parameters
+	 * @param appointment
+	 * @return A array of String with its entries being the parameters of appointment
+	 */
 	private String[] convertAppointmentToArray(Appointment appointment) {
 	    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/M/yyyy H:mm");
 	    DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("d/M/yyyy");
@@ -320,7 +365,12 @@ public class AppointmentsRepository implements IRepository <String,String,Appoin
 	    row[14] = appointment.getInstructions();
 	    return row;
 	}
-	
+
+	/**
+	 * Converts an array of Strings to an Appointment object with its entries being the parameters of the Appointment
+	 * @param row
+	 * @return Appointment object with its parameters being the entries of the array
+	 */
 	private Appointment convertArrayToAppointment(String[] row) {
 	    // This method will parse the row array back into an Appointment object.
 	    // Assuming valid parsing and conversions, the process would look similar to what you have in loadAppointments.
@@ -346,7 +396,11 @@ public class AppointmentsRepository implements IRepository <String,String,Appoin
 	            row[14]
 	    );
 	}
-	
+
+	/**
+	 * Creates and updates the Appointment file with a new Appointment object
+	 * @param newSlot
+	 */
 	public void createAppointments(String newSlot) {
 		try {
 			File appointmentFile = new File(FILE_NAME);

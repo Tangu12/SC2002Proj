@@ -110,7 +110,12 @@ public class AdministratorController {
 
 		return filteredAppointments;
 	}
-    
+
+    /**
+     * Returns the array list of appointments that belong to a doctor based on their hospitalID
+     * @param doctorID
+     * @return
+     */
     public ArrayList<Appointment> getAppointmentsByDoctorID(String doctorID) {
 		ArrayList<Appointment> filteredAppointments = new ArrayList<>();
 		for(Appointment appointment : AppointmentList.getInstance().getAppointmentList()) {
@@ -119,11 +124,21 @@ public class AdministratorController {
 
 		return filteredAppointments;
 	}
-    
+
+    /**
+     * Checks if a medicine with a certain name exists in the medicine inventory
+     * @param name
+     * @return True or False
+     */
     public boolean isMedicineInInventory(String name) {
         return findMedicineByName(name) != null;
     }
 
+    /**
+     * Finds a medicine based on its name
+     * @param name
+     * @return The Medicine object
+     */
     // Helper method to find a medicine by its name
     public Medicine findMedicineByName(String name) {
         for (Medicine medicine : MedicationInventory.getInventory()) {
@@ -133,16 +148,31 @@ public class AdministratorController {
         }
         return null;
     }
-    
+
+    /**
+     * Increases the number of a specific medicine inside the medicine inventory
+     * @param stock
+     * @param selection
+     */
     public void increaseCurrentStock(int stock, int selection) {
     	medicalInventoryService.incrementStock(MedicationInventory.getInventory().get(selection-1).getNameOfMedicine(), stock);
     }
-    
+
+    /**
+     * Adds a new medicine to the medicine inventory with its initial amount and low level alert value
+     * @param name
+     * @param stock
+     * @param alertLevel
+     */
     public void addMedicine(String name, int stock, int alertLevel) {
     	Medicine med = new Medicine(name, stock, alertLevel);
     	medicalInventoryService.addMedicineToInventory(med);
     }
-    
+
+    /**
+     * Removes a medicine from the medicine inventory
+     * @param choice
+     */
     public void removeMedicine(int choice) {
         if(choice <= 0 || choice > MedicationInventory.getInventory().size()) { //user input unavailable choice
         	System.out.println("Please only select from the available choices: ");
@@ -156,35 +186,71 @@ public class AdministratorController {
             System.out.println("Medicine not found.");
         }
     }
-    
+
+    /**
+     *
+     * @param med
+     * @param newStock
+     * @param newAlertLevel
+     */
     public void updateMedicine(Medicine med, int newStock, int newAlertLevel) {
     	medicalInventoryService.updateMedicine(med);
     }
-    
+
+    /**
+     * Decreases the amount of  a specific medicine inside the medicine inventory
+     * @param med
+     * @param usedAmount
+     */
     public void decrementStock(Medicine med, int usedAmount) {
     	medicalInventoryService.decrementStock(med.getNameOfMedicine(), usedAmount);
     }
 
+    /**
+     * Gathers all user accounts that are currently locked
+     * @return Array list of all the hospitalIDs that are locked
+     */
     public ArrayList<String> getAllLockedUserIDs() {
         return accountManager.getAllLockedUserIDs();
     }
 
+    /**
+     * Gathers all the currently existing hospitalIDs of everybody registered at the hospital
+     * @return Array list of all the hospitalIDs
+     */
     public ArrayList<String> getAllUserIDs() {
         return accountManager.getAllUserIDs();
     }
 
+    /**
+     * Gathers all user accounts that are currently locked
+     * @return Array list of all the hospitalIDs that are unlocked
+     */
     public ArrayList<String> getAllUnlockedUserIDs(){
         return accountManager.getAllUnlockedUserIDs();
     }
 
+    /**
+     * Locks the account of a user
+     * @param userID
+     */
     public void lockAccount(String userID) {
         accountManager.lockAccount(userID);
     }
 
+    /**
+     * Unlocks the account of a user
+     * @param userID
+     */
     public void unlockAccount(String userID){
         accountManager.unlockAccount(userID);
     }
-    
+
+    /**
+     * Handles the replenishment request made by the pharmacist
+     * @param selection
+     * @param amount
+     */
     public void processReplenishmentRequests(int selection, int amount) {
     		medicalInventoryService.processReplenishmentRequests(selection, amount);
     }

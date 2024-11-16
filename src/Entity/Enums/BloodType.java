@@ -1,5 +1,8 @@
 package Entity.Enums;
 
+/**
+ * All the blood types of people
+ */
 public enum BloodType {
     A_POSITIVE,
     A_NEGATIVE,
