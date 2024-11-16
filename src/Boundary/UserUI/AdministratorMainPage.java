@@ -256,23 +256,6 @@ public class AdministratorMainPage {
         }
         System.out.print("Enter new name: ");
         String newName = InputService.inputString();
-        System.out.print("Enter role: \n(1). Doctor\n(2). Pharmacist\n(3). Administrator\n");
-        int choice = InputService.inputInteger();
-        Domain newRole;
-        switch(choice) {
-	        case 1:
-	        	newRole = Domain.DOCTOR;
-	        	break;
-	        case 2:
-	        	newRole = Domain.PHARMACIST;
-	        	break;
-	        case 3:
-	        	newRole = Domain.ADMINISTRATOR;
-	        	break;
-	        default:
-	        	System.out.println("Please only select available options!!");
-	        	return;
-        }
         System.out.print("Enter gender:\n(1). Male\n(2). Female\n");
         int choice1 = InputService.inputInteger();
         Gender gender;
@@ -290,7 +273,7 @@ public class AdministratorMainPage {
         System.out.println("Enter Age: ");
         int age = InputService.inputInteger();
         Department dept = null;
-        if(newRole.equals(Domain.DOCTOR)) {
+        if(hospitalId.startsWith("D")) {
         	System.out.println("Select the departmen:\n"
                     + "(1) Cardiology\n"
                     + "(2) Neurology\n"
@@ -316,7 +299,7 @@ public class AdministratorMainPage {
             else if (choiceDep == 10) dept = Department.ObstetricsGynecology;
             else dept = Department.Others;
         }
-        adminController.updateStaffMember(hospitalId, newName, age, gender, newRole, dept);
+        adminController.updateStaffMember(hospitalId, newName, age, gender, dept);
 	}
 	
 	public void displayAllStaff() {

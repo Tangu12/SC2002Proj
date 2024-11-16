@@ -72,11 +72,11 @@ public class AdministratorController {
         }
     }
     
-    public void updateStaffMember(String userID, String newName, int age, Gender gender, Domain newRole, Department dep) {
+    public void updateStaffMember(String userID, String newName, int age, Gender gender, Department dep) {
     	Optional<? extends HospitalStaff> staffToUpdate = findStaffById(userID);
         if (staffToUpdate.isPresent()) {
         	HospitalStaff staff = staffToUpdate.get();
-            staffManagementService.updateStaffMember(staff, newName, age, gender, newRole, dep);
+            staffManagementService.updateStaffMember(staff, newName, age, gender, staff.getDomain(), dep);
         } else {
             System.out.println("Staff member with ID " + userID + " not found.");
         }

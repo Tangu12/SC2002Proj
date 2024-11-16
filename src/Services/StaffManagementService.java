@@ -92,7 +92,7 @@ public class StaffManagementService {
 		staff.updateDepartment(newRole,dept);
         try {
             staff.setDomain(newRole);
-            System.out.println("Updated staff member: " + staff.getName() + " to role " + newRole.toString());
+            System.out.println("Updated staff member: " + staff.getName());
         } catch (IllegalArgumentException e) {
             System.out.println("Invalid role. Please enter DOCTOR, PHARMACIST, or ADMINISTRATOR.");
         }
