@@ -3,7 +3,7 @@ package Tests;
 import Boundary.UserUI.DoctorMainPage;
 import Boundary.UserUI.PatientMainPage;
 import Controllers.DoctorController;
-import Controllers.HospitalStaffRegistrationService;
+import Services.HospitalStaffRegistrationService;
 import Controllers.PatientController;
 import Entity.AppointmentList;
 import Entity.MedicationInventory;

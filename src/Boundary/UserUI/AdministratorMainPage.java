@@ -1,7 +1,7 @@
 package Boundary.UserUI;
 
 import Controllers.AdministratorController;
-import Controllers.HospitalStaffRegistrationService;
+import Services.HospitalStaffRegistrationService;
 import Entity.Appointment;
 import Entity.AppointmentList;
 import Entity.MedicationInventory;

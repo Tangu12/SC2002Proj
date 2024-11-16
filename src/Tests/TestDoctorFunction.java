@@ -1,13 +1,10 @@
 package Tests;
 
-import Boundary.UserUI.AdministratorMainPage;
 import Boundary.UserUI.DoctorMainPage;
-import Controllers.AdministratorController;
 import Controllers.DoctorController;
-import Controllers.HospitalStaffRegistrationService;
+import Services.HospitalStaffRegistrationService;
 import Entity.AppointmentList;
 import Entity.MedicationInventory;
-import Entity.Enums.Gender;
 import Entity.Repository.AppointmentsRepository;
 import Entity.Repository.CredentialsRepository;
 import Entity.Repository.HospitalStaffRepository;

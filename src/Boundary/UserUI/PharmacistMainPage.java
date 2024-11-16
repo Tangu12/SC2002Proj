@@ -10,6 +10,7 @@ import Entity.Enums.Status;
 import Services.AppointmentService;
 import Services.InputService;
 import Services.MedicalInventoryService;
+import Utils.clearScreen;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -266,7 +267,7 @@ public class PharmacistMainPage {
     Updates the replenishment column in the MedicationInventory File
     */
     public void submitReplenishmentRequest(){
-        	viewAvailableMed();
+			viewMedicationInventory();
         	String medicine;
         	System.out.print("Select the Medicine for replenishment (-1 to exit): ");
         	int medSelection = InputService.inputInteger();

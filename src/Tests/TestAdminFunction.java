@@ -2,7 +2,7 @@ package Tests;
 
 import Boundary.UserUI.AdministratorMainPage;
 import Controllers.AdministratorController;
-import Controllers.HospitalStaffRegistrationService;
+import Services.HospitalStaffRegistrationService;
 import Entity.MedicationInventory;
 import Entity.Enums.Gender;
 import Entity.Repository.*;
