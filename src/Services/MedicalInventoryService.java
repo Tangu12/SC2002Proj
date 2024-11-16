@@ -124,10 +124,10 @@ public class MedicalInventoryService {
         for (Medicine medicine : medicationInventory.getInventory()) {
             if (medicine.getRequestAmount() > 0) {
                 hasRequests = true;
-                int newStock = medicine.getCurrentStock() + medicine.getRequestAmount();
+                int newStock = medicine.getCurrentStock() + addAmount;
                 medicine.setCurrentStock(newStock);
                 System.out.println("Processed replenishment for " + medicine.getNameOfMedicine() + ". New stock: " + newStock);
-                medicine.setRequestAmount(0); // Reset request amount
+                medicine.setRequestAmount(0);
             }
         }
         if (!hasRequests) {
