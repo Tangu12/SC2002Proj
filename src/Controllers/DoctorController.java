@@ -37,6 +37,12 @@ public class DoctorController {
                 doctors.add(possibleDoctor);
             }
         }
+
+        if(doctors.isEmpty()){
+            System.out.println("There are no available doctors at this moment.");
+            return "NOAVAILABLEDOCTORS";
+        }
+
         try {
             selection = sc.nextInt();
             sc.nextLine();

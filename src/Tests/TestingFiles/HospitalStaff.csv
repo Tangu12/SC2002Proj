@@ -1,3 +1,4 @@
-Staff ID,Name,Role,Gender,Age,Department
-D001,Min,Doctor,MALE,40,Cardiology
-R002,John,Pharmacist,MALE,35,NotApplicable
+Staff ID,Name,Role,Gender,Age
+D001,Min,Cardiology,MALE,40
+A001,Justin,ADMINISTRATOR,MALE,40
+R001,Hung,PHARMACIST,MALE,40

@@ -95,10 +95,10 @@ public class HospitalStaffRepository implements IRepository<String,String,String
 			//if(headerRow) headerRow = false;
 			if(row[0].charAt(0)=='D')
 			{
-				//String userID, String name, int age, Gender gender, Department
+				//String userID, String name, int role, Gender gender, age
                 String userID = row[0];
                 String name = row[1];
-                Department department = Department.valueOf(row[5]);
+                Department department = Department.valueOf(row[2]);
                 Gender gender= Gender.valueOf(row[3]);
                 int age = Integer.parseInt(row[4]);
 

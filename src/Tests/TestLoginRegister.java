@@ -70,7 +70,7 @@ public class TestLoginRegister {
 
         Pharmacist Hung = new Pharmacist("R001","Hung",40,Gender.MALE,Domain.PHARMACIST);
         pharmacistAccountService.createUserAccount(Hung,"Hung123","What is this person's name","hung");
-         */
+        */
 
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // Testing Functions

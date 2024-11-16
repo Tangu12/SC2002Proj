@@ -82,7 +82,7 @@ public class DoctorMainPage {
                         break;
                 }
             } catch (InputMismatchException e) {
-                System.out.println("Invalid input. Please enter a number between 1 and 5.");
+                System.out.println("Invalid input. Please enter a number between 1 and 6.");
                 choice = -1;
             }
         } while (choice != 7);
@@ -261,7 +261,7 @@ public class DoctorMainPage {
 	                    + "1. Accept Appointment\n"
 	                    + "2. Decline Apppointment\n");
 	            int decision = InputService.inputInteger();
-	            
+
 	            if (decision == 1 || decision == 2) {
 	                doctorController.acceptOrDeclinePendingApp(pendingIndices.get(selection-1), decision);
 	            } else {

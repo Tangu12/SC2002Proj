@@ -263,7 +263,8 @@ public class PatientMainPage {
         while (prefDoctor == null) {
             System.out.println("Enter your preferred Doctor: ");
             prefDoctor = doctorController.selectionOfDoctor(pur, dept, AppointmentList.getInstance().getAppointmentList());
-        }
+			if(prefDoctor.equals("NOAVAILABLEDOCTORS")) return;
+		}
         int appIndex = selectionOfTimeSlot(prefDoctor, AppointmentList.getInstance().getAppointmentList());
         patientController.scheduleAppointment(pat, appIndex, pur);
 	}
