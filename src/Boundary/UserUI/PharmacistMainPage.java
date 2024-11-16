@@ -126,7 +126,7 @@ public class PharmacistMainPage {
         do {
             System.out.println("\n--- Manage Prescriptions ---");
             System.out.println("(1) View All Prescriptions");
-            System.out.println("(2) Add New Prescription");
+            System.out.println("(2) Update Prescription");
             System.out.println("(3) Update Prescription Status");
             System.out.println("(4) Search Prescription by ID");
             System.out.println("(5) Return to Main Menu");
