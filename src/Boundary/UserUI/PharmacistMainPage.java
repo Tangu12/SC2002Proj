@@ -139,7 +139,7 @@ public class PharmacistMainPage {
                     break;
                 case 2:
                 		List<Integer> pendingPresciptionAppointmentsIndices = viewPresciptionAppointments();
-                    System.out.print("Select the Appointment ID you want to update: ");
+                    System.out.print("Select the index of the Appointment ID you want to update (e.g, 1)");
                     int appSelection = InputService.inputInteger();
                     if(appSelection-1 >= pendingPresciptionAppointmentsIndices.size()) {System.out.println("Please only enter the available options"); return;}
                     int medSelection;
@@ -231,27 +231,32 @@ public class PharmacistMainPage {
             System.out.println("+" + "-".repeat(3) + "+"
                     + "-".repeat(30) + "+"
                     + "-".repeat(15) + "+"
-                    + "-".repeat(15) + "+");
+					+ "-".repeat(15) + "+"
+                    + "-".repeat(30) + "+");
 
             System.out.println("|" + formatCell("No.", 3)
                     + "|" + formatCell("Medicine Name", 30)
                     + "|" + formatCell("Current Stock", 15)
-                    + "|" + formatCell("Current Stock", 15) + "|");
+                    + "|" + formatCell("Request Amount", 15)
+					+ "|" + formatCell("Low Level Stock Alert", 30)+ "|");
 
             System.out.println("+" + "-".repeat(3) + "+"
                     + "-".repeat(30) + "+"
                     + "-".repeat(15) + "+"
-                    + "-".repeat(15) + "+");
+					+ "-".repeat(15) + "+"
+                    + "-".repeat(30) + "+");
             for (Medicine medicine : pharmacistController.getMedicationInventory()) {
                 //System.out.println(i + ". " + medicine);
                 System.out.println("|" + formatCell(String.valueOf(i), 3)
                         + "|" + formatCell(medicine.getNameOfMedicine(), 30)
                         + "|" + formatCell(String.valueOf(medicine.getCurrentStock()), 15)
-                        + "|" + formatCell(String.valueOf(medicine.getRequestAmount()), 15)+ "|");
+                        + "|" + formatCell(String.valueOf(medicine.getRequestAmount()), 15)
+						+ "|" + formatCell(String.valueOf(medicine.getLowStockLevelAlert()), 30)+ "|");
                 System.out.println("+" + "-".repeat(3) + "+"
                         + "-".repeat(30) + "+"
                         + "-".repeat(15) + "+"
-                        + "-".repeat(15) + "+");
+                        + "-".repeat(15) + "+"
+						+ "-".repeat(30) + "+");
                 i++;
             }
         }
