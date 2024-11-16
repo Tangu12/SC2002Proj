@@ -42,7 +42,7 @@ public class PatientRegistrationUI {
         BloodType bloodType = InputService.inputEnum(BloodType.class);
 
         Patient newUser = new Patient(patientRegistrationController.getUserName(),name,
-                patientRegistrationController.calculateAge(dob),gender,Domain.PATIENT,null,contactInfo,dob,bloodType);
+                patientRegistrationController.calculateAge(dob),gender,Domain.PATIENT,contactInfo,dob,bloodType);
         patientRegistrationController.registerUser(newUser,plainTextPassword,securityQuestion,plainTextSecurityAnswer);
 
 

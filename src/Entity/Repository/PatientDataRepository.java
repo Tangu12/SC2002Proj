@@ -44,12 +44,10 @@ public class PatientDataRepository implements IRepository <String,String,Patient
                     writer.write("UserID,Name,Age,Gender,Domain,ContactInfo,DateOfBirth,BloodType,MedicalHistory");
                     writer.newLine();
                 }
-                // prevent null entry from creating new line
-                // String medicalHistory = (patient.getMedicalHistory() == null) ? "" : patient.getMedicalHistory().toString();
 
                 writer.write(patient.getUserID() + "," + patient.getName() + "," + patient.getAge() + ","
                         + patient.getGender() + "," + patient.getDomain() + "," + patient.getContactInfo() + ","
-                        + patient.getDateOfBirth() + "," + patient.getBloodType() + "," + patient.getMedicalHistory());
+                        + patient.getDateOfBirth() + "," + patient.getBloodType());
                 writer.newLine();
                 System.out.println("Patient Record Added to PatientData file successfully!");
             } catch (Exception e) {
@@ -81,15 +79,11 @@ public class PatientDataRepository implements IRepository <String,String,Patient
                     int age = Integer.parseInt(data[2].trim());
                     Gender gender = Gender.valueOf(data[3].trim());
                     Domain domain  = Domain.valueOf(data[4].trim());
-//                    String medicalRecordsJson = data[5].trim(); // Assuming medicalRecords is in column 5
-//                    Type medicalRecordListType = new TypeToken<ArrayList<MedicalRecord>>() {}.getType();
-//                    ArrayList<MedicalRecord> medicalRecords = gson.fromJson(medicalRecordsJson, medicalRecordListType);
-                    ArrayList<MedicalRecord> medicalRecords = null; // Array of medical records issue
                     String contactInfo = data[5].trim();
                     LocalDate dateOfBirth = LocalDate.parse(data[6].trim());
                     BloodType bloodType = BloodType.valueOf(data[7].trim());
 
-                    return new Patient(patientID, name, age, gender, domain, medicalRecords,contactInfo,dateOfBirth,bloodType);
+                    return new Patient(patientID, name, age, gender, domain,contactInfo,dateOfBirth,bloodType);
                 }
             }
 
@@ -123,10 +117,9 @@ public class PatientDataRepository implements IRepository <String,String,Patient
                 String contactInfo = data[5].trim();
                 LocalDate dateOfBirth = LocalDate.parse(data[6].trim());
                 BloodType bloodType = BloodType.valueOf(data[7].trim());
-                ArrayList<MedicalRecord> medicalRecords = null; // Array of medical records issue
 
 
-                Patient temp = new Patient(patientID, name, age, gender, domain, medicalRecords,contactInfo,dateOfBirth,bloodType);
+                Patient temp = new Patient(patientID, name, age, gender, domain, contactInfo,dateOfBirth,bloodType);
 
                 // Update the record if it matches
                 if (temp.getUserID().equalsIgnoreCase(updatedPatient.getUserID())) {
@@ -144,11 +137,10 @@ public class PatientDataRepository implements IRepository <String,String,Patient
         // Once the whole file is read, we copy the file back
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(path))) {
-            //writer.write("HospitalID,Name,Age,Gender,Domain,Contact,DateOfBirth,BloodType,MedicalHistory\n");
             writer.newLine();
 
             for (Patient tempPatient : tempPatients) {
-                writer.write(tempPatient.getUserID() + "," + tempPatient.getName() + "," + tempPatient.getAge() + "," + tempPatient.getGender() + "," + tempPatient.getDomain() + "," +tempPatient.getContactInfo()+","+tempPatient.getDateOfBirth()+"," +tempPatient.getBloodType()+","+tempPatient.getMedicalHistory());
+                writer.write(tempPatient.getUserID() + "," + tempPatient.getName() + "," + tempPatient.getAge() + "," + tempPatient.getGender() + "," + tempPatient.getDomain() + "," +tempPatient.getContactInfo()+","+tempPatient.getDateOfBirth()+"," +tempPatient.getBloodType());
                 writer.newLine();
             }
             if (!isUpdated) {
@@ -183,9 +175,8 @@ public class PatientDataRepository implements IRepository <String,String,Patient
                 String contactInfo = data[5].trim();
                 LocalDate dateOfBirth = LocalDate.parse(data[6].trim());
                 BloodType bloodType = BloodType.valueOf(data[7].trim());
-                ArrayList<MedicalRecord> medicalRecords = null; // Array of medical records issue
 
-                Patient temp = new Patient(patientID, name, age, gender, domain, medicalRecords,contactInfo,dateOfBirth,bloodType);
+                Patient temp = new Patient(patientID, name, age, gender, domain, contactInfo,dateOfBirth,bloodType);
 
                 if (temp.getUserID().equalsIgnoreCase(deletePatientID)) {
                     isDeleted = true;
@@ -205,7 +196,7 @@ public class PatientDataRepository implements IRepository <String,String,Patient
             writer.newLine();
 
             for (Patient tempPatient : tempPatients) {
-                writer.write(tempPatient.getUserID() + "," + tempPatient.getName() + "," + tempPatient.getAge() + "," + tempPatient.getGender() + "," + tempPatient.getDomain() + "," +tempPatient.getContactInfo()+","+tempPatient.getDateOfBirth()+"," +tempPatient.getBloodType()+","+tempPatient.getMedicalHistory());
+                writer.write(tempPatient.getUserID() + "," + tempPatient.getName() + "," + tempPatient.getAge() + "," + tempPatient.getGender() + "," + tempPatient.getDomain() + "," +tempPatient.getContactInfo()+","+tempPatient.getDateOfBirth()+"," +tempPatient.getBloodType());
                 writer.newLine();
             }
             if (!isDeleted) {
@@ -231,14 +222,13 @@ public class PatientDataRepository implements IRepository <String,String,Patient
 				data.add(values);
 			}
 		} catch (IOException e) {
-			//e.printStackTrace();
 			System.out.println("File is not created yet!!");
 		}
 		boolean headerRow = true;
 		for(String[] row : data) {
 			if(headerRow) headerRow = false;
 			else {
-				Patient patient = new Patient(row[0], row[1], Integer.valueOf(row[2]), Gender.valueOf(row[3]), Domain.PATIENT, null, row[5], LocalDate.parse(row[6]), BloodType.valueOf(row[7]));
+				Patient patient = new Patient(row[0], row[1], Integer.valueOf(row[2]), Gender.valueOf(row[3]), Domain.PATIENT, row[5], LocalDate.parse(row[6]), BloodType.valueOf(row[7]));
 				Patient.getPatientList().add(patient);
 			}
 		}

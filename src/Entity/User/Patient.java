@@ -25,16 +25,13 @@ public class Patient implements IUser{
 
     private static ArrayList<Patient> patientList = new ArrayList<>();
 
-    // Add more attributes as needed
-    ArrayList<MedicalRecord> medicalHistory;
 
-    public Patient(String userID, String name, int age, Gender gender, Domain domain, ArrayList<MedicalRecord> medicalHistory, String contactInfo, LocalDate dateOfBirth, BloodType bloodType) {
+    public Patient(String userID, String name, int age, Gender gender, Domain domain, String contactInfo, LocalDate dateOfBirth, BloodType bloodType) {
         this.userID = userID;
         this.name = name;
         this.age = age;
         this.gender = gender;
         this.domain = domain;
-        this.medicalHistory = medicalHistory;
         this.contactInfo = contactInfo;
         this.dateOfBirth = dateOfBirth;
         this.bloodType = bloodType;
@@ -66,9 +63,6 @@ public class Patient implements IUser{
         return this.domain;
     }
 
-    public ArrayList<MedicalRecord> getMedicalHistory() {
-        return this.medicalHistory;
-    }
 
     public String getContactInfo() {
         return contactInfo;
@@ -108,13 +102,6 @@ public class Patient implements IUser{
         this.domain = domain;
     }
 
-    public void setMedicalHistory(ArrayList<MedicalRecord> medicalHistory) {
-        this.medicalHistory = medicalHistory;
-    }
-
-    public void addMedicalHistory(MedicalRecord medicalRecord){
-        this.medicalHistory.add(medicalRecord);
-    }
 
     public void updateMedicalHistory(MedicalRecord medicalRecord){
         // uses medical history repository
