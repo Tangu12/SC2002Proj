@@ -139,7 +139,7 @@ public class PharmacistMainPage {
                     break;
                 case 2:
                 		List<Integer> pendingPresciptionAppointmentsIndices = viewPresciptionAppointments();
-                    System.out.print("Select the index of the Appointment ID you want to update (e.g, 1)");
+                    System.out.print("Select the index of the Appointment ID you want to update (e.g, 1): ");
                     int appSelection = InputService.inputInteger();
                     if(appSelection-1 >= pendingPresciptionAppointmentsIndices.size()) {System.out.println("Please only enter the available options"); return;}
                     int medSelection;

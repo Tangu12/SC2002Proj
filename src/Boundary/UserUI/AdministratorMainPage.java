@@ -325,7 +325,7 @@ public class AdministratorMainPage {
 				+ "-".repeat(20) + "+"
 				+ "-".repeat(10) + "+"
 				+ "-".repeat(10) + "+"
-				+ "-".repeat(20));
+				+ "-".repeat(20) + "+");
 
 		System.out.println("|" + formatCell("ID", 10)
 				+ "|" + formatCell("Doctor Name", 20)
@@ -357,7 +357,7 @@ public class AdministratorMainPage {
         System.out.println("+" + "-".repeat(10) + "+"
 				+ "-".repeat(20) + "+"
 				+ "-".repeat(10) + "+"
-				+ "-".repeat(10));
+				+ "-".repeat(10) + "+");
 
 		System.out.println("|" + formatCell("ID", 10)
 				+ "|" + formatCell("Pharmacist Name", 20)
@@ -385,7 +385,7 @@ public class AdministratorMainPage {
         System.out.println("+" + "-".repeat(10) + "+"
 				+ "-".repeat(20) + "+"
 				+ "-".repeat(10) + "+"
-				+ "-".repeat(10));
+				+ "-".repeat(10) + "+");
 
 		System.out.println("|" + formatCell("ID", 10)
 				+ "|" + formatCell("Administartor Name", 20)
@@ -546,15 +546,18 @@ public class AdministratorMainPage {
 			System.out.println("+" + "-".repeat(3) + "+"
 					+ "-".repeat(30) + "+"
 					+ "-".repeat(15) + "+"
+					+ "-".repeat(15) + "+"
 					+ "-".repeat(15) + "+");
 
 			System.out.println("|" + formatCell("No.", 3)
 					+ "|" + formatCell("Medicine Name", 30)
 					+ "|" + formatCell("Current Stock", 15)
-					+ "|" + formatCell("Low Stock Alert", 15) + "|");
+					+ "|" + formatCell("Low Stock Alert", 15) 
+					+ "|" + formatCell("Requested Amt", 15)+ "|");
 
 			System.out.println("+" + "-".repeat(3) + "+"
 					+ "-".repeat(30) + "+"
+					+ "-".repeat(15) + "+"
 					+ "-".repeat(15) + "+"
 					+ "-".repeat(15) + "+");
 
@@ -562,10 +565,12 @@ public class AdministratorMainPage {
 				System.out.println("|" + formatCell(String.valueOf(i), 3)
 						+ "|" + formatCell(medicine.getNameOfMedicine(), 30)
 						+ "|" + formatCell(String.valueOf(medicine.getCurrentStock()), 15)
-						+ "|" + formatCell(String.valueOf(medicine.getLowStockLevelAlert()), 15) + "|");
+						+ "|" + formatCell(String.valueOf(medicine.getLowStockLevelAlert()), 15) 
+						+ "|" + formatCell(String.valueOf(medicine.getRequestAmount()), 15)+ "|");
 
 				System.out.println("+" + "-".repeat(3) + "+"
 						+ "-".repeat(30) + "+"
+						+ "-".repeat(15) + "+"
 						+ "-".repeat(15) + "+"
 						+ "-".repeat(15) + "+");
 				i++;

@@ -62,13 +62,17 @@ public class PatientMainPage {
                     case 5:
                         System.out.println("Enter the Appointment that you want to change: ");
                         int orgAppIDIndex = getAppIdIndexFromTime(AppointmentList.getInstance().getAppointmentList());
+                        if(orgAppIDIndex == 0) break;
                         if (!patientController.checkAppIDExist(AppointmentList.getInstance().getAppointmentList().get(orgAppIDIndex).getAppID())) { // Keeping this?
                             System.out.println("Only enter available Appointment IDs");
                             break;
                         }
-                        patientController.cancelAppointment(orgAppIDIndex);
-                        System.out.println("Your original appointment has been cancelled!!\n Select new Appointment.");
-                        scheduleAppointment(this.patientController.getPatient());
+                        System.out.println("Select new Appointment:");
+                        if(scheduleAppointment(this.patientController.getPatient())) {
+                        		patientController.cancelAppointment(orgAppIDIndex);
+                        		System.out.println("Your original appointment has been cancelled!!");
+                        }
+                        else System.out.println("Unable to schedule new appointment. No appointment is changed\n");
                         break;
                     case 6:
                         System.out.println("Enter the time slot that you want to cancel: ");
@@ -220,20 +224,25 @@ public class PatientMainPage {
         }
     }
 	
-	public void scheduleAppointment(Patient pat) throws Exception {
-        System.out.println("Choose number of the purpose of your Appointment:\n" // need exception handling?
+	public boolean scheduleAppointment(Patient pat) throws Exception {
+        System.out.println("Choose number of the purpose of your Appointment: (0 to exit)\n" // need exception handling?
                 + "(1) CheckUp\n"
                 + "(2) Surgery\n"
                 + "(3) Consultation\n"
                 + "(4) Other\n");
         int choicePur = InputService.inputInteger();
+        if(choicePur == 0) return false;
+        if(choicePur<0 || choicePur>4) {
+        		System.out.println("Please only enter the available options!!");
+        		return false;
+        }
         Purpose pur;
         if (choicePur == 1) pur = Purpose.CheckUp;
         else if (choicePur == 2) pur = Purpose.Surgery;
         else if (choicePur == 3) pur = Purpose.Consultation;
         else pur = Purpose.Other;
         // enter the department of your visit (check Appointments.java)
-        System.out.println("Choose the department of your Appointment:\n"
+        System.out.println("Choose the department of your Appointment: (0 to exit)\n"
                 + "(1) Cardiology\n"
                 + "(2) Neurology\n"
                 + "(3) Oncology\n"
@@ -246,6 +255,11 @@ public class PatientMainPage {
                 + "(10) ObstetricsGynecology\n"
                 + "(11) Others\n");
         int choiceDep = InputService.inputInteger();
+        if(choiceDep == 0) return false;
+        if(choiceDep<0 || choiceDep>11) {
+	    		System.out.println("Please only enter the available options!!");
+	    		return false;
+	    }
         Department dept;
         if (choiceDep == 1) dept = Department.Cardiology;
         else if (choiceDep == 2) dept = Department.Neurology;
@@ -263,10 +277,11 @@ public class PatientMainPage {
         while (prefDoctor == null) {
             System.out.println("Enter your preferred Doctor: ");
             prefDoctor = doctorController.selectionOfDoctor(pur, dept, AppointmentList.getInstance().getAppointmentList());
-			if(prefDoctor.equals("NOAVAILABLEDOCTORS")) return;
+			if(prefDoctor.equals("NOAVAILABLEDOCTORS")) return false;
 		}
         int appIndex = selectionOfTimeSlot(prefDoctor, AppointmentList.getInstance().getAppointmentList());
         patientController.scheduleAppointment(pat, appIndex, pur);
+        return true;
 	}
 	
 	public int getAppIdIndexFromTime(ArrayList<Appointment> appointmentList) {
@@ -283,6 +298,10 @@ public class PatientMainPage {
             index++;
         }
         int selection = InputService.inputInteger();
+        if(selection<=0 || selection>possibleAppsIndices.size()) {
+        		System.out.println("Selection is out of range and unavailable choice!!");
+        		return 0;
+        }
         return patientController.getAppIdIndexFromTime(appointmentList, possibleAppsIndices, selection);
 	}
 	

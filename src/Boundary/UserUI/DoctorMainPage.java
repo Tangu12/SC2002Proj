@@ -188,10 +188,10 @@ public class DoctorMainPage {
 		 LocalDate updateDate = LocalDate.now().plusDays(plusDays);
 		 printAppointmentOfaDayForDoc(updateDate.format(formatterForInput), docID);
 		do {
-			System.out.println("Please enter when your shift starts: (0 -> 23) (-1 to return)");
+			System.out.println("Please enter when your shift starts: (0 -> 23) (-1 to return) (eg. 0 means 12am, 23 means 11pm)");
 			startTime = InputService.inputInteger();
 			if(startTime == -1) return;
-			System.out.println("Please enter when your shift ends: (0 -> 24) (-1 to return)");
+			System.out.println("Please enter when your shift ends: (0 -> 24) (-1 to return) (eg. 0 means 12am, 23 means 11pm)");
 			endTime = InputService.inputInteger();
 			if(endTime == -1) return;
 			if(startTime < 0 && endTime < 0 && startTime >= 24 && endTime> 24 && startTime >= endTime)
@@ -254,10 +254,10 @@ public class DoctorMainPage {
 	 
 	 public void acceptOrDeclinePendingApp() {
 	        List<Integer> pendingIndices = viewDoctorPendingAppointments();
-	        System.out.println("Please select your choice to accept or decline.");
+	        System.out.println("Please enter the index of the appointment that you want to accept or decline.");
 	        int selection = InputService.inputInteger();
 	        try {
-	            System.out.println("Accept or Decline appointment:\n"
+	            System.out.println("Accept or Decline appointment: (Enter 1 or 2)\n"
 	                    + "1. Accept Appointment\n"
 	                    + "2. Decline Apppointment\n");
 	            int decision = InputService.inputInteger();
@@ -331,7 +331,7 @@ public class DoctorMainPage {
 	        int index = 0;
 	        List<Integer> pendingIndices = new ArrayList<>();
 	        for (Appointment appointments : AppointmentList.getInstance().getAppointmentList()) {
-	            if (Objects.equals(appointments.getDocID(), doctorController.getDoctor().getUserID()) && appointments.getStatusOfApp() == Status.Confirmed) {
+	            if (Objects.equals(appointments.getDocID(), doctorController.getDoctor().getUserID()) && (appointments.getStatusOfApp() == Status.Confirmed || appointments.getStatusOfApp() == Status.PendingPrescription)) {
 	                System.out.println("|" + formatCell(String.valueOf(i), 3)
 							+ "|" + formatCell(appointments.getTimeOfApp().format(formatter), columnWidth)
 							+ "|" + formatCell(appointments.getPurposeOfApp().toString(), columnWidth)
@@ -350,7 +350,11 @@ public class DoctorMainPage {
 	 
 	 public void updateApptOutcomeRecords() {
  		 List<Integer> pendingIndices = viewDoctorScheduledAppointments();
-	     System.out.println("Select one of the record you would like to update: ");
+ 		 if (pendingIndices.isEmpty()) {
+ 			 System.out.println("There is no scheduled appointment for you.");
+ 			 return;
+ 		 }
+	     System.out.println("Select one of the record you would like to update: (enter the index eg. 1)");
 	     int selection = InputService.inputInteger();
 	     if(selection-1 >= pendingIndices.size()) {System.out.println("Please only enter the available records:"); return;}
 	     System.out.println("Please enter your notes (Doctor's notes):");

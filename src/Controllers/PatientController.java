@@ -39,7 +39,7 @@ public class PatientController {
             System.out.println("Invalid input.");
             // Clear invalid input
         } catch (IndexOutOfBoundsException e) {
-            System.out.println("Selected number is out of range. Please choose a valid doctor number.");
+            System.out.println("Selected number is out of range.");
         }
         return 0;
     }
