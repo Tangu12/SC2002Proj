@@ -101,6 +101,17 @@ public class AccountManager {
         return credentialsService.getAllUserIDs();
     }
 
+    public ArrayList<String> getAllUnlockedUserIDs() {
+        ArrayList<String> unlockedAccounts = new ArrayList<>();
+        ArrayList<String> allUserIDs = credentialsService.getAllUserIDs();
+        for(String userID : allUserIDs){
+            if(!credentialsService.isAccountLocked(userID)){
+                unlockedAccounts.add(userID);
+            }
+        }
+        return unlockedAccounts;
+    }
+
     public void lockAccount(String userID) {
         credentialsService.lockAccount(userID);
     }

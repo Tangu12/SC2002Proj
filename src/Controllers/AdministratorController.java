@@ -173,6 +173,10 @@ public class AdministratorController {
         return accountManager.getAllUserIDs();
     }
 
+    public ArrayList<String> getAllUnlockedUserIDs(){
+        return accountManager.getAllUnlockedUserIDs();
+    }
+
     public void lockAccount(String userID) {
         accountManager.lockAccount(userID);
     }

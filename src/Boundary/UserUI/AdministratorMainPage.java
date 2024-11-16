@@ -694,10 +694,17 @@ public class AdministratorMainPage {
 
 			// Show Locked Users
 			ArrayList<String> lockedUsers = adminController.getAllLockedUserIDs();
+			ArrayList<String> unlockedUsers = adminController.getAllUnlockedUserIDs();
 
 			System.out.println("Locked Users :");
 			for (String lockedUser : lockedUsers) {
 				System.out.println(lockedUser);
+			}
+			System.out.println("---------------------------------");
+
+			System.out.println("Unlocked Users :");
+			for (String unlockedUser : unlockedUsers) {
+				System.out.println(unlockedUser);
 			}
 			System.out.println("---------------------------------");
 
@@ -725,12 +732,14 @@ public class AdministratorMainPage {
 			System.out.println("Please Enter The Account That You Want To Lock: ");
 			input = InputService.inputString();
 
-			if (lockedUsers.contains(input)) {
-				System.out.println("This account is already locked.");
-			}
 			if (!allUserIDs.contains(input)) {
 				System.out.println("This account does not exist.");
+				return;
 			}
+			else if (lockedUsers.contains(input)) {
+				System.out.println("This account is already locked.");
+			}
+
 		} while (lockedUsers.contains(input)||!allUserIDs.contains(input));
 
 		adminController.lockAccount(input);
@@ -746,12 +755,15 @@ public class AdministratorMainPage {
 			System.out.println("Please Enter The Account That You Want To Unlock: ");
 			input = InputService.inputString();
 
-			if (!lockedUsers.contains(input)) {
-				System.out.println("This account is already unlocked.");
-			}
-			else if (!allUserIDs.contains(input)) {
+			if (!allUserIDs.contains(input)) {
 				System.out.println("This account does not exist.");
+				return;
 			}
+			else if (!lockedUsers.contains(input)) {
+				System.out.println("This account is already unlocked.");
+				return;
+			}
+
 		} while (!lockedUsers.contains(input)||!allUserIDs.contains(input));
 
 		adminController.unlockAccount(input);
