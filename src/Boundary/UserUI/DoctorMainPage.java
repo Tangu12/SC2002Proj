@@ -194,10 +194,11 @@ public class DoctorMainPage {
 			System.out.println("Please enter when your shift ends: (0 -> 24) (-1 to return) (eg. 0 means 12am, 23 means 11pm)");
 			endTime = InputService.inputInteger();
 			if(endTime == -1) return;
-			if(startTime < 0 && endTime < 0 && startTime >= 24 && endTime> 24 && startTime >= endTime)
+			if(startTime < 0 || endTime < 0 || startTime >= 24 || endTime> 24 || startTime >= endTime)
 				System.out.println("Please only enter available time and endTime must be greater than startTime");
-		} while(startTime < 0 && endTime < 0 && startTime >= 24 && endTime> 24 && startTime >= endTime);
+		} while(startTime < 0 || endTime < 0 || startTime >= 24 || endTime> 24 || startTime >= endTime);
 		doctorController.createAppointmentSlot(doctorController.getDoctor().getUserID(), doctorController.getDoctor().getName(), plusDays, doctorController.getDoctor().getDepartment(), startTime, endTime);
+		System.out.println("Appointments are created succeesully!");
 	 }
 	 
 	 public void printAppointmentOfaDayForDoc(String date, String docID) {
