@@ -21,45 +21,41 @@ public class HospitalStaffRepository implements IRepository<String,String,String
     public static void updateHospitalStaffFile(List<Administrator> admList, List<Doctor> docList, List<Pharmacist> phList) {
         List<String[]> data = new ArrayList<>();
         
-        String[] values = new String[6];
+        String[] values = new String[5];
         values[0] = "Staff ID";
         values[1] = "Name";
-        values[2] = "Role";
+        values[2] = "Role/Department(if Doctor)";
         values[3] = "Gender";
         values[4] = "Age";
-        values[5] = "Department";
         data.add(values);
         
         for(Administrator adm : admList) {
-        	String[] row = new String[6];
+        	String[] row = new String[5];
         	row[0] = adm.getUserID();
             row[1] = adm.getName();
             row[2] = "Administrator";
             row[3] = adm.getGender().toString();
             row[4] = String.valueOf(adm.getAge());
-            row[5] = "NotApplicable";
             data.add(row);
         }
         
         for(Doctor doc : docList) {
-        	String[] row = new String[6];
+        	String[] row = new String[5];
         	row[0] = doc.getUserID();
             row[1] = doc.getName();
-            row[2] = "Doctor";
+            row[2] = doc.getDepartment().toString();
             row[3] = doc.getGender().toString();
             row[4] = String.valueOf(doc.getAge());
-            row[5] = doc.getDepartment().toString();
             data.add(row);
         }
         
         for(Pharmacist ph : phList) {
-        	String[] row = new String[6];
+        	String[] row = new String[5];
         	row[0] = ph.getUserID();
             row[1] = ph.getName();
             row[2] = "Pharmacist";
             row[3] = ph.getGender().toString();
             row[4] = String.valueOf(ph.getAge());
-            row[5] = "NotApplicable";
             data.add(row);
         }
         updateFile(data);
