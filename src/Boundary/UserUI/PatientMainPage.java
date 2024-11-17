@@ -56,7 +56,8 @@ public class PatientMainPage extends UserMainPage{
                     	viewAvailableAppointmentSlots(AppointmentList.getInstance().getAppointmentList());
                         break;
                     case 4:
-                    	scheduleAppointment(this.patientController.getPatient());
+                    	if(scheduleAppointment(this.patientController.getPatient())) System.out.println("Your appointment is successfully scheduled");
+                    	else System.out.println("Appointment is NOT scheduled!");
                         break;
                     case 5:
                         System.out.println("Enter the Appointment that you want to change: ");
@@ -279,9 +280,9 @@ public class PatientMainPage extends UserMainPage{
 
         String prefDoctor = null;
         while (prefDoctor == null) {
-            System.out.println("Enter your preferred Doctor: ");
+            System.out.println("Enter your preferred Doctor (-1 to quit): ");
             prefDoctor = patientController.selectionOfDoctor(pur, dept, AppointmentList.getInstance().getAppointmentList());
-			if(prefDoctor!=null && prefDoctor.equals("NOAVAILABLEDOCTORS") || prefDoctor.equals("INDEXOUTOFBOUNDS")) return false;
+			if(prefDoctor!=null && prefDoctor.equals("NOAVAILABLEDOCTORS") || prefDoctor.equals("INDEXOUTOFBOUNDS") || prefDoctor.equals("-1")) return false;
 		}
         int appIndex = selectionOfTimeSlot(prefDoctor, AppointmentList.getInstance().getAppointmentList());
         patientController.scheduleAppointment(pat, appIndex, pur);
