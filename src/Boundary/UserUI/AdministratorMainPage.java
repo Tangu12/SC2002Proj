@@ -111,10 +111,9 @@ public class AdministratorMainPage extends UserMainPage{
 	            System.out.println("(2) Add Medicine");
 	            System.out.println("(3) Remove Medicine");
 	            System.out.println("(4) Update Medicine");
-	            System.out.println("(5) Use Medicine");
-	            System.out.println("(6) Check Inventory for Low Stock");
-	            System.out.println("(7) Process Replenishment Requests");
-	            System.out.println("(8) Return to Main Menu");
+	            System.out.println("(5) Check Inventory for Low Stock");
+	            System.out.println("(6) Process Replenishment Requests");
+	            System.out.println("(7) Return to Main Menu");
 
 	            choice = InputService.inputInteger();
 
@@ -123,25 +122,15 @@ public class AdministratorMainPage extends UserMainPage{
 	                case 2 -> addOrIncrementMedicine();
 	                case 3 -> removeMedicine();
 	                case 4 -> updateMedicine();
-	                case 5 -> useMedicine();
-	                case 6 -> checkInventory();
-	                case 7 -> processReplenishmentRequests();
-	                case 8 -> System.out.println("Returning to Main Menu.");
+	                case 5 -> checkInventory();
+	                case 6 -> processReplenishmentRequests();
+	                case 7 -> System.out.println("Returning to Main Menu.");
 	                default -> System.out.println("Invalid choice.");
 	            }
-	        } while (choice != 8);
+	        } while (choice != 7);
 	    }
 
 	public void addStaffMember() {
-		/*
-        System.out.print("Enter hospital ID: ");
-        String hospitalId = InputService.inputString();
-
-        Optional<? extends HospitalStaff> staffToadd = adminController.findStaffById(hospitalId);
-        if(staffToadd.isPresent()) {
-        	System.out.println("ID already exists!!!");
-        	return;
-        }*/
 
         System.out.print("Enter role: \n(1). Doctor\n(2). Pharmacist\n(3). Administrator\n");
         int choice = InputService.inputInteger();
@@ -617,27 +606,6 @@ public class AdministratorMainPage extends UserMainPage{
         int newAlertLevel = InputService.inputInteger();
         adminController.updateMedicine(medicine, newStock, newAlertLevel);
         System.out.println("Updated " + MedicationInventory.getInventory().get(choice-1).getNameOfMedicine() + ": New stock = " + newStock + ", New alert level = " + newAlertLevel);
-    }
-	
-	// Use a specific amount of medicine
-    public void useMedicine() {
-    	viewInventory();
-        System.out.print("Enter medicine name to use: ");
-        int choice = InputService.inputInteger();
-        Medicine medicine = adminController.findMedicineByName(MedicationInventory.getInventory().get(choice-1).getNameOfMedicine());
-        if (medicine == null) {
-            System.out.println("Medicine not found.");
-            return;
-        }
-
-        System.out.print("Enter amount used: ");
-        int amount = InputService.inputInteger();
-        if (amount <= medicine.getCurrentStock()) {
-            adminController.decrementStock(medicine, amount);
-            System.out.println("Used " + amount + " units of " + MedicationInventory.getInventory().get(choice-1).getNameOfMedicine() + ".");
-        } else {
-            System.out.println("Insufficient stock.");
-        }
     }
     
     public void checkInventory() {

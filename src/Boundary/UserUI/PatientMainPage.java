@@ -1,5 +1,6 @@
 package Boundary.UserUI;
 
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
@@ -163,7 +164,7 @@ public class PatientMainPage extends UserMainPage{
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/M/yyyy H:mm");
         int i = 1;
         for (Appointment appointments : appointmentList) {
-            if (appointments.getPatID().equals(pat.getUserID()) && appointments.getStatusOfApp() == Status.Confirmed) {
+            if (appointments.getPatID().equals(pat.getUserID()) && appointments.getStatusOfApp() == Status.Confirmed && (!appointments.getTimeOfApp().toLocalDate().isBefore(LocalDate.now()))) {
             	System.out.println("|" + formatCell(String.valueOf(i), 5)
 						+ "|" + formatCell(appointments.getPurposeOfApp().toString(), columnWidth)
 						+ "|" + formatCell(appointments.getTimeOfApp().format(formatter), columnWidth)
@@ -174,7 +175,7 @@ public class PatientMainPage extends UserMainPage{
 						+ "-".repeat(40) + "+");
 		        i++;
             }
-            if (appointments.getPatID().equals(pat.getUserID()) && appointments.getStatusOfApp() == Status.Pending) {
+            if (appointments.getPatID().equals(pat.getUserID()) && appointments.getStatusOfApp() == Status.Pending && (!appointments.getTimeOfApp().toLocalDate().isBefore(LocalDate.now()))) {
             	System.out.println("|" + formatCell(String.valueOf(i), 5)
 						+ "|" + formatCell(appointments.getPurposeOfApp().toString(), columnWidth)
 						+ "|" + formatCell(appointments.getTimeOfApp().format(formatter), columnWidth)
@@ -186,6 +187,8 @@ public class PatientMainPage extends UserMainPage{
 				i++;
             }
         }
+        
+        if(i==1) System.out.println("There is no scheduled appointment.");
     }
 	
 	public void viewPatientPastAppointmentOutcomeRecord(ArrayList<Appointment> appointmentList, Patient pat) {

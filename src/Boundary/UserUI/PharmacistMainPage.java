@@ -130,7 +130,8 @@ public class PharmacistMainPage extends UserMainPage{
             System.out.println("(2) Update Prescription");
             System.out.println("(3) Update Prescription Status");
             System.out.println("(4) Search Prescription by ID");
-            System.out.println("(5) Return to Main Menu");
+            System.out.println("(5) Dispense Medicine");
+            System.out.println("(6) Return to Main Menu");
 
             choice = InputService.inputInteger();
 
@@ -210,13 +211,16 @@ public class PharmacistMainPage extends UserMainPage{
                     }
                     break;
                 case 5:
+                		dispenseMedicine();
+                		break;
+                case 6:
                     System.out.println("Returning to Main Menu.");
                     break;
                 default:
                     System.out.println("Invalid choice, please try again.");
                     break;
             }
-        } while (choice != 5);
+        } while (choice != 6);
     }
 
     /*
@@ -451,5 +455,39 @@ public class PharmacistMainPage extends UserMainPage{
 				i++;
 			}
 		}
+    }
+    
+    // Use a specific amount of medicine
+    public void dispenseMedicine() {
+    		viewAvailableMed();
+        System.out.print("Select the index of medicine to use: ");
+        int choice = InputService.inputInteger();
+        Medicine medicine = pharmacistController.findMedicineByName(MedicationInventory.getInventory().get(choice-1).getNameOfMedicine());
+        if (medicine == null) {
+            System.out.println("Medicine not found.");
+            return;
+        }
+
+        System.out.print("Enter amount used: ");
+        int amount = InputService.inputInteger();
+        if (amount <= medicine.getCurrentStock()) {
+        		pharmacistController.decrementStock(medicine, amount);
+            System.out.println("Used " + amount + " units of " + MedicationInventory.getInventory().get(choice-1).getNameOfMedicine() + ".");
+        } else {
+            System.out.println("Insufficient stock.");
+        }
+    }
+    
+    public void checkInventory() {
+        boolean lowStockFound = false;
+        for (Medicine medicine : MedicationInventory.getInventory()) {
+            if (medicine.needsReplenishment()) {
+                System.out.println("Low stock alert: " + medicine.getNameOfMedicine() +"Current Stock Level : "+ medicine.getCurrentStock() + " Low Stock alert is set at : " + medicine.getLowStockLevelAlert());
+                lowStockFound = true;
+            }
+        }
+        if (!lowStockFound) {
+            System.out.println("All medicines are sufficiently stocked.");
+        }
     }
 }

@@ -2,6 +2,7 @@ package Controllers;
 
 import Entity.Appointment;
 import Entity.AppointmentList;
+import Entity.MedicationInventory;
 import Entity.Enums.Status;
 import Entity.User.Pharmacist;
 import Entity.Medicine;
@@ -23,10 +24,6 @@ public class PharmacistController {
     
     public Pharmacist getPharmacist() {
     	return this.pharmacist;
-    }
-
-    public void viewAppointmentOutcomeRecord(){
-
     }
 
     /*
@@ -70,5 +67,18 @@ public class PharmacistController {
         } else {
             System.out.println("Invalid input. Please enter 1 or 2.");
         }
+    }
+    
+    public void decrementStock(Medicine med, int usedAmount) {
+    		medicalInventoryService.decrementStock(med.getNameOfMedicine(), usedAmount);
+    }
+    
+    public Medicine findMedicineByName(String name) {
+        for (Medicine medicine : MedicationInventory.getInventory()) {
+            if (medicine.getNameOfMedicine().equalsIgnoreCase(name)) {
+                return medicine;
+            }
+        }
+        return null;
     }
 } 
