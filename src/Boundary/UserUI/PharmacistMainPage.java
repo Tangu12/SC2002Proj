@@ -7,16 +7,12 @@ import Entity.AppointmentList;
 import Entity.MedicationInventory;
 import Entity.Medicine;
 import Entity.Enums.Status;
-import Services.AppointmentService;
 import Services.InputService;
-import Services.MedicalInventoryService;
-import Utils.clearScreen;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class PharmacistMainPage extends UserMainPage{
     private PharmacistController pharmacistController;
@@ -144,8 +140,9 @@ public class PharmacistMainPage extends UserMainPage{
                     System.out.print("Select the index of the Appointment ID you want to update (e.g, 1): ");
                     int appSelection = InputService.inputInteger();
                     if(appSelection-1 >= pendingPresciptionAppointmentsIndices.size()) {System.out.println("Please only enter the available options"); return;}
+                    Appointment targetAppointment = pharmacistController.getAppointmentByID(AppointmentList.getInstance().getAppointmentList().get(pendingPresciptionAppointmentsIndices.get(appSelection-1)).getAppID());
                     int medSelection;
-                    String medicine = " ";
+                    String medicine = targetAppointment.getMedicine();
                     do {
                     	viewAvailableMed();
                     	System.out.print("Select the Medicine (-1 to end): ");
@@ -154,7 +151,10 @@ public class PharmacistMainPage extends UserMainPage{
                     	else if(medSelection <= 0 || medSelection > MedicationInventory.getInventory().size()) System.out.println("Not available medicine.");
                     	else {
                     		if(medicine == " ") medicine = MedicationInventory.getInventory().get(medSelection - 1).getNameOfMedicine();
-                    		else medicine = medicine + "/" + MedicationInventory.getInventory().get(medSelection - 1).getNameOfMedicine();
+                    		else {
+                    			if(medicine.contains(MedicationInventory.getInventory().get(medSelection - 1).getNameOfMedicine())) System.out.println(MedicationInventory.getInventory().get(medSelection - 1).getNameOfMedicine() + " is already prescribed");
+                    			else medicine = medicine + "/" + MedicationInventory.getInventory().get(medSelection - 1).getNameOfMedicine();
+                    		}
                     	}
                         
                     } while(medSelection != -1);
@@ -166,7 +166,6 @@ public class PharmacistMainPage extends UserMainPage{
                     String instruction = InputService.inputString();
 
                     String dateIssued = String.valueOf(LocalDate.now().format(formatterDate));
-                    Appointment targetAppointment = pharmacistController.getAppointmentByID(AppointmentList.getInstance().getAppointmentList().get(pendingPresciptionAppointmentsIndices.get(appSelection-1)).getAppID());
                     pharmacistController.addNewPrescription(targetAppointment, dateIssued, medicine, dosage, instruction);
                     break;
                 case 3:
