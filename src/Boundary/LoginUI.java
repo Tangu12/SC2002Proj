@@ -27,6 +27,12 @@ public class LoginUI {
     private AccountManager accountManager;
     private CredentialsService credentialsService;
 
+    /**
+     * LoginUI class which displays the login
+     * @param loginController
+     * @param accountManager
+     * @param credentialsService
+     */
     public LoginUI(LoginController loginController, AccountManager accountManager, CredentialsService credentialsService) {
         this.loginController = loginController;
         this.accountManager = accountManager;

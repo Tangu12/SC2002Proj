@@ -33,8 +33,14 @@ public class AdministratorMainPage extends UserMainPage{
 	public void homePage() {
         int choice;
         do {
+			System.out.println("    _       _           _       _     _             _             \n" +
+					"   / \\   __| |_ __ ___ (_)_ __ (_)___| |_ _ __ __ _| |_ ___  _ __ \n" +
+					"  / _ \\ / _` | '_ ` _ \\| | '_ \\| / __| __| '__/ _` | __/ _ \\| '__|\n" +
+					" / ___ \\ (_| | | | | | | | | | | \\__ \\ |_| | | (_| | || (_) | |   \n" +
+					"/_/   \\_\\__,_|_| |_| |_|_|_| |_|_|___/\\__|_|  \\__,_|\\__\\___/|_|   ");
+
             System.out.println("\nChoose the number of functions:\n"
-                    + "(1) View and Manage Hospital Staff\n"
+                    + "(1) View and Manage Hospital\n"
                     + "(2) View Appointment Details\n"
                     + "(3) Manage Inventory System\n"
                     + "(4) Logout");
@@ -55,7 +61,7 @@ public class AdministratorMainPage extends UserMainPage{
         int choice;
 
         do {
-            System.out.println("\n--- Hospital Staff Management ---");
+            System.out.println("\n--- Hospital Management ---");
             System.out.println("(1) Add Staff Member");
             System.out.println("(2) Remove Staff Member");
             System.out.println("(3) Update Staff Information");

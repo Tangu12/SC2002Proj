@@ -30,6 +30,12 @@ public class PatientMainPage extends UserMainPage{
     public void homePage() {
     	int choice;
         do {
+			System.out.println("|  _ \\ __ _| |_(_) ___ _ __ | |_ \n" +
+					"| |_) / _` | __| |/ _ \\ '_ \\| __|\n" +
+					"|  __/ (_| | |_| |  __/ | | | |_ \n" +
+					"|_|   \\__,_|\\__|_|\\___|_| |_|\\__|");
+
+
             System.out.println("Choose the number of function:\n"
                     + "(1) View Medical Record\n"
                     + "(2) Update Personal Information\n"
