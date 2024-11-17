@@ -1,5 +1,6 @@
 package Boundary;
 
+import Application.ApplicationContext;
 import Services.InputService;
 
 public class WelcomeUI {
@@ -14,7 +15,7 @@ public class WelcomeUI {
         this.logoutUI = logoutUI;
     }
 
-    public void welcomeUI() {
+    public void welcomeUI(ApplicationContext applicationContext) {
         try {
              do{
                  System.out.print(
@@ -34,7 +35,7 @@ public class WelcomeUI {
                 int choice = InputService.inputInteger();
                 switch (choice) {
                     case 1 -> patientRegistrationUI.registrationUI();
-                    case 2 -> loginUI.loginUI();
+                    case 2 -> loginUI.loginUI(applicationContext);
                     case 3-> quit = logoutUI.logoutUI();
                     default -> System.out.println("Invalid choice. Please try again.");
                 }
@@ -42,7 +43,7 @@ public class WelcomeUI {
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println(e.getMessage());
-            welcomeUI();
+            welcomeUI(applicationContext);
         }
     }
 }

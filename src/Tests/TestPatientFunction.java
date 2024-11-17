@@ -76,7 +76,7 @@ public class TestPatientFunction {
 
 		// Create Boundary
 		DoctorMainPage mainPage = new DoctorMainPage(docController);
-		PatientMainPage mainPage1 = new PatientMainPage(docController, patientController);
+		PatientMainPage mainPage1 = new PatientMainPage(patientController);
 
 		mainPage1.mainpage();
 

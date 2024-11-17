@@ -18,11 +18,9 @@ import Entity.User.Patient;
 import Services.InputService;
 
 public class PatientMainPage {
-	private DoctorController doctorController;
 	private PatientController patientController;
 	
-	public PatientMainPage(DoctorController docCon, PatientController patCon) {
-		this.doctorController = docCon;
+	public PatientMainPage(PatientController patCon) {
 		this.patientController = patCon;
 	}
 	
@@ -276,7 +274,7 @@ public class PatientMainPage {
         String prefDoctor = null;
         while (prefDoctor == null) {
             System.out.println("Enter your preferred Doctor: ");
-            prefDoctor = doctorController.selectionOfDoctor(pur, dept, AppointmentList.getInstance().getAppointmentList());
+            prefDoctor = patientController.selectionOfDoctor(pur, dept, AppointmentList.getInstance().getAppointmentList());
 			if(prefDoctor!=null && prefDoctor.equals("NOAVAILABLEDOCTORS")) return false;
 		}
         int appIndex = selectionOfTimeSlot(prefDoctor, AppointmentList.getInstance().getAppointmentList());
