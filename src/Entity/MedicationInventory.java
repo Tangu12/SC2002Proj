@@ -2,17 +2,24 @@ package Entity;
 
 import java.util.ArrayList;
 
+/**
+ * Medication Inventory Class which stores all the available {@code Medicine} and their information
+ */
 public class MedicationInventory {
     private static ArrayList<Medicine> inventory;
     private static MedicationInventory instance;
 
+    /**
+     * Constructor for {@code MedicationInventory}
+     */
     private MedicationInventory() {
         MedicationInventory.inventory = new ArrayList<>();
     }
 
-    /*
-    Singleton, makes sure that there is only one instance in the whole program
-    */
+    /**
+     * Singleton, makes sure that there is only one instance in the whole program
+     * @return
+     */
     public static MedicationInventory getInstance() {
         if (instance == null) {
             instance = new MedicationInventory();
@@ -20,27 +27,35 @@ public class MedicationInventory {
         return instance;
     }
 
-    // Get list of all medicines in the inventory
+    /**
+     * The getter method of all the {@code Medicine} in the {@code MedicationInventory}
+     * @return
+     */
     public static ArrayList<Medicine> getInventory() {
         return inventory;
     }
 
-    // Set Inventory
+    /**
+     * The setter method of all the {@code Medicine} in the {@code MedicationInventory}
+     * @param inventory
+     */
     public void setInventory(ArrayList<Medicine> inventory) {
     	MedicationInventory.inventory = inventory;
     }
 
-    /*
-    Add Medicine to inventory
-    */
+    /**
+     * Adds a {@code Medicine} to the {@code MedicationInventory}
+     */
     public void addMedicine(Medicine medicine){
         inventory.add(medicine);
         System.out.println("Medicine added successfully!");
     }
 
-    /*
-    Delete Medicine from list, returns True if Medicine is found, else return False
-    */
+    /**
+     *  Delete a {@code Medicine} from the {@code MedicationInventory} if it exists inside the {@code MedicationInventory}
+     * @param medicineName
+     * @return
+     */
     public boolean deleteMedicine(String medicineName) {
         for (Medicine medicine : inventory) {
             if (medicine.getNameOfMedicine().equals(medicineName)) {
@@ -52,9 +67,11 @@ public class MedicationInventory {
         return false;
     }
 
-    /*
-    Search for Medicine in list according to medicineName
-    */
+    /**
+     * Searches for a {@code Medicine} inside {@code MedicationInventory} using the name of the {@code Medicine}
+     * @param medicineName
+     * @return
+     */
     public Medicine findMedicine(String medicineName) {
         for (Medicine medicine : inventory) {
             if (medicine.getNameOfMedicine().equals(medicineName)) {
@@ -65,9 +82,12 @@ public class MedicationInventory {
         return null;
     }
 
-    /*
-    Increment currentStock
-    */
+    /**
+     * Increments the stock a {@code Medicine} inside the {@code MedicationInventory} if its exists
+     * @param medicineName
+     * @param increment
+     * @return
+     */
     public boolean incrementCurrentStock(String medicineName, int increment) {
         for(Medicine medicine : inventory){
             if(medicine.getNameOfMedicine().equals(medicineName)){
@@ -80,7 +100,13 @@ public class MedicationInventory {
         return false;
     }
 
-    // Decrement currentStock
+
+    /**
+     * Decrements the stock a {@code Medicine} inside the {@code MedicationInventory} if its exists
+     * @param medicineName
+     * @param decrement
+     * @return
+     */
     public boolean decrementCurrentStock(String medicineName, int decrement) {
         if (decrement<0) {
             System.out.println("Error, decrement value cannot be negative!");
@@ -104,7 +130,12 @@ public class MedicationInventory {
         return decremented;
     }
 
-    // set LowStockAlert
+    /**
+     * The setter method of the low level stock alert of a {@code Medicine} in the {@code MedicationInventory} if it exists
+     * @param medicineName
+     * @param lowStock
+     * @return
+     */
     public boolean setLowStockAlert(String medicineName, int lowStock) {
         if (lowStock<0) {
             System.out.println("Error, request value cannot be negative!");
@@ -129,6 +160,12 @@ public class MedicationInventory {
 
     }
 
+    /**
+     * The setter method of a current stock of a {@code Medicine} in the {@code MedicationInventory} if it exists
+     * @param medicineName
+     * @param currentStock
+     * @return
+     */
     // Set currentStock
     public boolean setCurrentStock(String medicineName, int currentStock) {
         if (currentStock<0) {
@@ -152,6 +189,12 @@ public class MedicationInventory {
         return updated;
     }
 
+    /**
+     * The setter method for the request amount of a certain {@code Medicine} in the {@code MedicationInventory} if it exists
+     * @param medicineName
+     * @param requestAmount
+     * @return
+     */
     // Set requestAmount
     public boolean setRequestAmount(String medicineName, int requestAmount) {
         if (requestAmount<0) {
@@ -187,10 +230,12 @@ public class MedicationInventory {
         return lowStockMedicines;
     }
 
-    /*
-    Master Method to updateMedicine based on medicineName. Replaces the entry associated with the medicineName with the updatedMedicine Object.
-    Returns true if successful, False otherwise
-    */
+    /**
+     * Master Method to updateMedicine based on medicineName. Replaces the entry associated with the medicineName with the updatedMedicine Object
+     * @param medicineName
+     * @param updatedMedicine
+     * @return True if successful, False otherwise
+     */
     public boolean updateMedicine(String medicineName, Medicine updatedMedicine) {
         // Input Checking
         if(updatedMedicine.getCurrentStock() < 0 || updatedMedicine.getRequestAmount() < 0 || updatedMedicine.getLowStockLevelAlert()<0){
@@ -211,9 +256,12 @@ public class MedicationInventory {
         return false;
     }
 
-    /*
-    Master Method to update the current stock based on medicineName. Returns True if successful, False otherwise
-    */
+    /**
+     *  Master Method to update the current stock based on medicineName
+     * @param medicineName
+     * @param updatedStock
+     * @return True if successful, False otherwise
+     */
     public boolean updateCurrentStock(String medicineName, int updatedStock) {
         if(updatedStock<0){
             System.out.println("Error, updated stock is not valid, please input a number >= 0!");
