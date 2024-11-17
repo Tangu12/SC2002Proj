@@ -17,17 +17,17 @@ import Entity.User.Doctor;
 import Entity.User.Patient;
 import Services.InputService;
 
+
 public class DoctorMainPage extends UserMainPage {
 
 	private static int columnWidth = 20;
 	private DoctorController doctorController;
-	//private PatientController patientController;
 	
 	public DoctorMainPage(DoctorController docCon) {
 		this.doctorController = docCon;
-		//this.patientController = patCon;
 	}
-	
+
+
 	 public void homePage() {
         int choice;
         do {
@@ -38,7 +38,6 @@ public class DoctorMainPage extends UserMainPage {
 
             System.out.println("Choose the number of function:\n"
                     + "(1) View Patient Medical Records\n"
-                    // + "(2) Update Patient Medical Records\n" already updating in below choices
                     + "(2) View Personal Schedule\n"
                     + "(3) Set Availability for Appointments\n"
                     + "(4) Accept or Decline Appointment Requests\n"

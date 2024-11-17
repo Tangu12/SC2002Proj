@@ -20,6 +20,9 @@ import java.security.Provider;
 
 import Application.ApplicationContext;
 
+/**
+ * LoginUI class which displays the login page when the User wants to log in
+ */
 public class LoginUI {
 
 
@@ -28,7 +31,7 @@ public class LoginUI {
     private CredentialsService credentialsService;
 
     /**
-     * LoginUI class which displays the login
+     * Constructor for {@code LoginUI}
      * @param loginController
      * @param accountManager
      * @param credentialsService
@@ -39,6 +42,13 @@ public class LoginUI {
         this.credentialsService = credentialsService;
     }
 
+    /**
+     * Login function which takes in the Users {@code HospitalID} and password and compares it with the corresponding {@code HospitalID} and password in {@code Credentials}.
+     * </p>
+     * If the login is successful, the home page of the User's domain would be displayed
+     * @param applicationContext
+     * @throws Exception
+     */
     public void loginUI(ApplicationContext applicationContext) throws Exception {
         String inputID;
         boolean validUserID = false;
@@ -95,7 +105,6 @@ public class LoginUI {
 	        		break;
         }
          */
-
     }
 }
 

@@ -7,7 +7,12 @@ import Controllers.PatientController;
 import Controllers.PharmacistController;
 import Entity.User.*;
 
+
+/**
+ * {@code UserMainPageFactory} class has the responsibility to return the domain of the User that is logging in
+ */
 public class UserMainPageFactory {
+
     public static UserMainPage getHomePage(IUser user, ApplicationContext applicationContext) {
         switch (user.getDomain()) {
             case PATIENT:

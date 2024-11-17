@@ -10,13 +10,23 @@ import Services.InputService;
 
 import java.time.LocalDate;
 
+/**
+ * {@code patientRegistrationController}
+ */
 public class PatientRegistrationUI {
     private PatientRegistrationController patientRegistrationController;
 
+    /**
+     * Constructor for {@code patientRegistrationController}
+     * @param patientRegistrationController
+     */
     public PatientRegistrationUI(PatientRegistrationController patientRegistrationController) {
         this.patientRegistrationController = patientRegistrationController;
     }
 
+    /**
+     * Displays the UI when a new {@code Patient} wants to register for an account in the Hospital
+     */
     public void registrationUI() {
         System.out.println("Welcome to Hospital Management System !");
         System.out.print("Your assigned PatientID is : ");
@@ -44,7 +54,5 @@ public class PatientRegistrationUI {
         Patient newUser = new Patient(patientRegistrationController.getUserName(),name,
                 patientRegistrationController.calculateAge(dob),gender,Domain.PATIENT,contactInfo,dob,bloodType);
         patientRegistrationController.registerUser(newUser,plainTextPassword,securityQuestion,plainTextSecurityAnswer);
-
-
     }
 }

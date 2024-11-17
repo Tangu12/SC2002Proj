@@ -230,46 +230,82 @@ public class Appointment {
 	}
 
 	/**
-	 *
+	 * The setter method of the {@code HospitalID} of a {@code Doctor} for a {@code Appointment}
 	 * @param docID
 	 */
 	public void setDocID(String docID) {
 		this.doctorID = docID;
 	}
-	
+
+	/**
+	 * The setter method of the {@code Doctor} name of a {@code Appointment}
+	 * @param docName
+	 */
 	public void setDocName(String docName) {
 		this.doctorName = docName;
 	}
-	
+
+	/**
+	 * The setter method of a {@code Appointment}'s purpose
+	 * @param purposeOfAppointment
+	 */
 	public void setPurposeOfApp(Purpose purposeOfAppointment) {
 		this.purposeOfAppointment = purposeOfAppointment;
 	}
 
+	/**
+	 * The setter method of the department of a {@code Appointment}
+	 * @param appointmentDepartment
+	 */
 	public void setDepartmentOfAppointment(Department appointmentDepartment) {
 		this.appointmentDepartment = appointmentDepartment;
 	}
-	
+
+	/**
+	 * The setter method of a {@code Appointment}'s status
+	 * @param statusOfAppointment
+	 */
 	public void setStatusOfApp(Status statusOfAppointment) {
 		this.statusOfAppointment = statusOfAppointment;
 	}
 
+	/**
+	 * The setter method of a {@code Appointment}'s outcome record
+	 * @param appointOutcomeRecord
+	 */
 	public void setAppointOutcomeRecord(String appointOutcomeRecord) {
 		this.appointOutcomeRecord = appointOutcomeRecord;
 	}
-	
+
+	/**
+	 * The setter method of a {@code Appointment}'s {@code Medicine}
+	 * @param med
+	 */
 	public void setMedicine(String med) {
 		this.medicine = med;
 	}
-	
+
+	/**
+	 * The setter method of a {@code Appointment}'s {@code Medicine} issue date
+	 * @param date
+	 */
 	public void setLocalDate(String date) {
 		DateTimeFormatter formatterDate = DateTimeFormatter.ofPattern("d/M/yyyy"); 
 		this.medicineIssuedDate = LocalDate.parse(date, formatterDate);
 	}
-	
+
+	/**
+	 * The setter method of a {@code Appointment}'s {@code Medicine} dosage
+	 * @param dosage
+	 */
 	public void setDosage(String dosage) {
 		this.dosage = dosage;
 	}
-	
+
+	/**
+	 * The setter method of the instructions of taking the {@code Medicine} of a {@code Appointment}
+	 * @param instructions
+	 */
 	public void setInstructions(String instructions) {
 		this.instructions = instructions;
 	}

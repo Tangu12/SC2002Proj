@@ -4,6 +4,7 @@ import Entity.User.*;
 import java.util.ArrayList;
 import Services.CredentialsService;
 
+
 public class AccountManager {
     private IUserAccountService<Patient> patientAccountService;   // Service for Patient
     private IUserAccountService<Doctor> doctorAccountService;

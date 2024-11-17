@@ -3,18 +3,31 @@ package Boundary;
 import Application.ApplicationContext;
 import Services.InputService;
 
+/**
+ * {@code WelcomeUI} displays the login UI for the User at the start of the program
+ */
 public class WelcomeUI {
     private PatientRegistrationUI patientRegistrationUI;
     private LogoutUI logoutUI;
     private LoginUI loginUI;
     boolean quit = false;
 
+    /**
+     * Constructor for {code WelcomeUI}
+     * @param patientRegistrationUI
+     * @param logoutUI
+     * @param loginUI
+     */
     public WelcomeUI(PatientRegistrationUI patientRegistrationUI, LogoutUI logoutUI,LoginUI loginUI) {
         this.patientRegistrationUI = patientRegistrationUI;
         this.loginUI = loginUI;
         this.logoutUI = logoutUI;
     }
 
+    /**
+     * Displays the welcome UI for every User that visits the Hospital
+     * @param applicationContext
+     */
     public void welcomeUI(ApplicationContext applicationContext) {
         try {
              do{

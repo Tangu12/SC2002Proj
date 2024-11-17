@@ -20,16 +20,27 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * {@code AdministratorMainPage} class which displays the UI that a {@code Administrator} would see after logging in
+ */
 public class AdministratorMainPage extends UserMainPage{
 	private AdministratorController adminController;
 	private HospitalStaffRegistrationService hospitalStaffRegistrationService;
 	private final int columnWidth = 20;
-	
+
+	/**
+	 * Constructor for {@code AdministratorMainPage}
+	 * @param adnController
+	 * @param hospitalStaffRegistrationService
+	 */
     public AdministratorMainPage(AdministratorController adnController, HospitalStaffRegistrationService hospitalStaffRegistrationService) {
     	this.adminController = adnController;
 		this.hospitalStaffRegistrationService = hospitalStaffRegistrationService;
     }
-	
+
+	/**
+	 * Displays the home page of the Administrator
+	 */
 	public void homePage() {
         int choice;
         do {
@@ -56,7 +67,10 @@ public class AdministratorMainPage extends UserMainPage{
             }
         } while (choice != 4);
     }
-	
+
+	/**
+	 * Displays the UI of the {@code Administrator} if they decide to view and manage {@code HospitalStaff}
+	 */
 	private void viewAndManageHospitalStaff() {
         int choice;
 
@@ -82,7 +96,10 @@ public class AdministratorMainPage extends UserMainPage{
             }
         } while (choice != 6);
     }
-	
+
+	/**
+	 * Displays the UI of the {@code Administrator} if they decide to view the appointment details
+	 */
 	private void viewAppointmentDetails() {
         int choice;
 
@@ -108,7 +125,10 @@ public class AdministratorMainPage extends UserMainPage{
             }
         } while (choice != 6);
     }
-	
+
+	/**
+	 * Displays the UI of the {@code Administrator} if they decide to manage the {@code MedicationInventory}
+	 */
 	private void manageInventorySystem() {
 	        int choice;
 	        do {
@@ -136,6 +156,9 @@ public class AdministratorMainPage extends UserMainPage{
 	        } while (choice != 7);
 	    }
 
+	/**
+	 * Adds a new {@code HospitalStaff}
+	 */
 	public void addStaffMember() {
 
         System.out.print("Enter role: \n(1). Doctor\n(2). Pharmacist\n(3). Administrator\n");
@@ -233,13 +256,19 @@ public class AdministratorMainPage extends UserMainPage{
         }
 	}
 
+	/**
+	 * Removes a {@code HospitalStaff} using the {@code AdminController}
+	 */
 	public void removeStaffMember() {
     	displayAllStaff();
         System.out.print("Enter the hospital ID to remove: ");
         String hospitalId = InputService.inputString();
         adminController.removeStaffMember(hospitalId);
     }
-	
+
+	/**
+	 * Updates the information of a {@code HospitalStaff}
+	 */
 	public void updateStaffMember() {
 		displayAllStaff();
         System.out.print("Enter the hospital ID to update: ");
@@ -296,7 +325,10 @@ public class AdministratorMainPage extends UserMainPage{
         }
         adminController.updateStaffMember(hospitalId, newName, age, gender, dept);
 	}
-	
+
+	/**
+	 * Displays all the {@code HospitalStaff} in the hospital by order of their domains, from {@code Doctor}, {@code Pharmacist} then {@code Administrators}
+	 */
 	public void displayAllStaff() {
         System.out.println("All Doctors at the hospital:");
         System.out.println("+" + "-".repeat(10) + "+"
@@ -387,7 +419,11 @@ public class AdministratorMainPage extends UserMainPage{
 			k++;
 		}
     }
-	
+
+	/**
+	 * Displays all the {@code Appointment}
+	 * @param appointmentList
+	 */
 	public void displayAppointmentList(ArrayList<Appointment> appointmentList) {
 		if (appointmentList == null || appointmentList.isEmpty()) {
 			System.out.println("No appointments are found.");
@@ -460,7 +496,10 @@ public class AdministratorMainPage extends UserMainPage{
 					+ "-".repeat(30) + "+");
 		}
 	}
-	
+
+	/**
+	 * Displays all the {@code Appointment} with a specific status
+	 */
 	public void viewAppointmentsByStatus() {
 		System.out.println("Choose appointment status to filter by:");
         System.out.println("(1) Confirmed");
@@ -486,7 +525,10 @@ public class AdministratorMainPage extends UserMainPage{
 
         displayAppointmentList(adminController.getAppointmentsByStatus(status));
 	}
-	
+
+	/**
+	 * Displays the {@code Appointment} with a specific appointmentID
+	 */
 	public void searchAppointmentByID() {
         System.out.println("Enter the Appointment ID:");
         String appointmentID = InputService.inputString();
@@ -500,14 +542,20 @@ public class AdministratorMainPage extends UserMainPage{
             System.out.println("Appointment ID not found.");
         }
     }
-	
+
+	/**
+	 * Displays all the {@code Appointment}s belonging to a {@code Patient} with a specific {@code HospitalID}
+	 */
 	public void searchByPatientID() {
         System.out.println("Enter the Patient ID:");
         String patientID = InputService.inputString();
 
         displayAppointmentList(adminController.getAppointmentsByPatientID(patientID));
     }
-	
+
+	/**
+	 * Displays all the {@code Appointment}s belonging to a {@code Doctor} with a specific {@code HospitalID}
+	 */
 	public void searchByDoctorID() {
 		System.out.println("Enter the Doctor ID:");
         String doctorID = InputService.inputString();
@@ -515,6 +563,9 @@ public class AdministratorMainPage extends UserMainPage{
         displayAppointmentList(adminController.getAppointmentsByDoctorID(doctorID));
 	}
 
+	/**
+	 * Displays all the {@code Medicine} in the {@code MedicationInventory} alongside all their parameters, their name, current stock, low stock level alert and requested amount
+ 	 */
 	public void viewInventory() {
 		int i = 1;
 		if (adminController.getMedicationInventory().isEmpty()) {
@@ -555,7 +606,10 @@ public class AdministratorMainPage extends UserMainPage{
 			}
 		}
 	}
-	
+
+	/**
+	 * Add a new {@code Medicine} or increment the stock of a current {@code Medicine}
+	 */
 	public void addOrIncrementMedicine() {
     	viewInventory();
         System.out.print("Please select the medicine to add stock (0 to add new medicine): ");
@@ -583,8 +637,10 @@ public class AdministratorMainPage extends UserMainPage{
             adminController.addMedicine(name, stock, alertLevel);
         }
     }
-	
-	// Remove Medicine from inventory
+
+	/**
+	 * Removes a {@code Medicine} from the {@code MedicationInventor}
+	 */
     public void removeMedicine() {
     	viewInventory();
         System.out.print("Select the medicine to remove: ");
@@ -613,7 +669,8 @@ public class AdministratorMainPage extends UserMainPage{
         adminController.updateMedicine(medicine, newStock, newAlertLevel);
         System.out.println("Updated " + MedicationInventory.getInventory().get(choice-1).getNameOfMedicine() + ": New stock = " + newStock + ", New alert level = " + newAlertLevel);
     }
-    
+
+
     public void checkInventory() {
         boolean lowStockFound = false;
         for (Medicine medicine : MedicationInventory.getInventory()) {
@@ -626,8 +683,10 @@ public class AdministratorMainPage extends UserMainPage{
             System.out.println("All medicines are sufficiently stocked.");
         }
     }
-    
-    // Process all pending replenishment requests
+
+	/**
+	 * Process all pending replenishment requests
+	 */
     public void processReplenishmentRequests() {
     		List<Integer> medicineIndices = viewMedicineForReplenishmentRequests();
     		System.out.println("Select the medicine to replenish (-1 to exit): ");
@@ -639,7 +698,7 @@ public class AdministratorMainPage extends UserMainPage{
     		if (amount<0) {System.out.println("Unavailable amount!!"); return;}
     		adminController.processReplenishmentRequests(medicineIndices.get(choice-1), amount);
     }
-    
+
     private static String formatCell(String value, int width) {
 		if (value == " ") {
 			value = "";
@@ -647,6 +706,9 @@ public class AdministratorMainPage extends UserMainPage{
 		return String.format("%-" + width + "s", value);  // Left-align the text within the specified width
 	}
 
+	/**
+	 * Displays all the current locked and unlocked accounts and allows the {@code Administrator} to decide to unlock or lock any account
+	 */
 	public void manageUserAccountLock(){
 		int choice;
 
@@ -685,6 +747,9 @@ public class AdministratorMainPage extends UserMainPage{
 		} while (choice != 3);
 	}
 
+	/**
+	 * Locks a User's account if it exists and is unlocked
+	 */
 	public void lockAccount() {
 		ArrayList<String> lockedUsers = adminController.getAllLockedUserIDs();
 		ArrayList<String> allUserIDs = adminController.getAllUserIDs();
@@ -708,6 +773,9 @@ public class AdministratorMainPage extends UserMainPage{
 		System.out.println("Account " + input + " is locked.");
 	}
 
+	/**
+	 * Unlocks a User's account if it exists and is locked
+	 */
 	public void unlockAccount() {
 		ArrayList<String> lockedUsers = adminController.getAllLockedUserIDs();
 		ArrayList<String> allUserIDs = adminController.getAllUserIDs();
@@ -731,7 +799,11 @@ public class AdministratorMainPage extends UserMainPage{
 		adminController.unlockAccount(input);
 		System.out.println("Account " + input + " is unlocked.");
 	}
-	
+
+	/**
+	 * Displays a list of medicines in the inventory that have requested replenishment.
+	 * @return A list of indices representing the medicines with requested amounts greater than 0.
+	 */
 	public List<Integer> viewMedicineForReplenishmentRequests(){
 		List<Integer> indices = new ArrayList<>();
 		int i = 1;
