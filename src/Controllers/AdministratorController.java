@@ -74,7 +74,11 @@ public class AdministratorController {
                 .or(() -> Pharmacist.getPharmacistList().stream().filter(p -> p.getUserID().equals(hospitalId)).map(p -> (HospitalStaff) p).findFirst())
                 .or(() -> Administrator.getAdministratorList().stream().filter(a -> a.getUserID().equals(hospitalId)).map(a -> (HospitalStaff) a).findFirst());
     }
-    
+
+    /**
+     * Searches for a hospital staff member by their unique hospital ID across different staff types and removes them if they exist
+     * @param userID
+     */
     public void removeStaffMember(String userID) {
     	Optional<? extends HospitalStaff> staffToRemove = findStaffById(userID);
 
