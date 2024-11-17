@@ -52,7 +52,7 @@ public class PatientController {
             // Clear invalid input
         } catch (IndexOutOfBoundsException e) {
             System.out.println("Selected number is out of range. Back to Home Page");
-            // how to return it back to home page?
+            return "INDEXOUTOFBOUNDS";
         }
         if (selection == -1) { // add this to cancel
             throw new Exception();

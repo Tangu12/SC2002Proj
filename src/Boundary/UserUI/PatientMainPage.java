@@ -278,7 +278,7 @@ public class PatientMainPage extends UserMainPage{
         while (prefDoctor == null) {
             System.out.println("Enter your preferred Doctor: ");
             prefDoctor = patientController.selectionOfDoctor(pur, dept, AppointmentList.getInstance().getAppointmentList());
-			if(prefDoctor!=null && prefDoctor.equals("NOAVAILABLEDOCTORS")) return false;
+			if(prefDoctor!=null && prefDoctor.equals("NOAVAILABLEDOCTORS") || prefDoctor.equals("INDEXOUTOFBOUNDS")) return false;
 		}
         int appIndex = selectionOfTimeSlot(prefDoctor, AppointmentList.getInstance().getAppointmentList());
         patientController.scheduleAppointment(pat, appIndex, pur);
