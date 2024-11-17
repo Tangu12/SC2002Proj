@@ -6,18 +6,26 @@ import Entity.Medicine;
 import java.io.*;
 import java.util.ArrayList;
 
+/**
+ * The Repository that accesses and changes everything related to {@code MedicineInventory} in the {@code MedicineInventory} database
+ */
 public class MedicationInventoryRepository implements IRepository<String,String,Medicine,Medicine>{
     public final String path;
 
+    /**
+     * Constructor for the  /**
+     *      * Constructor for the {@code MedicalInventoryRepository} which initialises the path of which the {@code MedicalInventoryRepository} reads from
+     *      * @param path
+     * @param path
+     */
     public MedicationInventoryRepository(String path) {
         this.path = path;
     }
 
-    // read medicine(returns whole inventory)
-    /*
-     * Creates a new record in the medicationInventory File. It checks if the file exists, if not, it appends the record to the end of the file.
-     * */
-
+    /**
+     * Creates a new {@code Medicine} in the {@code MedicineInventory} file
+     * @param attributes
+     */
     @Override
     public void createRecord(Object... attributes) {
         if (attributes.length != 1 && !(attributes[0] instanceof Medicine)) {
@@ -50,9 +58,11 @@ public class MedicationInventoryRepository implements IRepository<String,String,
         }
     }
 
-    /*
-     * Looks through the MedicationInventory file to find the medicine matching the input, and returns the medicine.
-     * */
+    /**
+     * Looks through the {@code MedicineInventory} file to find the {@code Medicine} matching the input, and returns the {@code Medicine}.
+     * @param identifier
+     * @return
+     */
     @Override
     public Medicine readRecord(String identifier){
         try (BufferedReader reader = new BufferedReader(new FileReader(path))) {
@@ -83,9 +93,10 @@ public class MedicationInventoryRepository implements IRepository<String,String,
         return null;
     }
 
-    /*
-    Loads all medicine into a temporary List. Then goes through the list to find the record that matches and adds it to the temporary List. It then writes the temporary list into the file
-    */
+    /**
+     * Updates the data of a {@code Medicine} inside the {@code MedicineInventory} file
+     * @param record
+     */
     @Override
     public void updateRecord(Medicine record) {
         ArrayList<Medicine> tempMedicineList = new ArrayList<>();
@@ -140,9 +151,10 @@ public class MedicationInventoryRepository implements IRepository<String,String,
         }
     }
 
-    /*
-    Loads all medicine into a temporary List. Then goes through the list to find the record that matches DOES NOT add it to the temporaryList. It then writes the temporary list into the file
-    */
+    /**
+     * Deletes a {@code Medicine} from the {@code MedicineInventory} file
+     * @param medicineName
+     */
     @Override
     public void deleteRecord(String medicineName){
         ArrayList<Medicine> tempMedicineList = new ArrayList<>();
@@ -198,9 +210,10 @@ public class MedicationInventoryRepository implements IRepository<String,String,
 
     }
 
-    /*
-    Returns all medicine in the file in an ArrayList
-    * */
+    /**
+     * Returns all {@code Medicine} in the file in an ArrayList
+     * @return
+     */
     public ArrayList<Medicine> getAllMedicine(){
         ArrayList<Medicine> inventory = new ArrayList<>();;
 
@@ -230,9 +243,10 @@ public class MedicationInventoryRepository implements IRepository<String,String,
         return inventory;
     }
 
-    /*
-    Overwrites the file and stores the inventory List
-    */
+    /**
+     * Overwrites the file and stores the inventory List
+     * @param inventory
+     */
     public void saveInventoryToFile(ArrayList<Medicine> inventory){
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(path))) {
             writer.write("Medicine Name,Current Stock,Low Stock Alert,Request Amount");

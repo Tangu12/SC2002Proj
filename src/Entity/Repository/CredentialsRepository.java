@@ -8,15 +8,25 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
+
+/**
+ * The Repository that accesses and changes everything related to {@code Credentials} in the {@code Credentials} database
+ */
 public class CredentialsRepository implements IRepository <String,String, Credentials,Credentials> {
     public final String path;
 
+    /**
+     * Constructor for the {@code CredentialsRepository} which initialises the path of which the {@code CredentialsRepository} reads from
+     * @param path
+     */
     public CredentialsRepository(String path) {
         this.path = path;
     }
 
-    /*
-    Returns the row corresponding to the UserID given
+    /**
+     * Searches database for a specific {@code Credentials}
+     * @param userID
+     * @return The {@code Credentials} corresponding to the UserID given
      */
     @Override
     public Credentials readRecord(String userID) {
@@ -45,10 +55,10 @@ public class CredentialsRepository implements IRepository <String,String, Creden
         return null;
     }
 
-    /*
-    Deletes the row corresponding to the UserID given. Looks through the credentials file and adds the rows into an array of strings.
-    Then if the current row matches the userID given, it skips past it. When the end of the file is reached, a writer is used to write
-    all the entries in the array of string back into the file
+
+    /**
+     * Looks through the {@code Credentials} file and deletes the row corresponding to the UserID given.
+     * @param userID
      */
     @Override
     public void deleteRecord(String userID) {
@@ -105,8 +115,9 @@ public class CredentialsRepository implements IRepository <String,String, Creden
         }
     }
 
-    /*
-    Adds a new credential to the bottom of the credentials file. Does not check if credentials already exists
+    /**
+     * Adds a new {@code Credentials} to the bottom of the {@code Credentials}s file. Does not check if {@code Credentials} already exists
+     * @param attributes
      */
     @Override
     public void createRecord(Object... attributes) {
@@ -135,8 +146,9 @@ public class CredentialsRepository implements IRepository <String,String, Creden
         }
     }
 
-    /*
-    Updates the row corresponding to the UserID with the attributes given
+    /**
+     * Updates the row with the corresponding {@code UserID} with the attributes given
+     * @param record
      */
     @Override
     public void updateRecord(Credentials record) {
@@ -190,9 +202,13 @@ public class CredentialsRepository implements IRepository <String,String, Creden
         }
     }
 
-    /*
-    More specific update operation than updateRecord, which updates all. This only updates the hashedPassword and Salt
-    */
+
+    /**
+     * More specific update operation than updateRecord, which updates all. This only updates the hashedPassword and Salt
+     * @param userID
+     * @param hashedPassword
+     * @param salt
+     */
     public void updateHashedPassword(String userID, String hashedPassword, String salt) {
         List<Credentials> credentialsDatabase = new ArrayList<>();
 

@@ -28,7 +28,7 @@ public class AppointmentsRepository implements IRepository <String,String,Appoin
 	public static String FILE_NAME;
 
 	/**
-	 * Determines the file that gets accessed and changed by the Repository
+	 * Constructor for the {@code AppointmentRepository} which initialises the path of which the {@code AppointmentRepository} reads from
 	 * @param path
 	 */
     public AppointmentsRepository(String path) {

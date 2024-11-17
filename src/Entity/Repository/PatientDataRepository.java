@@ -13,14 +13,24 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ * The Repository that accesses and changes everything related to {@code Patient} in the {@code Patient} database
+ */
 public class PatientDataRepository implements IRepository <String,String,Patient,Patient>{
     public static String path;
 
+    /**
+     * Constructor for the {@code PatientDataRepository} which initialises the path of which the {@code PatientDataRepository} reads from
+     * @param path
+     */
     public PatientDataRepository(String path) {
     	PatientDataRepository.path = path;
     }
 
+    /**
+     * Creates a new {@code Patient} in the {@code Patient} file
+     * @param attributes
+     */
     @Override
     public void createRecord(Object... attributes) {
         if (attributes.length != 1 || !(attributes[0] instanceof Patient)) {
@@ -60,6 +70,11 @@ public class PatientDataRepository implements IRepository <String,String,Patient
         }
     }
 
+    /**
+     * Looks through the {@code Patient} file to find the {@code Patient} matching the input, and returns the {@code Patient}.
+     * @param targetID
+     * @return
+     */
     @Override
     public Patient readRecord(String targetID) { // why cant i change this to String?
         try (BufferedReader reader = new BufferedReader(new FileReader(path))) {
@@ -94,6 +109,10 @@ public class PatientDataRepository implements IRepository <String,String,Patient
         return null;
     }
 
+    /**
+     * Updates the data of a {@code Patient} inside the {@code Patient} file
+     * @param updatedPatient
+     */
     @Override
     public void updateRecord(Patient updatedPatient) {
         ArrayList<Patient> tempPatients = new ArrayList<>();
@@ -152,6 +171,10 @@ public class PatientDataRepository implements IRepository <String,String,Patient
         }
     }
 
+    /**
+     * Deletes a {@code Patient} inside the {@code Patient} file
+     * @param deletePatientID
+     */
     @Override
     public void deleteRecord(String deletePatientID) {
         ArrayList<Patient> tempPatients = new ArrayList<>();
@@ -210,7 +233,10 @@ public class PatientDataRepository implements IRepository <String,String,Patient
             e.printStackTrace();
         }
     }
-    
+
+    /**
+     * Loads the data of all the {@code Patient} inside the {@code Patients} file
+     */
     public static void loadPatientlist() {
 		List<String[]> data = new ArrayList<>();
 
@@ -233,6 +259,4 @@ public class PatientDataRepository implements IRepository <String,String,Patient
 			}
 		}
     }
-    
-    
 }

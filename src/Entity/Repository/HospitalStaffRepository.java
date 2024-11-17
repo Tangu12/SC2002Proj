@@ -11,13 +11,26 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The Repository that accesses and changes everything related to {@code HospitalStaff} in the {@code HospitalStaff} database
+ */
 public class HospitalStaffRepository implements IRepository<String,String,String[],String[]>{
     public static String path;
 
+    /**
+     * Constructor for the {@code HospitalStaffRepository} which initialises the path of which the {@code HospitalStaffRepository} reads from
+     * @param path
+     */
     public HospitalStaffRepository(String path) {
     	HospitalStaffRepository.path = path;
     }
-    
+
+    /**
+     * Updates the {@code HospitalStaff} file with the latest information of all the {@code HospitalStaff} by their roles
+     * @param admList
+     * @param docList
+     * @param phList
+     */
     public static void updateHospitalStaffFile(List<Administrator> admList, List<Doctor> docList, List<Pharmacist> phList) {
         List<String[]> data = new ArrayList<>();
         
@@ -60,7 +73,11 @@ public class HospitalStaffRepository implements IRepository<String,String,String
         }
         updateFile(data);
     }
-    
+
+    /**
+     * Updates the {@code HospitalStaff} file with the latest data from the {@code HospitalStaff}
+     * @param data
+     */
     private static void updateFile(List<String[]> data) {
 		try {
 			BufferedWriter writer = new BufferedWriter(new FileWriter(path));
@@ -71,7 +88,10 @@ public class HospitalStaffRepository implements IRepository<String,String,String
 			e.printStackTrace();
 		}
 	}
-    
+
+    /**
+     * Loads the data of all the {@code Doctors} in the {@code HospitalStaff}
+     */
     public static void loadDoctorList() {
     	List<String[]> data = new ArrayList<>();
 
@@ -105,7 +125,10 @@ public class HospitalStaffRepository implements IRepository<String,String,String
 			}
 		}
     }
-    
+
+    /**
+     * Loads the data of all the {@code Pharmacists} in the {@code HospitalStaff}
+     */
     public static void loadPharmacistList() {
     	List<String[]> data = new ArrayList<>();
 
@@ -131,7 +154,10 @@ public class HospitalStaffRepository implements IRepository<String,String,String
 			}
 		}
     }
-    
+
+    /**
+     * Loads the data of all the {@code Administrators} in the {@code HospitalStaff}
+     */
     public static void loadAdministrator() {
     	List<String[]> data = new ArrayList<>();
 
@@ -158,9 +184,10 @@ public class HospitalStaffRepository implements IRepository<String,String,String
 		}
     }
 
-    /*
-    Creates a record and takes in (Staff ID,Name,Role,Gender,Age)
-    */
+    /**
+     * Creates a record and takes in (Staff ID,Name,Role,Gender,Age)
+     * @param attributes
+     */
     @Override
     public void createRecord(Object... attributes) {
         if(attributes.length != 5) {
@@ -197,9 +224,11 @@ public class HospitalStaffRepository implements IRepository<String,String,String
         }
     }
 
-    /*
-    Returns a record based on StaffID String[]
-    */
+    /**
+     * Returns a record based on StaffID String[]
+     * @param staffID
+     * @return
+     */
     @Override
     public String[] readRecord(String staffID) {
         try (BufferedReader reader = new BufferedReader(new FileReader(path))) {
@@ -219,9 +248,10 @@ public class HospitalStaffRepository implements IRepository<String,String,String
         return null;
     }
 
-    /*
-    Updates a record based on input (Staff ID,Name,Role,Gender,Age)
-    */
+    /**
+     * Updates a record based on input (Staff ID,Name,Role,Gender,Age)
+     * @param record
+     */
     @Override
     public void updateRecord(String[] record) {
         ArrayList<String[]> temp = new ArrayList<>();
@@ -265,9 +295,10 @@ public class HospitalStaffRepository implements IRepository<String,String,String
         }
     }
 
-    /*
-    Deletes a record based on input StaffID
-    */
+    /**
+     * Deletes a record based on input StaffID
+     * @param staffID
+     */
     @Override
     public void deleteRecord(String staffID) {
         ArrayList<String[]> temp = new ArrayList<>();

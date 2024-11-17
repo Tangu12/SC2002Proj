@@ -5,13 +5,24 @@ import Entity.MedicalRecord;
 import java.io.*;
 import java.util.ArrayList;
 
+/**
+ * The Repository that accesses and changes everything related to {@code MedicalRecord} in the {@code MedicalRecord} database
+ */
 public class MedicalRecordRepository implements IRepository<MedicalRecord,String,MedicalRecord,MedicalRecord>{
     public final String path;
 
+    /**
+     * Constructor for the {@code MedicalRecordsRepository} which initialises the path of which the {@code MedicalRecordsRepository} reads from
+     * @param path
+     */
     public MedicalRecordRepository(String path) {
         this.path = path;
     }
 
+    /**
+     * Creates a new {@code MedicalRecord} at the bottom of the {@code MedicalRecord} database
+     * @param attributes
+     */
     public void createRecord(Object... attributes) {
         if(attributes.length != 1 && !(attributes[0] instanceof MedicalRecord)){
             System.out.println("Error! Attributes must be of type MedicalRecord");
@@ -28,6 +39,11 @@ public class MedicalRecordRepository implements IRepository<MedicalRecord,String
         }
     }
 
+    /**
+     * Finds a specific {@code MedicalRecord} based on its {@code appointmentID}
+     * @param inputID
+     * @return The {@code MedicalRecord} with the corresponding {@code appointmentID} as inputID
+     */
     public MedicalRecord readRecord(String inputID) { // Find first instance of the person's patient ID?
         try (BufferedReader reader = new BufferedReader(new FileReader(path))) {
             String line;
@@ -61,6 +77,10 @@ public class MedicalRecordRepository implements IRepository<MedicalRecord,String
         return null;
     }
 
+    /**
+     * Updates the {@code MedicalRecord} of a specific {@code MedicalRecord} inside {@code MedicalRecord} file
+     * @param updatedRecord
+     */
     public void updateRecord(MedicalRecord updatedRecord) {
         ArrayList<MedicalRecord> tempMedicalRecords = new ArrayList<>();
         boolean isUpdated = false;
@@ -118,6 +138,10 @@ public class MedicalRecordRepository implements IRepository<MedicalRecord,String
     }
 
 
+    /**
+     * Deletes a {@code MedicalRecord} from the {@code MedicalRecord} file
+     * @param deleteRecord
+     */
     public void deleteRecord(MedicalRecord deleteRecord) {
         ArrayList<MedicalRecord> tempMedicalRecords = new ArrayList<>();
         boolean isDeleted = false;
