@@ -33,9 +33,9 @@ public class LoginController {
             if (attemptsLeft <= 0) {
                 System.out.println("Account is now locked due to too many failed attempts.");
                 // Ask security Question
-                boolean sucess = forgotPasswordService.verifySecurityQuestion(userID);
+                boolean success = forgotPasswordService.verifySecurityQuestion(userID);
 
-                if(sucess) {
+                if(success) {
                     System.out.println("Successfully verified.");
                     forgotPasswordService.resetPassword(userID);
                     return true;
