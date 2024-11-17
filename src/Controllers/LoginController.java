@@ -5,18 +5,32 @@ import Services.CredentialsService;
 import Services.ForgotPasswordService;
 import Services.UserAccount.AccountManager;
 
+/**
+ * {@code LoginController} handles all the logic a User trying to log in
+ */
 public class LoginController {
     private CredentialsService credentialsService;
     private AccountManager accountManager;
     private ForgotPasswordService forgotPasswordService;
 
+    /**
+     * Constructor for {@code LoginController}
+     * @param credentialsService
+     * @param accountManager
+     * @param forgotPasswordService
+     */
     public LoginController(CredentialsService credentialsService, AccountManager accountManager,ForgotPasswordService forgotPasswordService) {
         this.credentialsService = credentialsService;
         this.accountManager = accountManager;
         this.forgotPasswordService = forgotPasswordService;
     }
 
-    // Login Function, checks if account is locked, then if password matches
+    /**
+     * Login Function, checks if account is locked, then if password matches
+     * @param userID
+     * @param plainTextPassword
+     * @return
+     */
     public boolean login(String userID, String plainTextPassword) {
         if (credentialsService.isAccountLocked(userID)) {
             System.out.println("Account is locked by the administrator.");
@@ -43,15 +57,15 @@ public class LoginController {
                 System.out.println("Wrong answer to the security question!");
                 credentialsService.lockAccount(userID);
             }
-
-
-
-
             return false;
         }
     }
 
-    // Check if UserID is Valid
+    /**
+     * Check if entered UserID is a valid {@code HospitalID}
+     * @param userID
+     * @return True if the UserID is valid, False otherwise
+     */
     public boolean validUserID(String userID){
         Credentials userCredentials = credentialsService.getRecord(userID);
         if (userCredentials == null) {

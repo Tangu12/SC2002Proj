@@ -18,6 +18,9 @@ import Services.MedicalInventoryService;
 import Services.StaffManagementService;
 import Services.UserAccount.AccountManager;
 
+/**
+ * {@code AdministratorController} handles all the logic a Administrator's Functions
+ */
 public class AdministratorController {
     //public static void operation(){}
     
@@ -25,7 +28,14 @@ public class AdministratorController {
 	private StaffManagementService staffManagementService;
 	private MedicalInventoryService medicalInventoryService;
     private AccountManager accountManager;
-	
+
+    /**
+     * Constructor for {@code AdministratorController}
+     * @param admin
+     * @param staffManagementService
+     * @param medicalInventoryService
+     * @param accountManager
+     */
 	public AdministratorController(Administrator admin, StaffManagementService staffManagementService,
                                    MedicalInventoryService medicalInventoryService, AccountManager accountManager) {
 		this.admin = admin;
@@ -33,11 +43,19 @@ public class AdministratorController {
 		this.medicalInventoryService = medicalInventoryService;
         this.accountManager = accountManager;
 	}
-	
+
+    /**
+     * Gets the instance of a {@code Administrator}
+     * @return The instance of the {@code Administrator}
+     */
 	public Administrator getAdministrator() {
 		return this.admin;
 	}
 
+    /**
+     * Gets the instance of a {@code MedicationInventory}
+     * @return The instance of the {@code MedicationInventory}
+     */
     public ArrayList<Medicine> getMedicationInventory(){
         return medicalInventoryService.viewInventory();
     }
@@ -45,7 +63,12 @@ public class AdministratorController {
     public void addStaffMember(HospitalStaff staff, String plainTextPassword,String securityQuestion,String plainTextSecurityAnswer) {
         staffManagementService.addStaffMember(staff, plainTextPassword, securityQuestion, plainTextSecurityAnswer);
     }
-    
+
+    /**
+     * Searches for a hospital staff member by their unique hospital ID across different staff types if they exist
+     * @param hospitalId
+     * @return The {@code HospitalStaff} object if they exist, or an empty {@link Optional} if no staff member with the given ID exists
+     */
     public Optional<HospitalStaff> findStaffById(String hospitalId) {
     	return Doctor.getDoctorList().stream().filter(d -> d.getUserID().equals(hospitalId)).map(d -> (HospitalStaff) d).findFirst()
                 .or(() -> Pharmacist.getPharmacistList().stream().filter(p -> p.getUserID().equals(hospitalId)).map(p -> (HospitalStaff) p).findFirst())
@@ -71,7 +94,15 @@ public class AdministratorController {
             System.out.println("Staff member with ID " + userID + " not found.");
         }
     }
-    
+
+    /**
+     * Updates the parameters of {@code HospitalStaff} member if they exist
+     * @param userID
+     * @param newName
+     * @param age
+     * @param gender
+     * @param dep
+     */
     public void updateStaffMember(String userID, String newName, int age, Gender gender, Department dep) {
     	Optional<? extends HospitalStaff> staffToUpdate = findStaffById(userID);
         if (staffToUpdate.isPresent()) {
@@ -81,7 +112,12 @@ public class AdministratorController {
             System.out.println("Staff member with ID " + userID + " not found.");
         }
     }
-    
+
+    /**
+     * Gets the list of {@code Appointment}s with a given {@code Appointment} status
+     * @param status
+     * @return A array list of {@code Appointment}s with the corresponding input status
+     */
     public ArrayList<Appointment> getAppointmentsByStatus(String status) {
 		ArrayList<Appointment> filteredAppointments = new ArrayList<>();
 
@@ -90,24 +126,32 @@ public class AdministratorController {
 				filteredAppointments.add(row);
 			}
 		}
-
 		return filteredAppointments;
 	}
-    
+
+    /**
+     * Returns the {@code Appointment} with the corresponding AppointmentID as the input
+     * @param appID
+     * @return A {@code Appointment} with the corresponding AppointmentID as the input
+     */
     public Appointment getAppointmentByID(String appID) {
 		for(Appointment appointment : AppointmentList.getInstance().getAppointmentList()) {
 			if(appID.equals(appointment.getAppID())) return appointment;
 		}
 		return null;
 	}
-    
+
+    /**
+     * Gets all the {@code Appointment}s belonging to a {@code Patient} based on their {@code HospitalID}
+     * @param patientID
+     * @return A array list of {@code Appointment}s that belong to the corresponding {@code Patient}
+     */
     public ArrayList<Appointment> getAppointmentsByPatientID(String patientID) {
 		ArrayList<Appointment> filteredAppointments = new ArrayList<>();
 		for(Appointment appointment : AppointmentList.getInstance().getAppointmentList()) {
 			if (appointment.getPatID().equals(patientID))
 				filteredAppointments.add(appointment);
 		}
-
 		return filteredAppointments;
 	}
 

@@ -73,7 +73,7 @@ public class AppointmentService {
 	}
 
 	/**
-	 * Creates {@code Appointment} slots in the
+	 * Creates {@code Appointment} slots in the appointment list from the {@Appointment} file
 	 * @param docID
 	 * @param docName
 	 * @param plusDays
@@ -98,7 +98,11 @@ public class AppointmentService {
 		AppointmentsRepository.loadAppointments();
 	}
 
-
+	/**
+	 * Checks if the entered appointmentID is a valid {@code HospitalID}
+	 * @param appID
+	 * @return True if the entered appointmentID is a valid {@code HospitalID}
+	 */
 	public boolean checkAppIDExist(String appID){
 		for(Appointment app : AppointmentList.getInstance().getAppointmentList()) {
 			if(app.getAppID().equals(appID)) return true;
@@ -147,7 +151,10 @@ public class AppointmentService {
         appointment.setInstructions(instructions);
         System.out.println("New prescription added successfully.");
     }
-	
+
+	/**
+	 * Cleans up {@code Appointments} that are unscheduled and have already passed
+	 */
 	public void cleanUpUnscheduledAppointments() {
 		List<Appointment> appointmentList = AppointmentList.getInstance().getAppointmentList();
 	    // Use an iterator to avoid ConcurrentModificationException
