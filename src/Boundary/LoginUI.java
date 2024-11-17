@@ -1,5 +1,6 @@
 package Boundary;
 
+import Boundary.UserUI.*;
 import Controllers.AdministratorController;
 import Controllers.DoctorController;
 import Controllers.LoginController;
@@ -18,10 +19,6 @@ import Services.UserAccount.AccountManager;
 import java.security.Provider;
 
 import Application.ApplicationContext;
-import Boundary.UserUI.AdministratorMainPage;
-import Boundary.UserUI.DoctorMainPage;
-import Boundary.UserUI.PatientMainPage;
-import Boundary.UserUI.PharmacistMainPage;
 
 public class LoginUI {
 
@@ -63,8 +60,15 @@ public class LoginUI {
             validPassword = loginController.login(inputID, password);
         } while (!credentialsService.isAccountLocked(inputID) && !validPassword);
 
-        IUser user = accountManager.readUser(inputID);
+        if(validPassword) {
+            IUser user = accountManager.readUser(inputID);
+            UserMainPage userMainPage = UserMainPageFactory.getHomePage(user, applicationContext);
+            userMainPage.homePage();
+        }
+
         //user.homePage();
+
+        /*
         switch(user.getDomain()) {
 	        case PATIENT:
 	        		PatientController patientController = new PatientController((Patient) user, applicationContext.getAppointmentService());
@@ -90,6 +94,8 @@ public class LoginUI {
 	        		System.out.println("Not Available Domain!");
 	        		break;
         }
+         */
+
     }
 }
 

@@ -1,5 +1,6 @@
 package Boundary.UserUI;
 
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
@@ -17,7 +18,7 @@ import Entity.Enums.Status;
 import Entity.User.Patient;
 import Services.InputService;
 
-public class PatientMainPage {
+public class PatientMainPage extends UserMainPage{
 	private PatientController patientController;
 	
 	public PatientMainPage(PatientController patCon) {
@@ -26,9 +27,15 @@ public class PatientMainPage {
 	
 	private static int columnWidth = 20;
     
-    public void mainpage() throws Exception {
+    public void homePage() {
     	int choice;
         do {
+			System.out.println("|  _ \\ __ _| |_(_) ___ _ __ | |_ \n" +
+					"| |_) / _` | __| |/ _ \\ '_ \\| __|\n" +
+					"|  __/ (_| | |_| |  __/ | | | |_ \n" +
+					"|_|   \\__,_|\\__|_|\\___|_| |_|\\__|");
+
+
             System.out.println("Choose the number of function:\n"
                     + "(1) View Medical Record\n"
                     + "(2) Update Personal Information\n"
@@ -55,7 +62,8 @@ public class PatientMainPage {
                     	viewAvailableAppointmentSlots(AppointmentList.getInstance().getAppointmentList());
                         break;
                     case 4:
-                    	scheduleAppointment(this.patientController.getPatient());
+                    	if(scheduleAppointment(this.patientController.getPatient())) System.out.println("Your appointment is successfully scheduled");
+                    	else System.out.println("Appointment is NOT scheduled!");
                         break;
                     case 5:
                         System.out.println("Enter the Appointment that you want to change: ");
@@ -105,7 +113,10 @@ public class PatientMainPage {
             } catch (InputMismatchException e) {
                 System.out.println("Invalid input. Please enter a number between 1 and 9.");
                 choice = -1;
-            }
+            } catch (Exception e) {
+				System.out.println("Error when scheduling appointment!");
+				choice = -1;
+			}
         } while (choice != 9);
     }
     
@@ -160,7 +171,7 @@ public class PatientMainPage {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/M/yyyy H:mm");
         int i = 1;
         for (Appointment appointments : appointmentList) {
-            if (appointments.getPatID().equals(pat.getUserID()) && appointments.getStatusOfApp() == Status.Confirmed) {
+            if (appointments.getPatID().equals(pat.getUserID()) && appointments.getStatusOfApp() == Status.Confirmed && (!appointments.getTimeOfApp().toLocalDate().isBefore(LocalDate.now()))) {
             	System.out.println("|" + formatCell(String.valueOf(i), 5)
 						+ "|" + formatCell(appointments.getPurposeOfApp().toString(), columnWidth)
 						+ "|" + formatCell(appointments.getTimeOfApp().format(formatter), columnWidth)
@@ -171,7 +182,7 @@ public class PatientMainPage {
 						+ "-".repeat(40) + "+");
 		        i++;
             }
-            if (appointments.getPatID().equals(pat.getUserID()) && appointments.getStatusOfApp() == Status.Pending) {
+            if (appointments.getPatID().equals(pat.getUserID()) && appointments.getStatusOfApp() == Status.Pending && (!appointments.getTimeOfApp().toLocalDate().isBefore(LocalDate.now()))) {
             	System.out.println("|" + formatCell(String.valueOf(i), 5)
 						+ "|" + formatCell(appointments.getPurposeOfApp().toString(), columnWidth)
 						+ "|" + formatCell(appointments.getTimeOfApp().format(formatter), columnWidth)
@@ -183,6 +194,8 @@ public class PatientMainPage {
 				i++;
             }
         }
+        
+        if(i==1) System.out.println("There is no scheduled appointment.");
     }
 	
 	public void viewPatientPastAppointmentOutcomeRecord(ArrayList<Appointment> appointmentList, Patient pat) {
@@ -273,9 +286,9 @@ public class PatientMainPage {
 
         String prefDoctor = null;
         while (prefDoctor == null) {
-            System.out.println("Enter your preferred Doctor: ");
+            System.out.println("Enter your preferred Doctor (-1 to quit): ");
             prefDoctor = patientController.selectionOfDoctor(pur, dept, AppointmentList.getInstance().getAppointmentList());
-			if(prefDoctor!=null && prefDoctor.equals("NOAVAILABLEDOCTORS")) return false;
+			if(prefDoctor!=null && prefDoctor.equals("NOAVAILABLEDOCTORS") || prefDoctor.equals("INDEXOUTOFBOUNDS") || prefDoctor.equals("-1")) return false;
 		}
         int appIndex = selectionOfTimeSlot(prefDoctor, AppointmentList.getInstance().getAppointmentList());
         patientController.scheduleAppointment(pat, appIndex, pur);

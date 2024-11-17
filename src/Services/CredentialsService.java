@@ -105,7 +105,6 @@ public class CredentialsService {
 
         if(hashedSecurityAnswerFromFile.equals(hashedInputSecurityAnswer)){
             successful = true;
-            System.out.println("Login Successful!");
         }
 
         return successful;

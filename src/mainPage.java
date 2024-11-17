@@ -8,6 +8,7 @@ import Controllers.PatientRegistrationController;
 import Entity.AppointmentList;
 import Entity.Repository.AppointmentsRepository;
 import Entity.Repository.HospitalStaffRepository;
+import Entity.Repository.PatientDataRepository;
 import Entity.User.Administrator;
 import Entity.User.Doctor;
 import Entity.User.Pharmacist;
@@ -29,6 +30,7 @@ public class mainPage {
         HospitalStaffRepository.loadAdministrator();
 		HospitalStaffRepository.loadDoctorList();
 		HospitalStaffRepository.loadPharmacistList();
+		PatientDataRepository.loadPatientlist();
 		applicationContext.getMedicalInventoryService().loadInventoryFromFile();
         
         // Setup Controllers

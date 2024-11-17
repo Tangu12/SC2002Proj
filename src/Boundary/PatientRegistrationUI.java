@@ -36,9 +36,9 @@ public class PatientRegistrationUI {
         System.out.println("Your Age is : "+patientRegistrationController.calculateAge(dob));
 
         String contactInfo = InputService.inputEmail();
-        System.out.println("Please enter your Gender : ");
+        System.out.println("Please Select a Gender");
         Gender gender = InputService.inputEnum(Gender.class);
-        System.out.println("Please enter your Blood Type : ");
+        System.out.println("Please Select a Blood Type");
         BloodType bloodType = InputService.inputEnum(BloodType.class);
 
         Patient newUser = new Patient(patientRegistrationController.getUserName(),name,

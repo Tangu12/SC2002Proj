@@ -19,7 +19,7 @@ public class LoginController {
     // Login Function, checks if account is locked, then if password matches
     public boolean login(String userID, String plainTextPassword) {
         if (credentialsService.isAccountLocked(userID)) {
-            System.out.println("Account is locked due to too many failed attempts.");
+            System.out.println("Account is locked by the administrator.");
             return false;
         }
         if (credentialsService.checkPassword(userID, plainTextPassword)) {
@@ -33,9 +33,9 @@ public class LoginController {
             if (attemptsLeft <= 0) {
                 System.out.println("Account is now locked due to too many failed attempts.");
                 // Ask security Question
-                boolean sucess = forgotPasswordService.verifySecurityQuestion(userID);
+                boolean success = forgotPasswordService.verifySecurityQuestion(userID);
 
-                if(sucess) {
+                if(success) {
                     System.out.println("Successfully verified.");
                     forgotPasswordService.resetPassword(userID);
                     return true;

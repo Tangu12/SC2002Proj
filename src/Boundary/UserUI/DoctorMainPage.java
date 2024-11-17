@@ -17,14 +17,8 @@ import Entity.User.Doctor;
 import Entity.User.Patient;
 import Services.InputService;
 
-public class DoctorMainPage {
-//    public void viewPatientMedicalRecord(){}
-//    public void updatePatientMedicalRecord(){}
-//    public void viewPersonalSchedule(){}
-//    public void setAvailabilityForAppointments(){}
-//    public void processAppointmentRequest(){}
-//    public void viewUpcomingAppointments(){}
-//    public void logout(){}
+public class DoctorMainPage extends UserMainPage {
+
 	private static int columnWidth = 20;
 	private DoctorController doctorController;
 	//private PatientController patientController;
@@ -37,6 +31,11 @@ public class DoctorMainPage {
 	 public void homePage() {
         int choice;
         do {
+			System.out.println("|  _ \\  ___   ___| |_ ___  _ __ \n" +
+					"| | | |/ _ \\ / __| __/ _ \\| '__|\n" +
+					"| |_| | (_) | (__| || (_) | |   \n" +
+					"|____/ \\___/ \\___|\\__\\___/|_|   ");
+
             System.out.println("Choose the number of function:\n"
                     + "(1) View Patient Medical Records\n"
                     // + "(2) Update Patient Medical Records\n" already updating in below choices

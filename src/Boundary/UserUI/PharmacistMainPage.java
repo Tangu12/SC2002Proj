@@ -7,18 +7,14 @@ import Entity.AppointmentList;
 import Entity.MedicationInventory;
 import Entity.Medicine;
 import Entity.Enums.Status;
-import Services.AppointmentService;
 import Services.InputService;
-import Services.MedicalInventoryService;
-import Utils.clearScreen;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
-public class PharmacistMainPage {
+public class PharmacistMainPage extends UserMainPage{
     private PharmacistController pharmacistController;
     private static int columnWidth = 20;
     
@@ -29,6 +25,12 @@ public class PharmacistMainPage {
     public void homePage(){
         int choice;
         do {
+			System.out.println(" ____  _                                     _     _   \n" +
+					"|  _ \\| |__   __ _ _ __ _ __ ___   __ _  ___(_)___| |_ \n" +
+					"| |_) | '_ \\ / _` | '__| '_ ` _ \\ / _` |/ __| / __| __|\n" +
+					"|  __/| | | | (_| | |  | | | | | | (_| | (__| \\__ \\ |_ \n" +
+					"|_|   |_| |_|\\__,_|_|  |_| |_| |_|\\__,_|\\___|_|___/\\__|");
+
             System.out.println("\nChoose the number of functions:\n"
                     + "(1) View Appointment Outcome Record\n"
                     + "(2) Update Prescription Status\n"
@@ -130,7 +132,8 @@ public class PharmacistMainPage {
             System.out.println("(2) Update Prescription");
             System.out.println("(3) Update Prescription Status");
             System.out.println("(4) Search Prescription by ID");
-            System.out.println("(5) Return to Main Menu");
+            System.out.println("(5) Dispense Medicine");
+            System.out.println("(6) Return to Main Menu");
 
             choice = InputService.inputInteger();
 
@@ -143,8 +146,9 @@ public class PharmacistMainPage {
                     System.out.print("Select the index of the Appointment ID you want to update (e.g, 1): ");
                     int appSelection = InputService.inputInteger();
                     if(appSelection-1 >= pendingPresciptionAppointmentsIndices.size()) {System.out.println("Please only enter the available options"); return;}
+                    Appointment targetAppointment = pharmacistController.getAppointmentByID(AppointmentList.getInstance().getAppointmentList().get(pendingPresciptionAppointmentsIndices.get(appSelection-1)).getAppID());
                     int medSelection;
-                    String medicine = " ";
+                    String medicine = targetAppointment.getMedicine();
                     do {
                     	viewAvailableMed();
                     	System.out.print("Select the Medicine (-1 to end): ");
@@ -153,7 +157,10 @@ public class PharmacistMainPage {
                     	else if(medSelection <= 0 || medSelection > MedicationInventory.getInventory().size()) System.out.println("Not available medicine.");
                     	else {
                     		if(medicine == " ") medicine = MedicationInventory.getInventory().get(medSelection - 1).getNameOfMedicine();
-                    		else medicine = medicine + "/" + MedicationInventory.getInventory().get(medSelection - 1).getNameOfMedicine();
+                    		else {
+                    			if(medicine.contains(MedicationInventory.getInventory().get(medSelection - 1).getNameOfMedicine())) System.out.println(MedicationInventory.getInventory().get(medSelection - 1).getNameOfMedicine() + " is already prescribed");
+                    			else medicine = medicine + "/" + MedicationInventory.getInventory().get(medSelection - 1).getNameOfMedicine();
+                    		}
                     	}
                         
                     } while(medSelection != -1);
@@ -165,7 +172,6 @@ public class PharmacistMainPage {
                     String instruction = InputService.inputString();
 
                     String dateIssued = String.valueOf(LocalDate.now().format(formatterDate));
-                    Appointment targetAppointment = pharmacistController.getAppointmentByID(AppointmentList.getInstance().getAppointmentList().get(pendingPresciptionAppointmentsIndices.get(appSelection-1)).getAppID());
                     pharmacistController.addNewPrescription(targetAppointment, dateIssued, medicine, dosage, instruction);
                     break;
                 case 3:
@@ -210,13 +216,16 @@ public class PharmacistMainPage {
                     }
                     break;
                 case 5:
+                		dispenseMedicine();
+                		break;
+                case 6:
                     System.out.println("Returning to Main Menu.");
                     break;
                 default:
                     System.out.println("Invalid choice, please try again.");
                     break;
             }
-        } while (choice != 5);
+        } while (choice != 6);
     }
 
     /*
@@ -451,5 +460,39 @@ public class PharmacistMainPage {
 				i++;
 			}
 		}
+    }
+    
+    // Use a specific amount of medicine
+    public void dispenseMedicine() {
+    		viewAvailableMed();
+        System.out.print("Select the index of medicine to use: ");
+        int choice = InputService.inputInteger();
+        Medicine medicine = pharmacistController.findMedicineByName(MedicationInventory.getInventory().get(choice-1).getNameOfMedicine());
+        if (medicine == null) {
+            System.out.println("Medicine not found.");
+            return;
+        }
+
+        System.out.print("Enter amount used: ");
+        int amount = InputService.inputInteger();
+        if (amount <= medicine.getCurrentStock()) {
+        		pharmacistController.decrementStock(medicine, amount);
+            System.out.println("Used " + amount + " units of " + MedicationInventory.getInventory().get(choice-1).getNameOfMedicine() + ".");
+        } else {
+            System.out.println("Insufficient stock.");
+        }
+    }
+    
+    public void checkInventory() {
+        boolean lowStockFound = false;
+        for (Medicine medicine : MedicationInventory.getInventory()) {
+            if (medicine.needsReplenishment()) {
+                System.out.println("Low stock alert: " + medicine.getNameOfMedicine() +"Current Stock Level : "+ medicine.getCurrentStock() + " Low Stock alert is set at : " + medicine.getLowStockLevelAlert());
+                lowStockFound = true;
+            }
+        }
+        if (!lowStockFound) {
+            System.out.println("All medicines are sufficiently stocked.");
+        }
     }
 }
