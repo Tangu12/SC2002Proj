@@ -32,6 +32,9 @@ public class mainPage {
 		HospitalStaffRepository.loadPharmacistList();
 		PatientDataRepository.loadPatientlist();
 		applicationContext.getMedicalInventoryService().loadInventoryFromFile();
+		
+		//Remove old unscheduled appointments
+		applicationContext.getAppointmentService().cleanUpUnscheduledAppointments();
         
         // Setup Controllers
         PatientRegistrationController patientRegistrationController= new PatientRegistrationController(applicationContext.getCredentialsRepository(), applicationContext.getPatientAccountService());

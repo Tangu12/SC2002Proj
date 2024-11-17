@@ -175,15 +175,18 @@ public class PharmacistMainPage extends UserMainPage{
                     pharmacistController.addNewPrescription(targetAppointment, dateIssued, medicine, dosage, instruction);
                     break;
                 case 3:
-                		List<Integer> pendingPresciptionAppointmentsIndices1 = viewPresciptionAppointments();
+                		List<Integer> pendingPresciptionAppointmentsIndices1 = viewPendingPresciptionAppointments();
+                		if(pendingPresciptionAppointmentsIndices1.isEmpty()) break;
                     System.out.print("Select the Appointment ID you want to update: ");
                     int appSelection1 = InputService.inputInteger();
                     if(appSelection1-1 >= pendingPresciptionAppointmentsIndices1.size()) {System.out.println("Please only enter the available options"); return;}
-                    System.out.println("Enter new Prescription Status:\n"
-                            + "1. Completed\n"
-                            + "2. Pending Prescription\n");
-                    int statusChoice = InputService.inputInteger();
-                    pharmacistController.updatePrescriptionStatus(pharmacistController.getAppointmentByID(AppointmentList.getInstance().getAppointmentList().get(pendingPresciptionAppointmentsIndices1.get(appSelection1-1)).getAppID()), statusChoice);
+                    System.out.println("Changing prescription status to 'Completed' (Y/N): ");
+                    String changeStatus = InputService.inputString();
+                    if(changeStatus.equals("Y")) {
+                    		pharmacistController.updatePrescriptionStatus(pharmacistController.getAppointmentByID(AppointmentList.getInstance().getAppointmentList().get(pendingPresciptionAppointmentsIndices1.get(appSelection1-1)).getAppID()));
+                    		System.out.println("Status is updated to Completed.");
+                    }
+                    else System.out.println("Prescription status is not changed.");
                     break;
                 case 4:
                 		System.out.print("Enter Appointment ID to search: ");
@@ -423,6 +426,71 @@ public class PharmacistMainPage extends UserMainPage{
             }
             index++;
         }
+        return pendingIndices;
+    }
+    
+    public List<Integer> viewPendingPresciptionAppointments() {
+        int i = 1;
+        int index = 0;
+        List<Integer> pendingIndices = new ArrayList<>();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/M/yyyy");
+        
+        System.out.println("+" + "-".repeat(3) + "+" + "-".repeat(columnWidth) + "+" +
+				"-".repeat(columnWidth) + "+" + "-".repeat(columnWidth) + "+" +
+				"-".repeat(columnWidth) + "+" + "-".repeat(50) + "+" + "-".repeat(50) + "+" +
+				"-".repeat(columnWidth) + "+" + "-".repeat(columnWidth) + "+" +
+				"-".repeat(30) + "+");
+
+		System.out.println( "|" + formatCell("No.", 3)
+				+ "|" + formatCell("Appointment ID", columnWidth)
+				+ "|" + formatCell("Patient Name", columnWidth)
+				+ "|" + formatCell("Doctor Name", columnWidth)
+				+ "|" + formatCell("Status", columnWidth)
+				+ "|" + formatCell("Appointment Outcomes", 50)
+				+ "|" + formatCell("Medicine", 50)
+				+ "|" + formatCell("Issued Date", columnWidth)
+				+ "|" + formatCell("Dosage", columnWidth)
+				+ "|" + formatCell("Instructions", 30) + "|");
+
+		System.out.println("+" + "-".repeat(3) + "+" + "-".repeat(columnWidth) + "+" +
+				"-".repeat(columnWidth) + "+" + "-".repeat(columnWidth) + "+" +
+				"-".repeat(columnWidth) + "+" + "-".repeat(50) + "+" + "-".repeat(50) + "+" +
+				"-".repeat(columnWidth) + "+" + "-".repeat(columnWidth) + "+" +
+				"-".repeat(30) + "+");
+		
+        for (Appointment appointment : AppointmentList.getInstance().getAppointmentList()) {
+            if (appointment.getStatusOfApp() == Status.PendingPrescription) {
+            	String medicineIssuedDateStr = (appointment.getMedicineIssuedDate() != null)
+                        ? appointment.getMedicineIssuedDate().format(formatter)
+                        : "N/A";
+
+                System.out.println( "|" + formatCell(String.valueOf(i), 3)
+                		+ "|" + formatCell(appointment.getAppID(), columnWidth)
+                        + "|" + formatCell(appointment.getPatName(), columnWidth)
+                        + "|" + formatCell(appointment.getDocName(), columnWidth)
+                        + "|" + formatCell(appointment.getStatusOfApp().toString(), columnWidth)
+                        + "|" + formatCell(appointment.getAppointOutcomeRecord(), 50)
+                        + "|" + formatCell(appointment.getMedicine(), 50)
+                        + "|" + formatCell(medicineIssuedDateStr, columnWidth)
+                        + "|" + formatCell(appointment.getDosage(), columnWidth)
+                        + "|" + formatCell(appointment.getInstructions(), 30) + "|");
+                System.out.println( "+" + "-".repeat(3)
+                		+ "+" + "-".repeat(columnWidth) + "+"
+                        + "-".repeat(columnWidth) + "+"
+                        + "-".repeat(columnWidth) + "+"
+                        + "-".repeat(columnWidth) + "+"
+                        + "-".repeat(50) + "+"
+                        + "-".repeat(50) + "+"
+                        + "-".repeat(columnWidth) + "+"
+                        + "-".repeat(columnWidth) + "+"
+                        + "-".repeat(30) + "+");
+                i++;
+                pendingIndices.add(index);
+            }
+            index++;
+        }
+        
+        if(pendingIndices.size() == 0) System.out.println("There is no appointment waiting for prescription.");
         return pendingIndices;
     }
     

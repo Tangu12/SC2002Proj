@@ -59,14 +59,8 @@ public class PharmacistController {
     	appointmentService.addNewPrescription(appointment, dateIssued, medicine, dosage, instructions);
     }
     
-    public void updatePrescriptionStatus(Appointment appointment, int statusChoice) {
-        if (statusChoice == 1) {
-            appointment.setStatusOfApp(Status.Completed);
-        } else if (statusChoice == 2) {
-            appointment.setStatusOfApp(Status.PendingPrescription);
-        } else {
-            System.out.println("Invalid input. Please enter 1 or 2.");
-        }
+    public void updatePrescriptionStatus(Appointment appointment) {
+        appointment.setStatusOfApp(Status.Completed);
     }
     
     public void decrementStock(Medicine med, int usedAmount) {
