@@ -54,9 +54,11 @@ public class LoginUI {
             validPassword = loginController.login(inputID, password);
         } while (!credentialsService.isAccountLocked(inputID) && !validPassword);
 
-        IUser user = accountManager.readUser(inputID);
-        UserMainPage userMainPage = UserMainPageFactory.getHomePage(user, applicationContext);
-        userMainPage.homePage();
+        if(validPassword) {
+            IUser user = accountManager.readUser(inputID);
+            UserMainPage userMainPage = UserMainPageFactory.getHomePage(user, applicationContext);
+            userMainPage.homePage();
+        }
 
         //user.homePage();
 
