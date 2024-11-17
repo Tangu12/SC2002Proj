@@ -78,7 +78,7 @@ public class TestPatientFunction {
 		DoctorMainPage mainPage = new DoctorMainPage(docController);
 		PatientMainPage mainPage1 = new PatientMainPage(patientController);
 
-		mainPage1.mainpage();
+		//mainPage1.mainpage();
 
 		// Testing Functions
 		HospitalStaffRepository.updateHospitalStaffFile(Administrator.getAdministratorList(), Doctor.getDoctorList(), Pharmacist.getPharmacistList());

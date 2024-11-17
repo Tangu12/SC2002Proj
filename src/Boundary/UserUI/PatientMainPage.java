@@ -17,7 +17,7 @@ import Entity.Enums.Status;
 import Entity.User.Patient;
 import Services.InputService;
 
-public class PatientMainPage {
+public class PatientMainPage extends UserMainPage{
 	private PatientController patientController;
 	
 	public PatientMainPage(PatientController patCon) {
@@ -26,7 +26,7 @@ public class PatientMainPage {
 	
 	private static int columnWidth = 20;
     
-    public void mainpage() throws Exception {
+    public void homePage() {
     	int choice;
         do {
             System.out.println("Choose the number of function:\n"
@@ -105,7 +105,10 @@ public class PatientMainPage {
             } catch (InputMismatchException e) {
                 System.out.println("Invalid input. Please enter a number between 1 and 9.");
                 choice = -1;
-            }
+            } catch (Exception e) {
+				System.out.println("Error when scheduling appointment!");
+				choice = -1;
+			}
         } while (choice != 9);
     }
     

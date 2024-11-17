@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class AdministratorMainPage {
+public class AdministratorMainPage extends UserMainPage{
 	private AdministratorController adminController;
 	private HospitalStaffRegistrationService hospitalStaffRegistrationService;
 	private final int columnWidth = 20;

@@ -17,14 +17,8 @@ import Entity.User.Doctor;
 import Entity.User.Patient;
 import Services.InputService;
 
-public class DoctorMainPage {
-//    public void viewPatientMedicalRecord(){}
-//    public void updatePatientMedicalRecord(){}
-//    public void viewPersonalSchedule(){}
-//    public void setAvailabilityForAppointments(){}
-//    public void processAppointmentRequest(){}
-//    public void viewUpcomingAppointments(){}
-//    public void logout(){}
+public class DoctorMainPage extends UserMainPage {
+
 	private static int columnWidth = 20;
 	private DoctorController doctorController;
 	//private PatientController patientController;

@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class PharmacistMainPage {
+public class PharmacistMainPage extends UserMainPage{
     private PharmacistController pharmacistController;
     private static int columnWidth = 20;
     
