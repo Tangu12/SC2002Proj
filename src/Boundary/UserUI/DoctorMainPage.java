@@ -31,6 +31,11 @@ public class DoctorMainPage extends UserMainPage {
 	 public void homePage() {
         int choice;
         do {
+			System.out.println("|  _ \\  ___   ___| |_ ___  _ __ \n" +
+					"| | | |/ _ \\ / __| __/ _ \\| '__|\n" +
+					"| |_| | (_) | (__| || (_) | |   \n" +
+					"|____/ \\___/ \\___|\\__\\___/|_|   ");
+
             System.out.println("Choose the number of function:\n"
                     + "(1) View Patient Medical Records\n"
                     // + "(2) Update Patient Medical Records\n" already updating in below choices

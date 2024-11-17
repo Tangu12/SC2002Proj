@@ -25,6 +25,12 @@ public class PharmacistMainPage extends UserMainPage{
     public void homePage(){
         int choice;
         do {
+			System.out.println(" ____  _                                     _     _   \n" +
+					"|  _ \\| |__   __ _ _ __ _ __ ___   __ _  ___(_)___| |_ \n" +
+					"| |_) | '_ \\ / _` | '__| '_ ` _ \\ / _` |/ __| / __| __|\n" +
+					"|  __/| | | | (_| | |  | | | | | | (_| | (__| \\__ \\ |_ \n" +
+					"|_|   |_| |_|\\__,_|_|  |_| |_| |_|\\__,_|\\___|_|___/\\__|");
+
             System.out.println("\nChoose the number of functions:\n"
                     + "(1) View Appointment Outcome Record\n"
                     + "(2) Update Prescription Status\n"
