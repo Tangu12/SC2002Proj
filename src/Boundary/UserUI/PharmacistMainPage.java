@@ -33,7 +33,7 @@ public class PharmacistMainPage extends UserMainPage{
 
             System.out.println("\nChoose the number of functions:\n"
                     + "(1) View Appointment Outcome Record\n"
-                    + "(2) Update Prescription Status\n"
+                    + "(2) Manage Prescriptions\n"
                     + "(3) View Medication Inventory\n"
                     + "(4) Submit Replenishment Request\n"
                     + "(5) Logout\n"
