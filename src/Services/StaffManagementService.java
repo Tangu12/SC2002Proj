@@ -11,12 +11,22 @@ import Services.UserAccount.AdministratorAccountService;
 import Services.UserAccount.DoctorAccountService;
 import Services.UserAccount.PharmacistAccountService;
 
+/**
+ * {@code StaffManagementService} class which handles all the logic dealing with the {@code HospitalStaff} class
+ */
 public class StaffManagementService {
 	private DoctorAccountService doctorAccountService;
 	private AdministratorAccountService administratorAccountService;
 	private PharmacistAccountService pharmacistAccountService;
 	private HospitalStaffRegistrationService hospitalStaffRegistrationService;
 
+	/**
+	 * Constructor for {@code StaffManagementService}
+	 * @param doctorAccountService
+	 * @param administratorAccountService
+	 * @param pharmacistAccountService
+	 * @param hospitalStaffRegistrationService
+	 */
 	public StaffManagementService(DoctorAccountService doctorAccountService,AdministratorAccountService administratorAccountService,
 								  PharmacistAccountService pharmacistAccountService, HospitalStaffRegistrationService hospitalStaffRegistrationService) {
 		this.doctorAccountService = doctorAccountService;
@@ -25,6 +35,13 @@ public class StaffManagementService {
 		this.hospitalStaffRegistrationService = hospitalStaffRegistrationService;
 	}
 
+	/**
+	 * Adds a new {@code HospitalStaff}
+	 * @param staff
+	 * @param plainTextPassword
+	 * @param securityQuestion
+	 * @param plainTextSecurityAnswer
+	 */
 	public void addStaffMember(HospitalStaff staff, String plainTextPassword,String securityQuestion,String plainTextSecurityAnswer) {
 		switch (staff.getDomain()) {
 			case DOCTOR:
@@ -65,7 +82,11 @@ public class StaffManagementService {
 				break;
 		}
 	}
-	
+
+	/**
+	 * Removes a {@code HospitalStaff}
+	 * @param staff
+	 */
 	public void removeStaffMember(HospitalStaff staff) {
 		switch(staff.getDomain()) {
 		case DOCTOR:
@@ -84,7 +105,16 @@ public class StaffManagementService {
 			break;
 		}
 	}
-	
+
+	/**
+	 * Updates the parameters of a {@code HospitalStaff}
+	 * @param staff
+	 * @param newName
+	 * @param age
+	 * @param gender
+	 * @param newRole
+	 * @param dept
+	 */
 	public void updateStaffMember(HospitalStaff staff, String newName, int age, Gender gender, Domain newRole, Department dept) {
 		staff.setName(newName);
         staff.setAge(age);
@@ -98,18 +128,35 @@ public class StaffManagementService {
         }
 	}
 
+	/**
+	 *
+	 * @param domain
+	 * @return
+	 */
 	public String getUserName(Domain domain){
 		return hospitalStaffRegistrationService.getUserName(domain);
 	}
 
+	/**
+	 * Removes a {@code Doctor} account by the {@code Doctor}'s {@code HospitalID}
+	 * @param userID
+	 */
 	public void removeDoctorAccount(String userID){
 		doctorAccountService.deleteUserAccount(userID);
 	}
 
+	/**
+	 * Removes a {@code Pharmacist} account by the {@code Pharmacist}'s {@code HospitalID}
+	 * @param userID
+	 */
 	public void removePharmacistAccount(String userID){
 		pharmacistAccountService.deleteUserAccount(userID);
 	}
 
+	/**
+	 * Removes a {@code Administrator} account by the {@code Administrator}'s {@code HospitalID}
+	 * @param userID
+	 */
 	public void removeAdministratorAccount(String userID){
 		administratorAccountService.deleteUserAccount(userID);
 	}

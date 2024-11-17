@@ -8,6 +8,9 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
+/**
+ * {@code MedicalRecordService} class which handles all the logic dealing with the {@code MedicalRecord} class
+ */
 public class MedicalRecordService {
     private AppointmentsRepository appointmentsRepository;
 

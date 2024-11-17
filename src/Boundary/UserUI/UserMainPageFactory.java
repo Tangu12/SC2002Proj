@@ -13,6 +13,12 @@ import Entity.User.*;
  */
 public class UserMainPageFactory {
 
+    /**
+     Creates a new instance of the {@code MainPage} of the domain of the User who is logging in
+     * @param user
+     * @param applicationContext
+     * @return
+     */
     public static UserMainPage getHomePage(IUser user, ApplicationContext applicationContext) {
         switch (user.getDomain()) {
             case PATIENT:

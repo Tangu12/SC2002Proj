@@ -7,12 +7,18 @@ import Services.UserAccount.AdministratorAccountService;
 import Services.UserAccount.DoctorAccountService;
 import Services.UserAccount.PharmacistAccountService;
 
+/**
+ * {@code HospitalStaffRegistrationService} class which handles all the logic dealing with the registration of new {@code HospitalStaff}
+ */
 public class HospitalStaffRegistrationService {
     private CredentialsRepository credentialsRepository;
     private DoctorAccountService doctorAccountService;
     private PharmacistAccountService pharmacistAccountService;
     private AdministratorAccountService administratorAccountService;
 
+    /**
+     * Constructor for {@code HospitalStaffRegistrationService}
+     */
     public HospitalStaffRegistrationService(CredentialsRepository credentialsRepository, DoctorAccountService doctorAccountService
                         , PharmacistAccountService pharmacistAccountService, AdministratorAccountService administratorAccountService) {
         this.credentialsRepository = credentialsRepository;
@@ -21,9 +27,11 @@ public class HospitalStaffRegistrationService {
         this.administratorAccountService = administratorAccountService;
     }
 
-    /*
-    Looks through the file to find the number of users and creates a username based on the latest user.(eg if last user in file is P002, function returns P003)
-    */
+    /**
+     * Looks through the file to find the number of users and creates a {@code HospitalID} based on the latest User.(eg if last user in file is P002, function returns P003)
+     * @param domain
+     * @return
+     */
     public String getUserName(Domain domain){
         int userCount = credentialsRepository.countUsersByType(domain);
         String prefix = null;
@@ -54,33 +62,46 @@ public class HospitalStaffRegistrationService {
         }
     }
 
-    // Helper method
+    /**
+     * Helper method
+     * @return
+     */
     private String getIdFormat() {
         int digits = String.valueOf(IUser.MAX_USERS).length();
         return "%s%0" + digits + "d";  // This creates format like "%s%04d" for 9999
     }
 
-    /*
-    Calls doctorAccountService.createUserAccount to create a new account for the doctor
-    */
+    /**
+     * Creates an account for a new {@code Doctor} using the {@code DoctorAccountService} class
+     * @param doctor
+     * @param plainTextPassword
+     * @param securityQuestion
+     * @param plainTextSecurityAnswer
+     */
     public void registerDoctorAccount(Doctor doctor,String plainTextPassword, String securityQuestion, String plainTextSecurityAnswer){
         doctorAccountService.createUserAccount(doctor,plainTextPassword,securityQuestion,plainTextSecurityAnswer);
     }
 
-    /*
-    Calls pharmacistAccountService.createUserAccount to create a new account for the pharmacist
-    */
+
+    /**
+     * Create an account for a new {@code Pharmacist} using the {@code PharmacistAccountService} class
+     * @param pharmacist
+     * @param plainTextPassword
+     * @param securityQuestion
+     * @param plainTextSecurityAnswer
+     */
     public void registerPharmacistAccount(Pharmacist pharmacist,String plainTextPassword, String securityQuestion, String plainTextSecurityAnswer){
         pharmacistAccountService.createUserAccount(pharmacist, plainTextPassword,securityQuestion,plainTextSecurityAnswer);
     }
 
-    /*
-    Calls administratorAccountService.createUserAccount to create a new account for the administrator
-    */
+    /**
+     * Create an account for a new {@code Administrator} using the {@code AdministratorAccountService} class
+     * @param administrator
+     * @param plainTextPassword
+     * @param securityQuestion
+     * @param plainTextSecurityAnswer
+     */
     public void registerAdministratorAccount(Administrator administrator,String plainTextPassword, String securityQuestion, String plainTextSecurityAnswer){
         administratorAccountService.createUserAccount(administrator, plainTextPassword,securityQuestion,plainTextSecurityAnswer);
     }
-
-
-
 }

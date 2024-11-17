@@ -6,49 +6,74 @@ import Entity.Repository.MedicationInventoryRepository;
 
 import java.util.ArrayList;
 
+/**
+ * {@code MedicalInventoryService} class which handles all the logic dealing with the {@code MedicalInventory} class
+ */
 public class MedicalInventoryService {
     private MedicationInventory medicationInventory;
     private MedicationInventoryRepository medicationInventoryRepository;
 
+    /**
+     * Constructor of {@code MedicalInventoryService} with Dependency Injection of {@code MedicationInventory} Singleton and {@code MedicationInventoryRepository}
+     * @param medicationInventory
+     * @param medicationInventoryRepository
+     */
     // Dependency Injection of MedicationInventory Singleton and MedicationInventoryRepository
     public MedicalInventoryService(MedicationInventory medicationInventory,MedicationInventoryRepository medicationInventoryRepository) {
         this.medicationInventory = medicationInventory;
         this.medicationInventoryRepository = medicationInventoryRepository;
     }
 
-    // load Inventory from file (update the local list from the file)
+    /**
+     * Loads the {@code MedicationInventory} with the data stored in side the {@code MedicationInventory} file
+     */
     public void loadInventoryFromFile(){
         medicationInventory.setInventory(medicationInventoryRepository.getAllMedicine());
     }
 
-    // Save inventory to file
+
+    /**
+     * Saves the {@code MedicationInventory} inside the {@code MedicationInventory} file
+     */
     public void saveInventoryToFile(){
         medicationInventoryRepository.saveInventoryToFile(medicationInventory.getInventory());
     }
 
-    // add new medicine that is not in the list (adds to current list and file)
+    /**
+     * Adds a new {@code Medicine} if it does not already exist, it gets added into the current list of {@code Medicine} and the {@code MedicationInventory} file
+     * @param medicine
+     */
     public void addMedicineToInventory(Medicine medicine){
         medicationInventory.addMedicine(medicine);
         medicationInventoryRepository.createRecord(medicine);
     }
 
-    // readInventory (find medicine in inventory)
-    // checkifInInventory
-    // find medicine by name
+    /**
+     * Finds and returns a {@code Medicine} from the {@code MedicationInventory} based on its name
+     * @param medicineName
+     * @return The {@code Medicine} with the corresponding input name
+     */
     public Medicine findMedicineFromInventory(String medicineName){
         return medicationInventory.findMedicine(medicineName);
     }
 
-    // Remove Medicine from list and from file
+    /**
+     * Remove a {@code Medicine} from the {@code Medicine} list and from the {@code MedicationInventory} file based on its name
+     * @param medicineName
+     */
     public void removeMedicineFromInventory(String medicineName){
         medicationInventory.deleteMedicine(medicineName);
         medicationInventoryRepository.deleteRecord(medicineName);
     }
 
-    // Increment Stock of Medicine
+    /**
+     * Increment the stock of a {@code Medicine} based on its {@code Medicine} name and the input amount
+     * @param medicineName
+     * @param incrementAmount
+     * @return
+     */
     public boolean incrementStock(String medicineName, int incrementAmount) {
         //We can reference medicine directly because arrayLists return references and not copies
-
         Medicine medicine = medicationInventory.findMedicine(medicineName);
         if (medicine == null) {
             System.out.println("Medicine not found in inventory.");
@@ -62,7 +87,12 @@ public class MedicalInventoryService {
         return true;
     }
 
-    // Decrement Stock of Medicine
+    /**
+     * Decrements the stock of a {@code Medicine} based on its {@code Medicine} name and the input amount
+     * @param medicineName
+     * @param decrementAmount
+     * @return True if the stock of that {@code Medicine} has been decremented and False otherwise
+     */
     public boolean decrementStock(String medicineName, int decrementAmount) {
         Medicine medicine = medicationInventory.findMedicine(medicineName);
         //We can reference medicine directly because arrayLists return references and not copies
@@ -85,7 +115,9 @@ public class MedicalInventoryService {
         return true;
     }
 
-    // Check Low stock in inventory
+    /**
+     * Checks and prints the {@code Medicine} in the {@code MedicationInventory} that has Low stock and needs replenishment
+     */
     public void checkLowStockInInventory() {
         boolean lowStockFound = false;
         for (Medicine medicine : medicationInventory.getInventory()) {
@@ -100,7 +132,10 @@ public class MedicalInventoryService {
         }
     }
 
-    // View Inventory, returns a list of all medicine in inventory
+    /**
+     * Gets the list of all the{@code Medicine} in the {@code MedicationInventory}
+     * @return List of all {@code Medicine} in the {@code MedicationInventory}
+     */
     public ArrayList<Medicine> viewInventory(){
         return medicationInventory.getInventory();
     }
@@ -118,7 +153,12 @@ public class MedicalInventoryService {
         }
     }
 
-    // Process Replenishment
+    /**
+     * Process the replenishment of a {@code Medicine} based on its name
+     * @param medicineName
+     * @param addAmount
+     * @return True if the replenishment request has been satisfied and False otherwise
+     */
     public boolean processReplenishmentRequest(String medicineName, int addAmount){
         boolean hasRequests = false;
         for (Medicine medicine : medicationInventory.getInventory()) {
@@ -137,11 +177,21 @@ public class MedicalInventoryService {
         saveInventoryToFile(); // Save changes
         return true;
     }
-    
+
+    /**
+     * Searches and updates the parameters of a {@code Medicine} inside {@code MedicationInventory} based on its name
+     * @param med
+     */
     public void updateMedicine(Medicine med) {
     	medicationInventory.updateMedicine(med.getNameOfMedicine(), med);
     }
-    
+
+    /**
+     * Processes a replenishment request for a {@code Medicine} in the {@code MedicationInventory}, then updates its stock level.
+     * If the replenishment exceeds the requested amount, the request amount is reset to zero; otherwise, it is reduced by the replenished amount
+     * @param selection
+     * @param amount
+     */
     public void processReplenishmentRequests(int selection, int amount) {
     		int originalAmount = MedicationInventory.getInventory().get(selection).getCurrentStock();
     		int originalRequestedAmount =  MedicationInventory.getInventory().get(selection).getRequestAmount();

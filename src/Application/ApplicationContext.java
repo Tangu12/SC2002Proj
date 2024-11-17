@@ -345,6 +345,10 @@ public class ApplicationContext {
 		this.medicalInventoryService = medicalInventoryService;
 	}
 
+	/**
+	 * Gets the {@code PatientAccountService} instance
+	 * @return
+	 */
 	public PatientAccountService getPatientAccountService() {
 		return patientAccountService;
 	}
@@ -365,6 +369,10 @@ public class ApplicationContext {
 		return doctorAccountService;
 	}
 
+	/**
+	 * Sets the {@code DoctorAccountService} instance
+	 * @param doctorAccountService
+	 */
 	public void setDoctorAccountService(DoctorAccountService doctorAccountService) {
 		this.doctorAccountService = doctorAccountService;
 	}
@@ -377,6 +385,10 @@ public class ApplicationContext {
 		return pharmacistAccountService;
 	}
 
+	/**
+	 * Sets the {@code PharmacistAccountService} instance
+	 * @param pharmacistAccountService
+	 */
 	public void setPharmacistAccountService(PharmacistAccountService pharmacistAccountService) {
 		this.pharmacistAccountService = pharmacistAccountService;
 	}
@@ -389,6 +401,10 @@ public class ApplicationContext {
 		return administratorAccountService;
 	}
 
+	/**
+	 * Sets the {@code AdministratorAccountService} instance
+	 * @param administratorAccountService
+	 */
 	public void setAdministratorAccountService(AdministratorAccountService administratorAccountService) {
 		this.administratorAccountService = administratorAccountService;
 	}
@@ -401,15 +417,26 @@ public class ApplicationContext {
 		return hospitalStaffRegistrationService;
 	}
 
+	/**
+	 * Sets the {@code HospitalStaffRegistrationService} instance
+	 * @param hospitalStaffRegistrationService
+	 */
 	public void setHospitalStaffRegistrationService(HospitalStaffRegistrationService hospitalStaffRegistrationService) {
 		this.hospitalStaffRegistrationService = hospitalStaffRegistrationService;
 	}
 
-
+	/**
+	 * Gets the {@code AccountManager} instance
+	 * @return
+	 */
 	public AccountManager getAccountManager() {
 		return accountManager;
 	}
 
+	/**
+	 * Sets the {@code AccountManager} instance
+	 * @param accountManager
+	 */
 	public void setAccountManager(AccountManager accountManager) {
 		this.accountManager = accountManager;
 	}

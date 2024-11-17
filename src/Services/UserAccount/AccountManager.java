@@ -4,7 +4,9 @@ import Entity.User.*;
 import java.util.ArrayList;
 import Services.CredentialsService;
 
-
+/**
+ * {@code AccountManager} which contains all the different types of account services
+ */
 public class AccountManager {
     private IUserAccountService<Patient> patientAccountService;   // Service for Patient
     private IUserAccountService<Doctor> doctorAccountService;
@@ -12,6 +14,14 @@ public class AccountManager {
     private IUserAccountService<Administrator> administratorAccountService;
     private CredentialsService credentialsService;
 
+    /**
+     * Constructor for {@code AccountManager}
+     * @param patientAccountService
+     * @param doctorAccountService
+     * @param pharmacistAccountService
+     * @param administratorAccountService
+     * @param credentialsService
+     */
     public AccountManager(IUserAccountService<Patient> patientAccountService, IUserAccountService<Doctor> doctorAccountService, IUserAccountService<Pharmacist> pharmacistAccountService, IUserAccountService<Administrator> administratorAccountService, CredentialsService credentialsService) {
         this.patientAccountService = patientAccountService;
         this.doctorAccountService = doctorAccountService;
@@ -20,6 +30,13 @@ public class AccountManager {
         this.credentialsService = credentialsService;
     }
 
+    /**
+     * Adds a new User to the Hospital based on the domain of the new User
+     * @param user
+     * @param plainTextPassword
+     * @param securityQuestion
+     * @param plainTextSecurityAnswer
+     */
     public void addUser(Object user, String plainTextPassword, String securityQuestion, String plainTextSecurityAnswer) {
         if (user instanceof Patient) {
             patientAccountService.createUserAccount((Patient) user, plainTextPassword, securityQuestion, plainTextSecurityAnswer);
@@ -34,6 +51,11 @@ public class AccountManager {
         }
     }
 
+    /**
+     * Reads and returns the domain of a User based on their {@code HospitalID}
+     * @param userID
+     * @return The domain of a User
+     */
     public IUser readUser(String userID) {
         String role = String.valueOf(userID.charAt(0));
         switch (role) {
@@ -55,6 +77,10 @@ public class AccountManager {
         }
     }
 
+    /**
+     * Updates a User's information based on their domain
+     * @param user
+     */
     public void updateUserInfo(Object user) {
         if (user instanceof Patient) {
             patientAccountService.updateUserData((Patient) user);
@@ -69,6 +95,9 @@ public class AccountManager {
         }
     }
 
+    /**
+     * Gets the domain of the User and calls the resepctive functions to delete the User
+     */
     public void deleteUser(String userID, Object userType) {
         if (userType instanceof Patient) {
             patientAccountService.deleteUserAccount(userID);
@@ -83,7 +112,10 @@ public class AccountManager {
         }
     }
 
-    // Returns all the Locked Accounts
+    /**
+     * Function to get the {@code HospitalID} of all the User's that have their account locked
+     * @return Array list of the {@code HospitalID} of all the User's that have their account locked
+     */
     public ArrayList<String> getAllLockedUserIDs() {
         ArrayList<String> lockedAccounts = new ArrayList<>();
 
@@ -98,6 +130,10 @@ public class AccountManager {
         return lockedAccounts;
     }
 
+    /**
+     * Function to get the {@code HospitalID} of all the User's in the Hospital
+     * @return Array list of the {@code HospitalID} of all the User's in the Hospital
+     */
     public ArrayList<String> getAllUserIDs() {
         return credentialsService.getAllUserIDs();
     }
@@ -113,10 +149,18 @@ public class AccountManager {
         return unlockedAccounts;
     }
 
+    /**
+     * Locks the account of a User by setting the number log in of attempts to -1
+     * @param userID
+     */
     public void lockAccount(String userID) {
         credentialsService.lockAccount(userID);
     }
 
+    /**
+     * Unlocks the account of a User by setting the number log in of attempts to 0
+     * @param userID
+     */
     public void unlockAccount(String userID){
         credentialsService.unlockAccount(userID);
     }

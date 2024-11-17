@@ -17,18 +17,27 @@ import java.util.Base64;
 
 import static Entity.Credentials.maxLoginAttempts;
 
+/**
+ * {@code CredentialsService} class which handles all the logic dealing with the {@code Appointment} class
+ */
 public class CredentialsService {
     private CredentialsRepository credentialsRepository;
 
 
-    // Dependency Injection of CredentialsRepository
+    /**
+     * Constructor for the {@code CredentialsService} with Dependency Injection of {@code CredentialsRepository}
+     * @param credentialsRepository
+     */
     public CredentialsService(CredentialsRepository credentialsRepository) {
         this.credentialsRepository = credentialsRepository;
     }
 
-    /*
-    Hashes the password with the salt using the SHA-256 Algorithm
-    */
+    /**
+     * The hashing function that hashes the password with the salt using the SHA-256 Algorithm
+     * @param password
+     * @param salt
+     * @return
+     */
     public static String hashPassword(String password, String salt) {
         MessageDigest md = null;
         try {
@@ -43,9 +52,10 @@ public class CredentialsService {
         return Base64.getEncoder().encodeToString(hashedBytes);
     }
 
-    /*
-    Generates a random 16-bit salt to hash password with
-    */
+    /**
+     * Generates a random 16-bit salt to hash password with
+     * @return
+     */
     public static String generateSalt() {
         SecureRandom random = new SecureRandom();
         byte[] salt = new byte[16];
@@ -53,9 +63,12 @@ public class CredentialsService {
         return Base64.getEncoder().encodeToString(salt);
     }
 
-    /*
-    Given a plainTextPassword, it hashes the password and checks it with the stored password in the credentials file
-    */
+    /**
+     * Given a plainTextPassword, it hashes the password and checks it with the stored password in the {@code Credentials} file
+     * @param userID
+     * @param plainTextPassword
+     * @return True if the hashed password matches the password stored inside the {@code Credentials} file
+     */
     public boolean checkPassword(String userID, String plainTextPassword){
         boolean successfulLogin = false;
         // readRecord returns a line in the credentials file.
@@ -74,9 +87,11 @@ public class CredentialsService {
         return successfulLogin;
     }
 
-    /*
-    Given a plainTextPassword, it hashes the password and stores it into the Credentials File to update the password
-    */
+    /**
+     * Given a plainTextPassword, it hashes the password and stores it into the {@code Credentials} file to update the password
+     * @param userID
+     * @param newPlainTextPassword
+     */
     public void changePassword(String userID, String newPlainTextPassword){
         String salt = generateSalt();
         String hashedPassword = hashPassword(newPlainTextPassword, salt);
@@ -84,17 +99,22 @@ public class CredentialsService {
         credentialsRepository.updateHashedPassword(userID,hashedPassword,salt);
     }
 
-    /*
-    Returns Security Question
-    */
+    /**
+     * Finds the Security Question of a User based on their {@code HospitalID} and returns it
+     * @param userID
+     * @return The User's Security Question
+     */
     public String getSecurityQuestion(String userID){
         Credentials userData = credentialsRepository.readRecord(userID);
         return userData.getSecurityQuestion();
     }
 
-    /*
-    Verifies the Security Question based on the input Answer
-    */
+    /**
+     * Verifies a User's Security Question based on their {@code HospitalID} and input Answer
+     * @param userID
+     * @param inputAnswer
+     * @return True if the User's answer to the security question matches the answer in the {@code Credentials} file
+     */
     public boolean verifySecurityQuestion(String userID, String inputAnswer){
         boolean successful = false;
         Credentials userData = credentialsRepository.readRecord(userID);
@@ -110,17 +130,23 @@ public class CredentialsService {
         return successful;
     }
 
-    /*
-    Get Number of Tries Left for User
-    */
+    /**
+     * Get the remaining number of attempts to log in for a User based on their {@code HospitalID}
+     * @param userID
+     * @return
+     */
     public int getNumberOfTriesLeft(String userID){
         Credentials userData = credentialsRepository.readRecord(userID);
         return (maxLoginAttempts - userData.getLoginAttempts());
     }
 
-    /*
-    Create a new record in the credentials file
-    */
+    /**
+     * Create a {@code Credential} in the {@code Credential} file
+     * @param userID
+     * @param plainTextPassword
+     * @param securityQuestion
+     * @param plainTextSecurityAnswer
+     */
     public void createNewRecord(String userID, String plainTextPassword, String securityQuestion, String plainTextSecurityAnswer) {
         String salt = generateSalt();
 
@@ -132,53 +158,65 @@ public class CredentialsService {
         credentialsRepository.createRecord(newCredentials);
     }
 
-    /*
-    Delete a record from the credentials file
-    */
+    /**
+     * Deletes a {@code Credential} in the {@code Credential} file based on their {@code HospitalID}
+     * @param userID
+     */
     public void deleteRecord(String userID){
         credentialsRepository.deleteRecord(userID);
     }
 
-    /*
-    Update a record from the credentials file
-    */
+    /**
+     * Updates the {@code Credential}s of a User in the {@code Credential} file
+     * @param userData
+     */
     public void updateRecord(Credentials userData){
         credentialsRepository.updateRecord(userData);
     }
 
-    /*
-    Return a record from the credentials file based on UserID
-    */
+    /**
+     * Searches for the {@code Credential} of a User from the {@code Credential} file based on their UserID
+     * @param userID
+     * @return The {@code Credential} of the User
+     */
     public Credentials getRecord(String userID){
         return credentialsRepository.readRecord(userID);
     }
 
-    /*
-    Locks the User Account by setting the number of attempts to -1
-    */
+    /**
+     * Locks the User Account by setting the number of attempts to -1
+     * @param userID
+     */
     public void lockAccount(String userID){
         Credentials temp = credentialsRepository.readRecord(userID);
         temp.lockAccount();
         credentialsRepository.updateRecord(temp);
     }
 
+    /**
+     * Unlocks the User Account by setting the number of attempts to 0
+     * @param userID
+     */
     public void unlockAccount(String userID){
         Credentials temp = credentialsRepository.readRecord(userID);
         temp.unlockAccount();
         credentialsRepository.updateRecord(temp);
     }
 
-    /*
-    Method to check if userAccount is locked
-    */
+    /**
+     * Method to check if a User's account is locked
+     * @param userID
+     * @return True if the User's account is locked and False otherwise
+     */
     public boolean isAccountLocked(String userID){
         Credentials temp = credentialsRepository.readRecord(userID);
         return temp.isAccountLocked();
     }
 
-    /*
-    Method to increment the number of login attempts. Locks Account if number of attempts exceed 3
-    */
+    /**
+     * Method to increment the number of login attempts. Locks Account if number of attempts exceed 3
+     * @param userID
+     */
     public void incrementLoginAttempts(String userID){
         if(isAccountLocked(userID)){
             return;
@@ -192,6 +230,11 @@ public class CredentialsService {
         credentialsRepository.updateRecord(temp);
     }
 
+    /**
+     * Function to get the domain of the User based on their {@code HospitalID}
+     * @param userID
+     * @return The domain of the User
+     */
     public Domain getUserDomain(String userID) {
         if (userID == null || userID.isEmpty()) {
             System.out.println("Invalid userID.");
@@ -215,6 +258,10 @@ public class CredentialsService {
         }
     }
 
+    /**
+     * Function to get the {@code HospitalID} of all the User's in the Hospital
+     * @return Array list of the {@code HospitalID} of all the User's in the Hospital
+     */
     public ArrayList<String> getAllUserIDs() {
         return credentialsRepository.getAllUserIDs();
     }

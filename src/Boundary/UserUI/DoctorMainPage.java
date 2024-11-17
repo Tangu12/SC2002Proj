@@ -17,17 +17,25 @@ import Entity.User.Doctor;
 import Entity.User.Patient;
 import Services.InputService;
 
-
+/**
+ * {@code DoctorMainPage} class which inherits from the {@code UserMainPage} class
+ */
 public class DoctorMainPage extends UserMainPage {
 
 	private static int columnWidth = 20;
 	private DoctorController doctorController;
-	
+
+	/**
+	 * Constructor for {@code DoctorMainPage}
+	 * @param docCon
+	 */
 	public DoctorMainPage(DoctorController docCon) {
 		this.doctorController = docCon;
 	}
 
-
+	/**
+	 *
+	 */
 	 public void homePage() {
         int choice;
         do {
@@ -85,7 +93,11 @@ public class DoctorMainPage extends UserMainPage {
             }
         } while (choice != 7);
     }
-	 
+
+	/**
+	 * Function to view all the current schedule of a {@code Doctor} based on their {@code HospitalID}
+	 * @param doc
+	 */
 	 public void viewPersonalSchedule(Doctor doc) {
         System.out.println("+" + "-".repeat(columnWidth) + "+"
 				+ "-".repeat(columnWidth) + "+"
@@ -126,8 +138,11 @@ public class DoctorMainPage extends UserMainPage {
             }
         }
 	 }
-	 
-	 public void setAvailability() {
+
+	/**
+	 * Function to set the days of which a {@code Doctor} would be available to work in the Hospital
+	 */
+	public void setAvailability() {
 	        int choice;
 	        do {
 	            System.out.println("Please enter your choice to update your shift for upcoming week: \n"
@@ -163,7 +178,6 @@ public class DoctorMainPage extends UserMainPage {
 	                	createAppointmentSlot(doctorController.getDoctor().getUserID(), doctorController.getDoctor().getName(), 6, doctorController.getDoctor().getDepartment());
 	                    break;
 	                case 8:
-	                	//doctorController.sortFile();
 	                    System.out.println("Quitting....");
 	                    break;
 	                default:
@@ -172,14 +186,27 @@ public class DoctorMainPage extends UserMainPage {
 	            }
 	        } while(choice != 8);
 	    }
-	 
-	 private static String formatCell(String value, int width) {
+
+	/**
+	 * Function to left-align the text within the specified width
+	 * @param value
+	 * @param width
+	 * @return
+	 */
+	private static String formatCell(String value, int width) {
 			if (value == " ") {
 				value = "";
 			}
-			return String.format("%-" + width + "s", value);  // Left-align the text within the specified width
+			return String.format("%-" + width + "s", value);
 		}
-	 
+
+	/**
+	 * Function for a {@code Doctor} to set their available timeslots in a day in terms of hours
+ 	 * @param docID
+	 * @param docName
+	 * @param plusDays
+	 * @param dep
+	 */
 	 public void createAppointmentSlot(String docID, String docName, int plusDays, Department dep) {
 		 int startTime, endTime;
 		 DateTimeFormatter formatterForInput = DateTimeFormatter.ofPattern("d/M/yyyy");
@@ -198,8 +225,13 @@ public class DoctorMainPage extends UserMainPage {
 		doctorController.createAppointmentSlot(doctorController.getDoctor().getUserID(), doctorController.getDoctor().getName(), plusDays, doctorController.getDoctor().getDepartment(), startTime, endTime);
 		System.out.println("Appointments are created succeesully!");
 	 }
-	 
-	 public void printAppointmentOfaDayForDoc(String date, String docID) {
+
+	/**
+	 * Displays the {@code Doctor}'s schedule for the day based on the selected date and {@code Doctor}
+	 * @param date
+	 * @param docID
+	 */
+	public void printAppointmentOfaDayForDoc(String date, String docID) {
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/M/yyyy H:mm");
 			System.out.println("Below is the schedule for the day");
 			System.out.println("+" + "-".repeat(columnWidth) + "+"
@@ -250,8 +282,11 @@ public class DoctorMainPage extends UserMainPage {
 				}
 			}
 		}
-	 
-	 public void acceptOrDeclinePendingApp() {
+
+	/**
+	 * Function to allow a {@code Doctor} choose to accept or decline appointments chosen by {@code Patient}s
+	 */
+	public void acceptOrDeclinePendingApp() {
 	        List<Integer> pendingIndices = viewDoctorPendingAppointments();
 	        System.out.println("Please enter the index of the appointment that you want to accept or decline.");
 	        int selection = InputService.inputInteger();
@@ -270,8 +305,15 @@ public class DoctorMainPage extends UserMainPage {
 	            System.out.println("Invalid Input! Please choose only available options shown.");
 	        } // Test this
 	    }
-	 
-	 public List<Integer> viewDoctorPendingAppointments() {
+
+	/**
+	 * Displays a list of scheduled appointments for the currently logged-in doctor in a table with the {@code Appointment}'s details and gathers the
+	 * indices of the {@code Appointment}s with a {@code Pending} status
+	 * @return A list of integers representing the indices of appointments that are in {@code Pending} status
+	 * @see Appointment
+	 * @see Status
+	 */
+	public List<Integer> viewDoctorPendingAppointments() {
 	        int i = 1;
 	        int index = 0;
 	        List<Integer> pendingIndices = new ArrayList<>();
@@ -309,8 +351,15 @@ public class DoctorMainPage extends UserMainPage {
 	        }
 	        return pendingIndices;
 	    }
-	 
-	 public List<Integer> viewDoctorScheduledAppointments() {
+
+	/**
+	 * Displays a list of scheduled appointments for the currently logged-in doctor in a table with the {@code Appointment}'s details and gathers the
+	 * indices of the {@code Appointment}s with a {@code Confirmed} or {@code PendingPrescription} status
+	 * @return A list of integers representing the indices of appointments that are in {@code Confirmed} or {@code PendingPrescription}status
+	 * @see Appointment
+	 * @see Status
+	 */
+	public List<Integer> viewDoctorScheduledAppointments() {
 	        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/M/yyyy H:mm");
 	        System.out.println("+" + "-".repeat(3) + "+"
 					+ "-".repeat(columnWidth) + "+"
@@ -346,8 +395,11 @@ public class DoctorMainPage extends UserMainPage {
 	        }
 	        return pendingIndices;
 	    }
-	 
-	 public void updateApptOutcomeRecords() {
+
+	/**
+	 * Function that allows a {@code Doctors} to update the Appointment Outcome Record of one of their {@code Appointments}
+	 */
+	public void updateApptOutcomeRecords() {
  		 List<Integer> pendingIndices = viewDoctorScheduledAppointments();
  		 if (pendingIndices.isEmpty()) {
  			 System.out.println("There is no scheduled appointment for you.");
@@ -390,8 +442,11 @@ public class DoctorMainPage extends UserMainPage {
 		        		return;
 	     }
 	 }
-	 
-	 public void viewMedicalRecord() {
+
+	/**
+	 * Function that allows a {@code Doctor} to view the {@code MedicalRecord}s of the {@code Appointment}s that are either {@code Confirmed} or {@code PendingPrescription}
+	 */
+	public void viewMedicalRecord() {
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d-M-yyyy");
 	        System.out.println("+" + "-".repeat(columnWidth) + "+"
 					+ "-".repeat(columnWidth) + "+"

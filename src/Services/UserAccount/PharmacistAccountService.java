@@ -10,18 +10,30 @@ import Services.CredentialsService;
 
 import java.util.ArrayList;
 
+/**
+ * {@code PharmacistAccountService} which inherits the {@code IUserAccountService} interface
+ */
 public class PharmacistAccountService implements IUserAccountService<Pharmacist> {
     private CredentialsService credentialsService;
     private HospitalStaffRepository hospitalStaffRepository;
 
-    // Dependency Injection
+    /**
+     * Constructor for PharmacistAccountService with Dependency Injection of the {@code CredentialsService} and the {@code HospitalStaffRepository}
+     * @param credentialsService
+     * @param hospitalStaffRepository
+     */
     public PharmacistAccountService(CredentialsService credentialsService,HospitalStaffRepository hospitalStaffRepository) {
         this.credentialsService = credentialsService;
         this.hospitalStaffRepository = hospitalStaffRepository;
     }
 
-    // attributes -> (Staff ID,Name,Role,Gender,Age)
-    // Creates a new Pharmacist Account
+    /**
+     * Creates a new {@code Pharmacist} in the {@code HospitalStaff} and {@code Credentials} file
+     * @param pharmacist
+     * @param plainTextPassword
+     * @param securityQuestion
+     * @param plainTextSecurityAnswer
+     */
     @Override
     public void createUserAccount(Pharmacist pharmacist, String plainTextPassword, String securityQuestion, String plainTextSecurityAnswer) {
         String userID = pharmacist.getUserID();
@@ -29,7 +41,11 @@ public class PharmacistAccountService implements IUserAccountService<Pharmacist>
         hospitalStaffRepository.createRecord(userID,pharmacist.getName(),pharmacist.getDomain(),pharmacist.getGender(),pharmacist.getAge());
     }
 
-    // Reads and return Pharmacist Object with matching HospitalID
+    /**
+     * Reads and return {@code Pharmacist} with matching {@code HospitalID}
+     * @param userID
+     * @return The {@code Pharmacist} with matching {@code HospitalID}
+     */
     public Pharmacist getAccount(String userID) {
         String[] pharmacistParameters = hospitalStaffRepository.readRecord(userID);
         ArrayList<MedicalRecord> medicalRecords = new ArrayList<MedicalRecord>(); // how to get array of medical records?
@@ -38,15 +54,19 @@ public class PharmacistAccountService implements IUserAccountService<Pharmacist>
     }
 
 
-    // Deletes a User Account
+    /**
+     * Deletes a {@code Pharmacist} Account from the {@code HospitalStaff} and {@code Credentials} file
+     */
     @Override
     public void deleteUserAccount(String userID) {
         credentialsService.deleteRecord(userID);
         hospitalStaffRepository.deleteRecord(userID);
     }
 
-    // Updates User Data
-    // (Staff ID,Name,Role,Gender,Age)
+    /**
+     * Updates a {@code Pharmacist}'s parameters
+     * @param pharmacist
+     */
     @Override
     public void updateUserData(Pharmacist pharmacist) {
         String userID = pharmacist.getUserID();
@@ -60,35 +80,49 @@ public class PharmacistAccountService implements IUserAccountService<Pharmacist>
         hospitalStaffRepository.updateRecord(user);
     }
 
+    /**
+     * Verifies a User has entered their correct password
+     * @param UserID
+     * @param plainTextPassword
+     * @return True if the answer given is correct, False otherwise
+     */
     @Override
     public boolean verifyPassword(String UserID, String plainTextPassword) {
         return credentialsService.checkPassword(UserID,plainTextPassword);
     }
 
-    /*
-    Verifies if the answer given to a security question is correct or not
-    */
+    /**
+     * Verifies if the User has correctly answered their security question
+     * @param userID
+     * @param plainTextSecurityAnswer
+     * @return True if the answer given is correct, False otherwise
+     */
     public boolean verifySecurityQuestion(String userID, String plainTextSecurityAnswer){
         return credentialsService.verifySecurityQuestion(userID,plainTextSecurityAnswer);
     }
 
-    /*
-    Returns the remaining logins that the user has before the user is locked out
-    */
+    /**
+     * Returns the remaining logins that the User has before the User is locked out
+     * @param userID
+     * @return Returns the remaining logins attempts of a User
+     */
     public int getNumberOfTriesLeft(String userID){
         return credentialsService.getNumberOfTriesLeft(userID);
     }
 
-    /*
-    Change Password of Pharmacist in the Credentials File
-    */
+    /**
+     * Changes the password of {@code Pharmacist} in the {@code Credentials} file
+     * @param userID
+     * @param newPassword
+     */
     public void changePassword(String userID, String newPassword){
         credentialsService.changePassword(userID,newPassword);
     }
 
-    /*
-    Lock account (system)
-    */
+    /**
+     * Increment the number of login attempts of a User based on their {@code HospitalID}
+     * @param userID
+     */
     public void incrementNumberOfTries(String userID){
         if(credentialsService.isAccountLocked(userID)){
             return; // Return if the account is already Locked
@@ -96,11 +130,17 @@ public class PharmacistAccountService implements IUserAccountService<Pharmacist>
         credentialsService.incrementLoginAttempts(userID);
     }
 
-    /* Unlock account after too many attempts (to be done by admin) */
+    /**
+     * Unlocks the account of a User, only to be done by the {@code Administrator}
+     * @param userID
+     */
     public void unlockAccount(String userID){
         credentialsService.unlockAccount(userID);
     }
 
+    /**
+     * Loads the list of {@code Pharmacist} from the {@code HospitalStaff} file
+     */
     public void loadPharmacistList(){
         hospitalStaffRepository.loadPharmacistList();
     }
