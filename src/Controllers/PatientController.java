@@ -11,6 +11,7 @@ import Entity.Enums.Department;
 import Entity.Enums.Purpose;
 import Entity.User.Patient;
 import Services.AppointmentService;
+import Services.InputService;
 
 public class PatientController {
 	private Patient patient;
@@ -23,7 +24,6 @@ public class PatientController {
 	
 	public String selectionOfDoctor(Purpose purposeOfVisit, Department appDepartment, ArrayList<Appointment> appointmentList) throws Exception {
         // create a array and refer to elements by their index
-		Scanner sc = new Scanner(System.in);
         int selection = 0;
         int i = 1;
         List<String> doctors = new ArrayList<>();
@@ -43,12 +43,15 @@ public class PatientController {
         }
 
         try {
-            selection = sc.nextInt();
-            sc.nextLine();
+            selection = InputService.inputInteger();
+            if(selection == -1) return null;
+            else if(selection>doctors.size() || selection <= 0) {
+            		System.out.println("Please only select the available doctor!!");
+            		return null;
+            }
             return doctors.get(selection - 1);
         } catch (InputMismatchException e) {
             System.out.println("Invalid input.");
-            sc.nextLine();
             // Clear invalid input
         } catch (IndexOutOfBoundsException e) {
             System.out.println("Selected number is out of range. Back to Home Page");
