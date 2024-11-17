@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Iterator;
+import java.util.List;
 
 import Entity.Appointment;
 import Entity.AppointmentList;
@@ -84,4 +86,16 @@ public class AppointmentService {
         appointment.setInstructions(instructions);
         System.out.println("New prescription added successfully.");
     }
+	
+	public void cleanUpUnscheduledAppointments() {
+		List<Appointment> appointmentList = AppointmentList.getInstance().getAppointmentList();
+	    // Use an iterator to avoid ConcurrentModificationException
+	    Iterator<Appointment> iterator = appointmentList.iterator();
+	    while (iterator.hasNext()) {
+	        Appointment appointment = iterator.next();
+	        if (appointment.getAvail() && appointment.getTimeOfApp().isBefore(LocalDateTime.now())) {
+	            iterator.remove(); // Safely removes the current element
+	        }
+	    }
+	}
 }
