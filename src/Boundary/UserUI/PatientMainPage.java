@@ -1,6 +1,7 @@
 package Boundary.UserUI;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
@@ -95,17 +96,6 @@ public class PatientMainPage extends UserMainPage{
                     case 9:
                         System.out.println("Thank you for using our service!!");
                         break;
-//                    case 8:
-//                        viewPatientPendingAppointments(appointmentList);
-//                        break;
-//                    case 9:
-//                        schedule.viewPatientAppointmentOutcomeRecords(this.getHospitalId());
-//                        break;
-//                    case 10:
-//                        System.out.println("Thank you for using our service!!");
-//                        // Update file
-//                        updateAppointmentFile(appointmentList);
-//                        break;
                     default:
                         System.out.println("Invalid input. Please enter a number between 1 and 6.");
                         break;
@@ -140,7 +130,7 @@ public class PatientMainPage extends UserMainPage{
 					+ "-".repeat(columnWidth) + "+");
 	
 			for(Appointment appointments : appointmentList) {
-				if(appointments.getAvail()) {
+				if(appointments.getAvail() && !appointments.getTimeOfApp().isBefore(LocalDateTime.now())) {
 					System.out.println("|" + formatCell(appointments.getAppID(), columnWidth)
 							+ "|" + formatCell(appointments.getTimeOfApp().format(formatter), columnWidth)
 							+ "|" + formatCell(appointments.getDocID(), columnWidth)
@@ -324,7 +314,7 @@ public class PatientMainPage extends UserMainPage{
         int index = 0;
         System.out.println("Available Time Slots: ");
         for (Appointment appointments : appointmentList) {
-            if (appointments.getAvail() && appointments.getDocName().equals(doctorName)) {
+            if (appointments.getAvail() && appointments.getDocName().equals(doctorName) && !appointments.getTimeOfApp().isBefore(LocalDateTime.now())) {
                 String appTime = String.valueOf(appointments.getTimeOfApp().format(formatter));
                 System.out.println(i + ". " + appTime);
                 timeSlotsIndices.add(index);
