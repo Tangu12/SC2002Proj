@@ -1,5 +1,7 @@
 package Controllers;
 
+import Controllers.IController.IAppointment.IPharmacistAppointment;
+import Controllers.IController.IMedicine.IPharmacistMedicine;
 import Entity.Appointment;
 import Entity.AppointmentList;
 import Entity.MedicationInventory;
@@ -14,7 +16,7 @@ import java.util.ArrayList;
 /**
  * {@code PharmacistController} handles all the logic a Pharmacist's Functions
  */
-public class PharmacistController {
+public class PharmacistController implements IPharmacistAppointment, IPharmacistMedicine {
     private MedicalInventoryService medicalInventoryService;
     private AppointmentService appointmentService;
     private Pharmacist pharmacist;

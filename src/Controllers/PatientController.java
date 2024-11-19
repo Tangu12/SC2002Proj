@@ -3,8 +3,8 @@ package Controllers;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
-import java.util.Scanner;
 
+import Controllers.IController.IAppointment.IPatientAppointment;
 import Entity.Appointment;
 import Entity.AppointmentList;
 import Entity.Enums.Department;
@@ -16,7 +16,7 @@ import Services.InputService;
 /**
  * {@code PatientController} handles all the logic a Patient's Functions
  */
-public class PatientController {
+public class PatientController implements IPatientAppointment {
 	private Patient patient;
 	private AppointmentService appointmentService;
 
