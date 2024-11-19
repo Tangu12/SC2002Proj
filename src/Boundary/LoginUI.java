@@ -76,35 +76,6 @@ public class LoginUI {
             userMainPage.homePage();
         }
 
-        //user.homePage();
-
-        /*
-        switch(user.getDomain()) {
-	        case PATIENT:
-	        		PatientController patientController = new PatientController((Patient) user, applicationContext.getAppointmentService());
-	        		PatientMainPage patientMainPage = new PatientMainPage(patientController);
-	        		patientMainPage.mainpage();
-	        		break;
-	        case PHARMACIST:
-	        		PharmacistController pharmacistController = new PharmacistController(applicationContext.getMedicalInventoryService(), applicationContext.getAppointmentService(), (Pharmacist) user);
-	        		PharmacistMainPage pharmacistMainPage = new PharmacistMainPage(pharmacistController);
-	        		pharmacistMainPage.homePage();
-	        		break;
-	        case DOCTOR:
-	        		DoctorController doctorController = new DoctorController((Doctor) user, applicationContext.getAppointmentService());
-	        		DoctorMainPage doctorMainPage = new DoctorMainPage(doctorController);
-	        		doctorMainPage.homePage();
-	        		break;
-	        case ADMINISTRATOR:
-	        		AdministratorController administratorController = new AdministratorController((Administrator) user, applicationContext.getStaffManagementService(), applicationContext.getMedicalInventoryService(), applicationContext.getAccountManager());
-	        		AdministratorMainPage administratorMainPage = new AdministratorMainPage(administratorController,applicationContext.getHospitalStaffRegistrationService());
-	        		administratorMainPage.homePage();
-	        		break;
-	        	default:
-	        		System.out.println("Not Available Domain!");
-	        		break;
-        }
-         */
     }
 }
 

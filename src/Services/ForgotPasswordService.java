@@ -23,7 +23,12 @@ public class ForgotPasswordService {
         System.out.println("Please answer the security question : ");
         System.out.println(getSecurityQuestion(userID));
         String plainTextSecurityAnswer = InputService.inputString();
-        return credentialsService.verifySecurityQuestion(userID, plainTextSecurityAnswer);
+
+        boolean success = credentialsService.verifySecurityQuestion(userID, plainTextSecurityAnswer.toLowerCase());
+        if(success){
+            credentialsService.unlockAccount(userID);
+        }
+        return success;
     }
 
     /**

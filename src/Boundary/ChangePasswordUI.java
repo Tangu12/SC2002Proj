@@ -1,6 +1,7 @@
 package Boundary;
 
 import Application.ApplicationContext;
+import Controllers.ChangePasswordController;
 import Controllers.LoginController;
 import Services.InputService;
 
@@ -8,50 +9,64 @@ import Services.InputService;
  * {@code ChangePasswordUI} handles the user interface for changing passwords.
  */
 public class ChangePasswordUI {
-    private LoginController loginController;
+    private ChangePasswordController changePasswordController;
 
     /**
      * Constructor for {@code ChangePasswordUI}.
      *
-     * @param loginController The controller to handle password changes.
+     * @param changePasswordController The Controller associated with the changing password action
      */
-    public ChangePasswordUI(LoginController loginController) {
-        this.loginController = loginController;
+    public ChangePasswordUI(ChangePasswordController changePasswordController) {
+        this.changePasswordController = changePasswordController;
     }
 
     /**
      * Handles the password change functionality.
      *
-     * @param applicationContext The application context.
+     * @param
      */
-    public void changePasswordUI(ApplicationContext applicationContext) {
-        System.out.print("Please enter your unique Hospital ID: ");
-        String userID = InputService.inputString();
+    public void changePasswordUI() {
+        System.out.print("Please enter your unique Hospital ID : ");
+        String inputID = InputService.inputString();
 
-        if (!loginController.validUserID(userID)) {
-            System.out.println("User ID does not exist. Please try again.");
+        if (!changePasswordController.validUserID(inputID)) {
+            System.out.println("User does not exist! \nYou have been kicked to the main page!");
+            return;
+        }
+        if(changePasswordController.isAccountLocked(inputID)){
+            System.out.print("Account is locked by the administrator.");
             return;
         }
 
-        System.out.print("Please enter your current password: ");
-        String currentPassword = InputService.inputString();
+        boolean validPassword = false;
 
-        System.out.print("Please enter your new password: ");
-        String newPassword = InputService.inputString();
+        System.out.print("Please enter your password : ");
+        String password = InputService.inputString();
+        validPassword = changePasswordController.verifyValidPassword(inputID, password);
 
-        System.out.print("Please confirm your new password: ");
-        String confirmPassword = InputService.inputString();
-
-        if (!newPassword.equals(confirmPassword)) {
-            System.out.println("Passwords do not match. Please try again.");
+        if(changePasswordController.isAccountLocked(inputID) || !validPassword) {
+            System.out.print("You have been kicked to the main page!");
             return;
         }
 
-        boolean success = loginController.changePassword(userID, currentPassword, newPassword);
-        if (success) {
-            System.out.println("Password changed successfully!");
-        } else {
-            System.out.println("Failed to change password. Please try again.");
+        String newPassword = null;
+        String confirmPassword = null;
+
+        do{
+            System.out.print("Please enter your new password: ");
+            newPassword = InputService.inputString();
+
+            System.out.print("Please confirm your new password: ");
+            confirmPassword = InputService.inputString();
+
+            if(!newPassword.equals(confirmPassword)){
+                System.out.println("Passwords do not match!");
+            }
         }
+        while(!newPassword.equals(confirmPassword));
+
+        changePasswordController.changePassword(inputID, newPassword);
+        //System.out.println("Password changed successfully!");
+
     }
 }
