@@ -3,9 +3,6 @@ package Entity.Repository;
 import Entity.Enums.BloodType;
 import Entity.Enums.Domain;
 import Entity.Enums.Gender;
-import Entity.MedicalRecord;
-import Entity.Medicine;
-import Entity.User.Administrator;
 import Entity.User.Patient;
 
 import java.io.*;

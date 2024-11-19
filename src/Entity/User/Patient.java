@@ -3,7 +3,6 @@ package Entity.User;
 import Entity.Enums.BloodType;
 import Entity.Enums.Domain;
 import Entity.Enums.Gender;
-import Entity.MedicalRecord;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -163,14 +162,6 @@ public class Patient implements IUser{
     @Override
     public void setDomain(Domain domain) {
         this.domain = domain;
-    }
-
-    /**
-     * Null function
-     * @param medicalRecord
-     */
-    public void updateMedicalHistory(MedicalRecord medicalRecord){
-        // uses medical history repository
     }
 
     /**

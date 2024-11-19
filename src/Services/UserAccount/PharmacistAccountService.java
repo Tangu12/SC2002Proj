@@ -2,13 +2,9 @@ package Services.UserAccount;
 
 import Entity.Enums.Domain;
 import Entity.Enums.Gender;
-import Entity.MedicalRecord;
 import Entity.Repository.HospitalStaffRepository;
-import Entity.User.Doctor;
 import Entity.User.Pharmacist;
 import Services.CredentialsService;
-
-import java.util.ArrayList;
 
 /**
  * {@code PharmacistAccountService} which inherits the {@code IUserAccountService} interface
@@ -48,8 +44,7 @@ public class PharmacistAccountService implements IUserAccountService<Pharmacist>
      */
     public Pharmacist getAccount(String userID) {
         String[] pharmacistParameters = hospitalStaffRepository.readRecord(userID);
-        ArrayList<MedicalRecord> medicalRecords = new ArrayList<MedicalRecord>(); // how to get array of medical records?
-        Pharmacist pharmacist = new Pharmacist(pharmacistParameters[0], pharmacistParameters[1], Integer.valueOf(pharmacistParameters[4]), Gender.valueOf(pharmacistParameters[3]), Domain.PHARMACIST, medicalRecords);
+        Pharmacist pharmacist = new Pharmacist(pharmacistParameters[0], pharmacistParameters[1], Integer.valueOf(pharmacistParameters[4]), Gender.valueOf(pharmacistParameters[3]), Domain.PHARMACIST);
         return pharmacist;
     }
 

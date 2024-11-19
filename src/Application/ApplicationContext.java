@@ -17,7 +17,6 @@ public class ApplicationContext {
     private AppointmentsRepository appointmentsRepository;
     private CredentialsRepository credentialsRepository;
     private HospitalStaffRepository hospitalStaffRepository;
-    private MedicalRecordRepository medicalRecordRepository;
     private MedicationInventoryRepository medicationInventoryRepository;
     private PatientDataRepository patientDataRepository;
     
@@ -52,7 +51,6 @@ public class ApplicationContext {
         this.appointmentsRepositoryPath = appointmentsRepositoryPath;
         this.credentialsRepositoryPath = credentialsRepositoryPath;
         this.hospitalStaffRepositoryPath = hospitalStaffRepositoryPath;
-        this.medicalRecordRepositoryPath = medicalRecordRepositoryPath;
         this.medicationInventoryRepositoryPath = medicationInventoryRepositoryPath;
         this.patientDataRepositoryPath = patientDataRepositoryPath;
 
@@ -62,7 +60,6 @@ public class ApplicationContext {
         this.appointmentsRepository= new AppointmentsRepository(appointmentsRepositoryPath);
         this.credentialsRepository= new CredentialsRepository(credentialsRepositoryPath);
         this.hospitalStaffRepository= new HospitalStaffRepository(hospitalStaffRepositoryPath);
-        this.medicalRecordRepository = new MedicalRecordRepository(medicalRecordRepositoryPath);
         this.medicationInventoryRepository = new MedicationInventoryRepository(medicationInventoryRepositoryPath);
         this.patientDataRepository = new PatientDataRepository(patientDataRepositoryPath);
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -230,22 +227,6 @@ public class ApplicationContext {
 	 */
 	public void setHospitalStaffRepository(HospitalStaffRepository hospitalStaffRepository) {
 		this.hospitalStaffRepository = hospitalStaffRepository;
-	}
-
-	/**
-	 * Gets the {@code MedicalRecordRepository} instance
-	 * @return The instance of {@code MedicalRecordRepository}
-	 */
-	public MedicalRecordRepository getMedicalRecordRepository() {
-		return medicalRecordRepository;
-	}
-
-	/**
-	 * Sets the {@code MedicalRecordRepository} instance
-	 * @param medicalRecordRepository
-	 */
-	public void setMedicalRecordRepository(MedicalRecordRepository medicalRecordRepository) {
-		this.medicalRecordRepository = medicalRecordRepository;
 	}
 
 	/**
