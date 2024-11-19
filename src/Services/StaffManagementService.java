@@ -3,6 +3,7 @@ package Services;
 import Entity.Enums.Department;
 import Entity.Enums.Domain;
 import Entity.Enums.Gender;
+import Entity.Repository.HospitalStaffRepository;
 import Entity.User.Administrator;
 import Entity.User.Doctor;
 import Entity.User.HospitalStaff;
@@ -81,6 +82,7 @@ public class StaffManagementService {
 				System.out.println("Error!! Domain not recognised.");
 				break;
 		}
+		HospitalStaffRepository.updateHospitalStaffFile(Administrator.getAdministratorList(), Doctor.getDoctorList(), Pharmacist.getPharmacistList());
 	}
 
 	/**
@@ -104,6 +106,7 @@ public class StaffManagementService {
 		default:
 			break;
 		}
+		HospitalStaffRepository.updateHospitalStaffFile(Administrator.getAdministratorList(), Doctor.getDoctorList(), Pharmacist.getPharmacistList());
 	}
 
 	/**
@@ -122,6 +125,7 @@ public class StaffManagementService {
 		staff.updateDepartment(newRole,dept);
         try {
             staff.setDomain(newRole);
+            HospitalStaffRepository.updateHospitalStaffFile(Administrator.getAdministratorList(), Doctor.getDoctorList(), Pharmacist.getPharmacistList());
             System.out.println("Updated staff member: " + staff.getName());
         } catch (IllegalArgumentException e) {
             System.out.println("Invalid role. Please enter DOCTOR, PHARMACIST, or ADMINISTRATOR.");

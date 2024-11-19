@@ -675,7 +675,7 @@ public class AdministratorMainPage extends UserMainPage{
         boolean lowStockFound = false;
         for (Medicine medicine : MedicationInventory.getInventory()) {
             if (medicine.needsReplenishment()) {
-                System.out.println("Low stock alert: " + medicine.getNameOfMedicine() +"Current Stock Level : "+ medicine.getCurrentStock() + " Low Stock alert is set at : " + medicine.getLowStockLevelAlert());
+                System.out.println("Low stock alert: " + medicine.getNameOfMedicine() + ". Current Stock Level : "+ medicine.getCurrentStock() + " Low Stock alert is set at : " + medicine.getLowStockLevelAlert());
                 lowStockFound = true;
             }
         }
