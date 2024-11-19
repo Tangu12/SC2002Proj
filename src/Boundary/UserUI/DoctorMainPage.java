@@ -292,6 +292,10 @@ public class DoctorMainPage extends UserMainPage {
 	        List<Integer> pendingIndices = viewDoctorPendingAppointments();
 	        System.out.println("Please enter the index of the appointment that you want to accept or decline.");
 	        int selection = InputService.inputInteger();
+	        if(selection>pendingIndices.size() || selection<=0) {
+	        		System.out.println("Please only enter available choices!");
+	        		return;
+	        }
 	        try {
 	            System.out.println("Accept or Decline appointment: (Enter 1 or 2)\n"
 	                    + "1. Accept Appointment\n"
@@ -485,7 +489,7 @@ public class DoctorMainPage extends UserMainPage {
  		 }
 	     System.out.println("Select one of the record you would like to update: (enter the index eg. 1)");
 	     int selection = InputService.inputInteger();
-	     if(selection-1 >= pendingIndices.size()) {System.out.println("Please only enter the available records:"); return;}
+	     if(selection-1 >= pendingIndices.size() || selection<=0) {System.out.println("Please only enter the available records:"); return;}
 	     System.out.println("Please enter your notes (Doctor's notes):");
 	     if(AppointmentList.getInstance().getAppointmentList().get(pendingIndices.get(selection-1)).getAppointOutcomeRecord().equals(" ")) {
 	    	 	System.out.println("There is no previous note:");
