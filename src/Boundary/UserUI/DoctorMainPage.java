@@ -528,7 +528,7 @@ public class DoctorMainPage extends UserMainPage {
          	if(medSelection == -1) break;
          	else if(medSelection <= 0 || medSelection > MedicationInventory.getInventory().size()) System.out.println("Not available medicine.");
          	else {
-         		if(medicine == " ") medicine = MedicationInventory.getInventory().get(medSelection - 1).getNameOfMedicine();
+         		if(medicine.equals(" ")) medicine = MedicationInventory.getInventory().get(medSelection - 1).getNameOfMedicine();
          		else {
          			if(medicine.contains(MedicationInventory.getInventory().get(medSelection - 1).getNameOfMedicine())) System.out.println(MedicationInventory.getInventory().get(medSelection - 1).getNameOfMedicine() + " is already prescribed");
          			else medicine = medicine + "/" + MedicationInventory.getInventory().get(medSelection - 1).getNameOfMedicine();
