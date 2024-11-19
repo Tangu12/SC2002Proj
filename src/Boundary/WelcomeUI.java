@@ -11,6 +11,7 @@ public class WelcomeUI {
     private PatientRegistrationUI patientRegistrationUI;
     private LogoutUI logoutUI;
     private LoginUI loginUI;
+    private ChangePasswordUI changePasswordUI;
     boolean quit = false;
 
     /**
@@ -21,10 +22,11 @@ public class WelcomeUI {
      * @param logoutUI The {@code LogoutUI} that manages the logout process when the user chooses to exit the system.
      * @param loginUI The {@code LoginUI} that manages the login process for existing users, allowing them to log into the system.
      */
-    public WelcomeUI(PatientRegistrationUI patientRegistrationUI, LogoutUI logoutUI, LoginUI loginUI) {
+    public WelcomeUI(PatientRegistrationUI patientRegistrationUI, LogoutUI logoutUI,LoginUI loginUI, ChangePasswordUI changePasswordUI) {
         this.patientRegistrationUI = patientRegistrationUI;
         this.loginUI = loginUI;
         this.logoutUI = logoutUI;
+        this.changePasswordUI = changePasswordUI;
     }
 
     /**
@@ -44,17 +46,19 @@ public class WelcomeUI {
                                 + "               |_|                                               |___/                                    |__/                      \r\n"
                                 + "");
 
-                System.out.println("Welcome to Hospital Management System !");
-                System.out.println("Please input your choice : ");
-                System.out.println("(1) Register as New User ");
-                System.out.println("(2) Login as Existing User ");
-                System.out.println("(3) Exit System");
+                 System.out.println("Welcome to Hospital Management System !");
+                 System.out.println("Please input your choice : ");
+                 System.out.println("(1) Register as New User ");
+                 System.out.println("(2) Login as Existing User ");
+                 System.out.println("(3) Change your password");
+                 System.out.println("(4) Exit System");
 
                 int choice = InputService.inputInteger();
                 switch (choice) {
                     case 1 -> patientRegistrationUI.registrationUI();
                     case 2 -> loginUI.loginUI(applicationContext);
-                    case 3 -> quit = logoutUI.logoutUI();
+                    case 3 -> changePasswordUI.changePasswordUI();
+                    case 4-> quit = logoutUI.logoutUI();
                     default -> System.out.println("Invalid choice. Please try again.");
                 }
             } while (!quit);

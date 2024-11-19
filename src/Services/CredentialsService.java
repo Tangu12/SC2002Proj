@@ -81,7 +81,7 @@ public class CredentialsService {
 
         if(hashedPasswordFromFile.equals(hashedInputPassword)){
             successfulLogin = true;
-            System.out.println("Login Successful!");
+            System.out.println("Password successfully verified!");
         }
 
         return successfulLogin;
@@ -94,10 +94,11 @@ public class CredentialsService {
      * @param newPlainTextPassword The new plain text password to be set.
      */
     public void changePassword(String userID, String newPlainTextPassword){
-        String salt = generateSalt();
-        String hashedPassword = hashPassword(newPlainTextPassword, salt);
+        Credentials userData = credentialsRepository.readRecord(userID);
+        String saltFromFile = userData.getSalt();
 
-        credentialsRepository.updateHashedPassword(userID,hashedPassword,salt);
+        String hashedPassword = hashPassword(newPlainTextPassword, saltFromFile);
+        credentialsRepository.updateHashedPassword(userID,hashedPassword,saltFromFile);
     }
 
     /**
@@ -227,6 +228,7 @@ public class CredentialsService {
         int tries = temp.getLoginAttempts();
         if(++tries>maxLoginAttempts){
             temp.lockAccount();
+            return;
         }
         temp.setLoginAttempts(tries);
         credentialsRepository.updateRecord(temp);

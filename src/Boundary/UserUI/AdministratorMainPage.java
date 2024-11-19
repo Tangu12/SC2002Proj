@@ -51,7 +51,7 @@ public class AdministratorMainPage extends UserMainPage{
 					"/_/   \\_\\__,_|_| |_| |_|_|_| |_|_|___/\\__|_|  \\__,_|\\__\\___/|_|   ");
 
             System.out.println("\nChoose the number of functions:\n"
-                    + "(1) View and Manage Hospital\n"
+                    + "(1) View and Manage Hospital staffs\n"
                     + "(2) View Appointment Details\n"
                     + "(3) Manage Inventory System\n"
                     + "(4) Logout");

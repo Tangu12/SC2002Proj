@@ -223,7 +223,7 @@ public class CredentialsRepository implements IRepository <String,String, Creden
             // Use updateRecord to save the modified record back to the file
             updateRecord(userRecord);
 
-            System.out.println("Password and salt updated successfully for user: " + userID);
+            System.out.println("Password updated successfully for user: " + userID);
         } else {
             System.out.println("Error! User not found, Credentials File unchanged");
         }
