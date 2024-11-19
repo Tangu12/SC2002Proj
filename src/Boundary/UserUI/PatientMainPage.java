@@ -165,7 +165,7 @@ public class PatientMainPage extends UserMainPage{
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/M/yyyy H:mm");
         int i = 1;
         for (Appointment appointments : appointmentList) {
-            if (appointments.getPatID().equals(pat.getUserID()) && appointments.getStatusOfApp() == Status.Confirmed && (!appointments.getTimeOfApp().toLocalDate().isBefore(LocalDate.now()))) {
+            if (appointments.getPatID().equals(pat.getUserID()) && appointments.getStatusOfApp() == Status.Confirmed) {
             	System.out.println("|" + formatCell(String.valueOf(i), 5)
             				+ "|" + formatCell(appointments.getStatusOfApp().toString(), columnWidth)
 						+ "|" + formatCell(appointments.getPurposeOfApp().toString(), columnWidth)
@@ -178,7 +178,7 @@ public class PatientMainPage extends UserMainPage{
 						+ "-".repeat(40) + "+");
 		        i++;
             }
-            if (appointments.getPatID().equals(pat.getUserID()) && appointments.getStatusOfApp() == Status.Pending && (!appointments.getTimeOfApp().toLocalDate().isBefore(LocalDate.now()))) {
+            if (appointments.getPatID().equals(pat.getUserID()) && appointments.getStatusOfApp() == Status.Pending) {
             	System.out.println("|" + formatCell(String.valueOf(i), 5)
             				+ "|" + formatCell(appointments.getStatusOfApp().toString(), columnWidth)
 						+ "|" + formatCell(appointments.getPurposeOfApp().toString(), columnWidth)
