@@ -81,7 +81,6 @@ public class TestAdminFunction {
 //		appRepo.deleteRecord(appID);
 
 		// Create Repository
-		//HospitalStaffRepository hospitalStaffRepository = new HospitalStaffRepository("program_files/HospitalStaff.csv");
 		HospitalStaffRepository hospitalStaffRepository = new HospitalStaffRepository("src/Tests/TestingFiles/HospitalStaff.csv");
 		HospitalStaffRepository.loadAdministrator();
 		HospitalStaffRepository.loadDoctorList();

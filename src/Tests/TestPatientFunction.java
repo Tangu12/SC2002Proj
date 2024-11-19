@@ -66,19 +66,16 @@ public class TestPatientFunction {
 		medicalInventoryService.loadInventoryFromFile();
 		
 		AppointmentService appointmentService = new AppointmentService(appRepo);
-
-		PatientController patientController = new PatientController(Patient.getPatientList().get(0), appointmentService);
-
 		AccountManager accountManager = new AccountManager(patientService,doctorService,pharmacistService,administratorService,credentialsService);
+		PatientAccountService patientAccountService = new PatientAccountService(credentialsService,patientRepository);
 
 		// Create Controller
-		DoctorController docController = new DoctorController(Doctor.getDoctorList().get(0), appointmentService);
+		PatientController patientController = new PatientController(Patient.getPatientList().get(0), appointmentService,patientAccountService);
 
 		// Create Boundary
-		DoctorMainPage mainPage = new DoctorMainPage(docController);
-		PatientMainPage mainPage1 = new PatientMainPage(patientController);
+		PatientMainPage mainPage= new PatientMainPage(patientController);
 
-		//mainPage1.mainpage();
+		mainPage.homePage();
 
 		// Testing Functions
 		HospitalStaffRepository.updateHospitalStaffFile(Administrator.getAdministratorList(), Doctor.getDoctorList(), Pharmacist.getPharmacistList());

@@ -1,22 +1,11 @@
 package Boundary;
 
 import Boundary.UserUI.*;
-import Controllers.AdministratorController;
-import Controllers.DoctorController;
 import Controllers.LoginController;
-import Controllers.PatientController;
-import Controllers.PharmacistController;
-import Entity.Enums.Domain;
-import Entity.User.Administrator;
-import Entity.User.Doctor;
 import Entity.User.IUser;
-import Entity.User.Patient;
-import Entity.User.Pharmacist;
 import Services.InputService;
 import Services.CredentialsService;
 import Services.UserAccount.AccountManager;
-
-import java.security.Provider;
 
 import Application.ApplicationContext;
 
@@ -29,6 +18,7 @@ public class LoginUI {
     private LoginController loginController;
     private AccountManager accountManager;
     private CredentialsService credentialsService;
+    private boolean isTesting;
 
     /**
      * Constructor for {@code LoginUI}
@@ -36,10 +26,11 @@ public class LoginUI {
      * @param accountManager
      * @param credentialsService
      */
-    public LoginUI(LoginController loginController, AccountManager accountManager, CredentialsService credentialsService) {
+    public LoginUI(LoginController loginController, AccountManager accountManager, CredentialsService credentialsService, Boolean isTesting) {
         this.loginController = loginController;
         this.accountManager = accountManager;
         this.credentialsService = credentialsService;
+        this.isTesting = isTesting;
     }
 
     /**
@@ -70,7 +61,7 @@ public class LoginUI {
             validPassword = loginController.login(inputID, password);
         } while (!credentialsService.isAccountLocked(inputID) && !validPassword);
 
-        if(validPassword) {
+        if(validPassword && !isTesting) {
             IUser user = accountManager.readUser(inputID);
             UserMainPage userMainPage = UserMainPageFactory.getHomePage(user, applicationContext);
             userMainPage.homePage();

@@ -1,6 +1,8 @@
 package Tests;
 
+import Application.ApplicationContext;
 import Boundary.*;
+import Controllers.ChangePasswordController;
 import Controllers.LoginController;
 import Controllers.PatientRegistrationController;
 import Entity.Enums.BloodType;
@@ -44,12 +46,17 @@ public class TestLoginRegister {
         // Setup Controllers
         PatientRegistrationController patientRegistrationController= new PatientRegistrationController(credentialsRepository, (PatientAccountService) patientAccountService);
         LoginController loginController = new LoginController(credentialsService, accountManager,forgotPasswordService);
+        ChangePasswordController changePasswordController = new ChangePasswordController(credentialsService);
 
         // Create Boundaries
         PatientRegistrationUI patientRegistrationUI = new PatientRegistrationUI(patientRegistrationController);
         LogoutUI logoutUI = new LogoutUI();
-        LoginUI loginUI = new LoginUI(loginController, accountManager, credentialsService);
-        //WelcomeUI welcomeUI = new WelcomeUI(patientRegistrationUI,logoutUI,loginUI,new ChangePasswordUI());
+        LoginUI loginUI = new LoginUI(loginController, accountManager, credentialsService,true);
+        ChangePasswordUI changePasswordUI= new ChangePasswordUI(changePasswordController);
+        WelcomeUI welcomeUI = new WelcomeUI(patientRegistrationUI,logoutUI,loginUI,changePasswordUI);
+
+        ApplicationContext TestLogin = new ApplicationContext("",credentialsPath,hospitalDataPath,"",patientsDataPath);
+
 
         // Initialise
         /*
@@ -72,7 +79,7 @@ public class TestLoginRegister {
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // Testing Functions
         //System.out.println(patientRegistrationController.getUserName());
-        //welcomeUI.welcomeUI();
+        welcomeUI.welcomeUI(TestLogin);
 
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // Clean Up

@@ -42,7 +42,7 @@ public class mainPage {
         // Create Boundaries
         PatientRegistrationUI patientRegistrationUI = new PatientRegistrationUI(patientRegistrationController);
         LogoutUI logoutUI = new LogoutUI();
-        LoginUI loginUI = new LoginUI(loginController, applicationContext.getAccountManager(), applicationContext.getCredentialsService());
+        LoginUI loginUI = new LoginUI(loginController, applicationContext.getAccountManager(), applicationContext.getCredentialsService(),false);
         ChangePasswordUI changePasswordUI= new ChangePasswordUI(changePasswordController);
         WelcomeUI welcomeUI = new WelcomeUI(patientRegistrationUI,logoutUI,loginUI,changePasswordUI);
         
