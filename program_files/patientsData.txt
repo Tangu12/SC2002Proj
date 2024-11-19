@@ -1,0 +1,3 @@
+UserID,Name,Age,Gender,Domain,ContactInfo,DateOfBirth,BloodType,MedicalHistory
+P001,Ryan,22,MALE,PATIENT,ryanguy@gmail.com,2002-06-20,A_POSITIVE
+P002,Dorcas,20,FEMALE,PATIENT,dorcas@gmail.com,2004-02-20,AB_NEGATIVE
