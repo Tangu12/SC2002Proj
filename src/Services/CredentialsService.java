@@ -81,7 +81,7 @@ public class CredentialsService {
 
         if(hashedPasswordFromFile.equals(hashedInputPassword)){
             successfulLogin = true;
-            System.out.println("Login Successful!");
+            System.out.println("Password successfully verified!");
         }
 
         return successfulLogin;
