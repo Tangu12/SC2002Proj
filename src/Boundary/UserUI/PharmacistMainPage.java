@@ -129,11 +129,10 @@ public class PharmacistMainPage extends UserMainPage{
         do {
             System.out.println("\n--- Manage Prescriptions ---");
             System.out.println("(1) View All Prescriptions");
-            System.out.println("(2) Update Prescription");
-            System.out.println("(3) Update Prescription Status");
-            System.out.println("(4) Search Prescription by ID");
-            System.out.println("(5) Dispense Medicine");
-            System.out.println("(6) Return to Main Menu");
+            System.out.println("(2) Update Prescription Status");
+            System.out.println("(3) Search Prescription by ID");
+            System.out.println("(4) Dispense Medicine");
+            System.out.println("(5) Return to Main Menu");
 
             choice = InputService.inputInteger();
 
@@ -142,39 +141,6 @@ public class PharmacistMainPage extends UserMainPage{
                     viewAllPrescriptions();
                     break;
                 case 2:
-                		List<Integer> pendingPresciptionAppointmentsIndices = viewPresciptionAppointments();
-                    System.out.print("Select the index of the Appointment ID you want to update (e.g, 1): ");
-                    int appSelection = InputService.inputInteger();
-                    if(appSelection-1 >= pendingPresciptionAppointmentsIndices.size()) {System.out.println("Please only enter the available options"); return;}
-                    Appointment targetAppointment = pharmacistController.getAppointmentByID(AppointmentList.getInstance().getAppointmentList().get(pendingPresciptionAppointmentsIndices.get(appSelection-1)).getAppID());
-                    int medSelection;
-                    String medicine = targetAppointment.getMedicine();
-                    do {
-                    	viewAvailableMed();
-                    	System.out.print("Select the Medicine (-1 to end): ");
-                    	medSelection = InputService.inputInteger();
-                    	if(medSelection == -1) return;
-                    	else if(medSelection <= 0 || medSelection > MedicationInventory.getInventory().size()) System.out.println("Not available medicine.");
-                    	else {
-                    		if(medicine == " ") medicine = MedicationInventory.getInventory().get(medSelection - 1).getNameOfMedicine();
-                    		else {
-                    			if(medicine.contains(MedicationInventory.getInventory().get(medSelection - 1).getNameOfMedicine())) System.out.println(MedicationInventory.getInventory().get(medSelection - 1).getNameOfMedicine() + " is already prescribed");
-                    			else medicine = medicine + "/" + MedicationInventory.getInventory().get(medSelection - 1).getNameOfMedicine();
-                    		}
-                    	}
-                        
-                    } while(medSelection != -1);
-
-                    System.out.print("Enter Dosage: ");
-                    String dosage = InputService.inputString();
-
-                    System.out.print("Enter Instructions: ");
-                    String instruction = InputService.inputString();
-
-                    String dateIssued = String.valueOf(LocalDate.now().format(formatterDate));
-                    pharmacistController.addNewPrescription(targetAppointment, dateIssued, medicine, dosage, instruction);
-                    break;
-                case 3:
                 		List<Integer> pendingPresciptionAppointmentsIndices1 = viewPendingPresciptionAppointments();
                 		if(pendingPresciptionAppointmentsIndices1.isEmpty()) break;
                     System.out.print("Select the Appointment ID you want to update: ");
@@ -188,7 +154,7 @@ public class PharmacistMainPage extends UserMainPage{
                     }
                     else System.out.println("Prescription status is not changed.");
                     break;
-                case 4:
+                case 3:
                 		System.out.print("Enter Appointment ID to search: ");
                     String prescriptionID = InputService.inputString().trim();
                     Appointment appointment = pharmacistController.getAppointmentByID(prescriptionID);
@@ -218,17 +184,17 @@ public class PharmacistMainPage extends UserMainPage{
                     	printPrescription(appointment);
                     }
                     break;
-                case 5:
+                case 4:
                 		dispenseMedicine();
                 		break;
-                case 6:
+                case 5:
                     System.out.println("Returning to Main Menu.");
                     break;
                 default:
                     System.out.println("Invalid choice, please try again.");
                     break;
             }
-        } while (choice != 6);
+        } while (choice != 5);
     }
 
     /*
