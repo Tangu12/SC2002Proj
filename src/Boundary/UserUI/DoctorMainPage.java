@@ -11,6 +11,8 @@ import Controllers.DoctorController;
 import Controllers.PatientController;
 import Entity.Appointment;
 import Entity.AppointmentList;
+import Entity.MedicationInventory;
+import Entity.Medicine;
 import Entity.Enums.Department;
 import Entity.Enums.Status;
 import Entity.User.Doctor;
@@ -410,8 +412,13 @@ public class DoctorMainPage extends UserMainPage {
 	 */
 	public List<Integer> viewDoctorNoCancelledScheduledAppointments() {
 	        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/M/yyyy H:mm");
+	        DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("d-M-yyyy");
 	        System.out.println("+" + "-".repeat(3) + "+"
 	        			+ "-".repeat(columnWidth) + "+"
+					+ "-".repeat(columnWidth) + "+"
+					+ "-".repeat(columnWidth) + "+"
+					+ "-".repeat(columnWidth) + "+"
+					+ "-".repeat(50) + "+"
 					+ "-".repeat(columnWidth) + "+"
 					+ "-".repeat(columnWidth) + "+"
 					+ "-".repeat(columnWidth) + "+");
@@ -420,10 +427,18 @@ public class DoctorMainPage extends UserMainPage {
 					+ "|" + formatCell("Status", columnWidth)
 					+ "|" + formatCell("App Date and Time", columnWidth)
 					+ "|" + formatCell("Purpose", columnWidth)
-					+ "|" + formatCell("Pat Name", columnWidth) + "|");
+					+ "|" + formatCell("Pat Name", columnWidth) 
+					+ "|" + formatCell("Medicine", 50)
+					+ "|" + formatCell("Issued Date", columnWidth)
+					+ "|" + formatCell("Dosage", columnWidth)
+					+ "|" + formatCell("Instructions", columnWidth)+ "|");
 
 			System.out.println("+" + "-".repeat(3) + "+"
 					+ "-".repeat(columnWidth) + "+"
+					+ "-".repeat(columnWidth) + "+"
+					+ "-".repeat(columnWidth) + "+"
+					+ "-".repeat(columnWidth) + "+"
+					+ "-".repeat(50) + "+"
 					+ "-".repeat(columnWidth) + "+"
 					+ "-".repeat(columnWidth) + "+"
 					+ "-".repeat(columnWidth) + "+");
@@ -436,9 +451,17 @@ public class DoctorMainPage extends UserMainPage {
 	                			+ "|" + formatCell(appointments.getStatusOfApp().toString(), columnWidth)
 							+ "|" + formatCell(appointments.getTimeOfApp().format(formatter), columnWidth)
 							+ "|" + formatCell(appointments.getPurposeOfApp().toString(), columnWidth)
-							+ "|" + formatCell(appointments.getPatName(), columnWidth) + "|");
+							+ "|" + formatCell(appointments.getPatName(), columnWidth) 
+							+ "|" + formatCell(appointments.getMedicine(), 50) 
+							+ "|" + formatCell((appointments.getMedicineIssuedDate() != null) ? appointments.getMedicineIssuedDate().format(formatter1): "N/A", columnWidth) 
+							+ "|" + formatCell(appointments.getDosage(), columnWidth) 
+							+ "|" + formatCell(appointments.getInstructions(), columnWidth)+ "|");
 					System.out.println("+" + "-".repeat(3) + "+"
 							+ "-".repeat(columnWidth) + "+"
+							+ "-".repeat(columnWidth) + "+"
+							+ "-".repeat(columnWidth) + "+"
+							+ "-".repeat(columnWidth) + "+"
+							+ "-".repeat(50) + "+"
 							+ "-".repeat(columnWidth) + "+"
 							+ "-".repeat(columnWidth) + "+"
 							+ "-".repeat(columnWidth) + "+");
@@ -454,6 +477,7 @@ public class DoctorMainPage extends UserMainPage {
 	 * Function that allows a {@code Doctors} to update the Appointment Outcome Record of one of their {@code Appointments}
 	 */
 	public void updateApptOutcomeRecords() {
+		DateTimeFormatter formatterDate = DateTimeFormatter.ofPattern("d/M/yyyy");
  		 List<Integer> pendingIndices = viewDoctorNoCancelledScheduledAppointments();
  		 if (pendingIndices.isEmpty()) {
  			 System.out.println("There is no scheduled appointment for you.");
@@ -486,6 +510,34 @@ public class DoctorMainPage extends UserMainPage {
 		        		System.out.println("Please only select the available status.");
 		        		return;
 	     }
+	     
+	     Appointment targetAppointment = doctorController.getAppointmentByID(AppointmentList.getInstance().getAppointmentList().get(pendingIndices.get(selection-1)).getAppID());
+         int medSelection;
+         String medicine = targetAppointment.getMedicine();
+         do {
+         	viewAvailableMed();
+         	System.out.print("Select the Medicine (-1 to end): ");
+         	medSelection = InputService.inputInteger();
+         	if(medSelection == -1) break;
+         	else if(medSelection <= 0 || medSelection > MedicationInventory.getInventory().size()) System.out.println("Not available medicine.");
+         	else {
+         		if(medicine == " ") medicine = MedicationInventory.getInventory().get(medSelection - 1).getNameOfMedicine();
+         		else {
+         			if(medicine.contains(MedicationInventory.getInventory().get(medSelection - 1).getNameOfMedicine())) System.out.println(MedicationInventory.getInventory().get(medSelection - 1).getNameOfMedicine() + " is already prescribed");
+         			else medicine = medicine + "/" + MedicationInventory.getInventory().get(medSelection - 1).getNameOfMedicine();
+         		}
+         	}
+             
+         } while(medSelection != -1);
+
+         System.out.print("Enter Dosage: ");
+         String dosage = InputService.inputString();
+
+         System.out.print("Enter Instructions: ");
+         String instruction = InputService.inputString();
+
+         String dateIssued = String.valueOf(LocalDate.now().format(formatterDate));
+         doctorController.addNewPrescription(targetAppointment, dateIssued, medicine, dosage, instruction);
 	 }
 
 	/**
@@ -569,4 +621,40 @@ public class DoctorMainPage extends UserMainPage {
 				}
 			}
 		}
+	
+	public void viewAvailableMed() {
+    	int i = 1;
+		if (MedicationInventory.getInventory().isEmpty()) {
+			System.out.println("Inventory is empty.");
+		} else {
+			System.out.println("Current Inventory:");
+			System.out.println("+" + "-".repeat(3) + "+"
+					+ "-".repeat(30) + "+"
+					+ "-".repeat(15) + "+"
+					+ "-".repeat(15) + "+");
+
+			System.out.println("|" + formatCell("No.", 3)
+					+ "|" + formatCell("Medicine Name", 30)
+					+ "|" + formatCell("Current Stock", 15)
+					+ "|" + formatCell("Low Stock Alert", 15) + "|");
+
+			System.out.println("+" + "-".repeat(3) + "+"
+					+ "-".repeat(30) + "+"
+					+ "-".repeat(15) + "+"
+					+ "-".repeat(15) + "+");
+
+			for (Medicine medicine : MedicationInventory.getInventory()) {
+				System.out.println("|" + formatCell(String.valueOf(i), 3)
+						+ "|" + formatCell(medicine.getNameOfMedicine(), 30)
+						+ "|" + formatCell(String.valueOf(medicine.getCurrentStock()), 15)
+						+ "|" + formatCell(String.valueOf(medicine.getLowStockLevelAlert()), 15) + "|");
+
+				System.out.println("+" + "-".repeat(3) + "+"
+						+ "-".repeat(30) + "+"
+						+ "-".repeat(15) + "+"
+						+ "-".repeat(15) + "+");
+				i++;
+			}
+		}
+    }
 }
