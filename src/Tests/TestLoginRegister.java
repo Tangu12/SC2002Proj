@@ -25,9 +25,9 @@ import java.time.LocalDate;
 public class TestLoginRegister {
     public static void main(String[] args) {
         String workingDir = System.getProperty("user.dir");
-        String credentialsPath = workingDir + "/src/Tests/TestingFiles/credentials.txt";
-        String patientsDataPath = workingDir + "/src/Tests/TestingFiles/patientsData.txt";
-        String hospitalDataPath = workingDir + "/src/Tests/TestingFiles/HospitalStaff.csv";
+        String credentialsPath = workingDir + "/program_files/credentials.txt";
+        String patientsDataPath = workingDir + "/program_files/patientsData.txt";
+        String hospitalDataPath = workingDir + "/program_files/HospitalStaff.csv";
 
         // Setup Repositories
         CredentialsRepository credentialsRepository = new CredentialsRepository(credentialsPath);
@@ -56,6 +56,8 @@ public class TestLoginRegister {
         WelcomeUI welcomeUI = new WelcomeUI(patientRegistrationUI,logoutUI,loginUI,changePasswordUI);
 
         ApplicationContext TestLogin = new ApplicationContext("",credentialsPath,hospitalDataPath,"",patientsDataPath);
+        Administrator Justin = new Administrator("A001","Justin",40,Gender.MALE);
+        administratorAccountService.createUserAccount(Justin,"Justin123","What is this person's name","justin");
 
 
         // Initialise

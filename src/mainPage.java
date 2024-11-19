@@ -15,11 +15,11 @@ public class mainPage {
 
 	public static void main(String[] args) {
 		String workingDir = System.getProperty("user.dir");
-		String credentialsPath = workingDir + "/src/Tests/TestingFiles/credentials.txt";
-        String patientsDataPath = workingDir + "/src/Tests/TestingFiles/patientsData.txt";
-        String hospitalDataPath = workingDir + "/src/Tests/TestingFiles/HospitalStaff.csv";
-        String medicationInventoryPath = workingDir + "/src/Tests/TestingFiles/MedicationInventory.csv";
-        String appointmentsDataPath = workingDir + "/src/Tests/TestingFiles/appointments.csv";
+		String credentialsPath = workingDir + "/program_files/credentials.txt";
+        String patientsDataPath = workingDir + "/program_files/patientsData.txt";
+        String hospitalDataPath = workingDir + "/program_files/HospitalStaff.csv";
+        String medicationInventoryPath = workingDir + "/program_files/MedicationInventory.csv";
+        String appointmentsDataPath = workingDir + "/program_files/appointments.csv";
         
         ApplicationContext applicationContext = new ApplicationContext(appointmentsDataPath, credentialsPath, hospitalDataPath, medicationInventoryPath, patientsDataPath);
         

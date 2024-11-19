@@ -404,6 +404,8 @@ public class DoctorMainPage extends UserMainPage {
 	            }
 	            index++;
 	        }
+	        
+	        if(i==1) System.out.println("There is no upcoming appointments for now!");
 	        return pendingIndices;
 	    }
 	

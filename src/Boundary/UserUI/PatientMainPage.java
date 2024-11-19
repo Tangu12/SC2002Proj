@@ -445,7 +445,7 @@ public class PatientMainPage extends UserMainPage{
 						+ "|" + formatCell("Date of Birth", columnWidth)
 						+ "|" + formatCell("Gender", columnWidth)
 						+ "|" + formatCell("Blood Type", columnWidth)
-						+ "|" + formatCell("Email", columnWidth));
+						+ "|" + formatCell("Email", columnWidth) + "|");
 
 				System.out.println("+" + "-".repeat(columnWidth) + "+"
 						+ "-".repeat(columnWidth) + "+"

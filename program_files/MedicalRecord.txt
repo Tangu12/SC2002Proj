@@ -1,7 +1,0 @@
-AppointmentID,HospitalID,Name,DateOfBirth,Gender,BloodType,PhoneNumber,Email,Diagnosis,Prescription
-A202410280900,P003,Justin,2002-07-22,M,O,999,justin,po,pop
-
-
-
-
-

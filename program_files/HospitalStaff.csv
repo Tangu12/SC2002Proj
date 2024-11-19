@@ -1,9 +1,4 @@
-Staff ID,Name,Role,Gender,Age,Department
-A001,Sarah Lee,Administrator,FEMALE,40,NotApplicable
-D001,John Kayek,Doctor,MALE,45,Cardiology
-D002,RyanGuy,Doctor,MALE,22,Neurology
-D003,Min,Doctor,MALE,22,Oncology
-D004,Dorcas,Doctor,FEMALE,20,Dermatology
-D005,Hung,Doctor,MALE,20,Endocrinology
-D006,Maguire,Doctor,MALE,60,Dermatology
-R001,Mark Lee,Pharmacist,MALE,29,NotApplicable
+Staff ID,Name,Role/Department(if Doctor),Gender,Age
+A001,Justin,Administrator,MALE,40
+D001,Min,Cardiology,MALE,45
+R001,Hung,Pharmacist,MALE,30
