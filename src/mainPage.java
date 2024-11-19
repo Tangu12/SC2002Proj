@@ -1,8 +1,6 @@
 import Application.ApplicationContext;
-import Boundary.LoginUI;
-import Boundary.LogoutUI;
-import Boundary.PatientRegistrationUI;
-import Boundary.WelcomeUI;
+import Boundary.*;
+import Controllers.ChangePasswordController;
 import Controllers.LoginController;
 import Controllers.PatientRegistrationController;
 import Entity.AppointmentList;
@@ -39,12 +37,14 @@ public class mainPage {
         // Setup Controllers
         PatientRegistrationController patientRegistrationController= new PatientRegistrationController(applicationContext.getCredentialsRepository(), applicationContext.getPatientAccountService());
         LoginController loginController = new LoginController(applicationContext.getCredentialsService(), applicationContext.getAccountManager(), applicationContext.getForgotPasswordService());
+        ChangePasswordController changePasswordController = new ChangePasswordController(applicationContext.getCredentialsService());
 
         // Create Boundaries
         PatientRegistrationUI patientRegistrationUI = new PatientRegistrationUI(patientRegistrationController);
         LogoutUI logoutUI = new LogoutUI();
         LoginUI loginUI = new LoginUI(loginController, applicationContext.getAccountManager(), applicationContext.getCredentialsService());
-        WelcomeUI welcomeUI = new WelcomeUI(patientRegistrationUI,logoutUI,loginUI);
+        ChangePasswordUI changePasswordUI= new ChangePasswordUI(changePasswordController);
+        WelcomeUI welcomeUI = new WelcomeUI(patientRegistrationUI,logoutUI,loginUI,changePasswordUI);
         
         welcomeUI.welcomeUI(applicationContext);
         

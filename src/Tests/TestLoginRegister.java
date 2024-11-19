@@ -1,9 +1,6 @@
 package Tests;
 
-import Boundary.LoginUI;
-import Boundary.LogoutUI;
-import Boundary.PatientRegistrationUI;
-import Boundary.WelcomeUI;
+import Boundary.*;
 import Controllers.LoginController;
 import Controllers.PatientRegistrationController;
 import Entity.Enums.BloodType;
@@ -52,7 +49,7 @@ public class TestLoginRegister {
         PatientRegistrationUI patientRegistrationUI = new PatientRegistrationUI(patientRegistrationController);
         LogoutUI logoutUI = new LogoutUI();
         LoginUI loginUI = new LoginUI(loginController, accountManager, credentialsService);
-        WelcomeUI welcomeUI = new WelcomeUI(patientRegistrationUI,logoutUI,loginUI);
+        //WelcomeUI welcomeUI = new WelcomeUI(patientRegistrationUI,logoutUI,loginUI,new ChangePasswordUI());
 
         // Initialise
         /*

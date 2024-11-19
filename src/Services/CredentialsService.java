@@ -93,10 +93,11 @@ public class CredentialsService {
      * @param newPlainTextPassword
      */
     public void changePassword(String userID, String newPlainTextPassword){
-        String salt = generateSalt();
-        String hashedPassword = hashPassword(newPlainTextPassword, salt);
+        Credentials userData = credentialsRepository.readRecord(userID);
+        String saltFromFile = userData.getSalt();
 
-        credentialsRepository.updateHashedPassword(userID,hashedPassword,salt);
+        String hashedPassword = hashPassword(newPlainTextPassword, saltFromFile);
+        credentialsRepository.updateHashedPassword(userID,hashedPassword,saltFromFile);
     }
 
     /**
@@ -225,6 +226,7 @@ public class CredentialsService {
         int tries = temp.getLoginAttempts();
         if(++tries>maxLoginAttempts){
             temp.lockAccount();
+            return;
         }
         temp.setLoginAttempts(tries);
         credentialsRepository.updateRecord(temp);
