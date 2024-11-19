@@ -12,6 +12,7 @@ import Entity.Enums.Purpose;
 import Entity.User.Patient;
 import Services.AppointmentService;
 import Services.InputService;
+import Services.UserAccount.PatientAccountService;
 
 /**
  * {@code PatientController} handles all the logic a Patient's Functions
@@ -19,15 +20,17 @@ import Services.InputService;
 public class PatientController implements IPatientAppointment {
 	private Patient patient;
 	private AppointmentService appointmentService;
+	private PatientAccountService patientAccountService;
 
     /**
      * Constructor for {@code PatientController}
      * @param pat
      * @param appService
      */
-    public PatientController(Patient pat, AppointmentService appService) {
+    public PatientController(Patient pat, AppointmentService appService, PatientAccountService patientAccountService) {
 		this.patient = pat;
 		this.appointmentService = appService;
+		this.patientAccountService = patientAccountService;
 	}
 
     /**
@@ -163,8 +166,10 @@ public class PatientController implements IPatientAppointment {
 		for(Patient patient : Patient.getPatientList()) {
 			if(patient.getUserID().equals(patID)) {
 				patient.setContactInfo(email);
+				patientAccountService.updateUserData(patient);
 				return;
 			}
 		}
+		
 	}
 }

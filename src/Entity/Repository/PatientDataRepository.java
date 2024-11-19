@@ -153,8 +153,9 @@ public class PatientDataRepository implements IRepository <String,String,Patient
         // Once the whole file is read, we copy the file back
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(path))) {
+            writer.write("UserID,Name,Age,Gender,Domain,ContactInfo,DateOfBirth,BloodType,MedicalHistory");
             writer.newLine();
-
+            
             for (Patient tempPatient : tempPatients) {
                 writer.write(tempPatient.getUserID() + "," + tempPatient.getName() + "," + tempPatient.getAge() + "," + tempPatient.getGender() + "," + tempPatient.getDomain() + "," +tempPatient.getContactInfo()+","+tempPatient.getDateOfBirth()+"," +tempPatient.getBloodType());
                 writer.newLine();

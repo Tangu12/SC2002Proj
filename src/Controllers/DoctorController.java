@@ -43,6 +43,7 @@ public class DoctorController implements IDoctorAppointment {
 	 */
 	public void createAppointmentSlot(String docID, String docName, int plusDays, Department dep, int startTime, int endTime) {
 		appointmentService.createAppointmentSlot(docID, docName, plusDays, dep, startTime, endTime);
+		appointmentService.updateAppointmentFile();
 	}
 
 	/**
@@ -52,6 +53,7 @@ public class DoctorController implements IDoctorAppointment {
 	 */
 	public void acceptOrDeclinePendingApp(int index, int decision) {
 		appointmentService.acceptOrDeclinePendingApp(index, decision);
+		appointmentService.updateAppointmentFile();
 	}
 
 	/**
@@ -62,5 +64,6 @@ public class DoctorController implements IDoctorAppointment {
 	 */
 	public void updateApptOutcomeRecords(int index, Status status, String notes) {
 		appointmentService.updateApptOutcomeRecords(index, status, notes);
+		appointmentService.updateAppointmentFile();
 	}
 }

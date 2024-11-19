@@ -1,5 +1,5 @@
 UserID,Name,Age,Gender,Domain,ContactInfo,DateOfBirth,BloodType,MedicalHistory
-P001,Ryan Wong,40,MALE,PATIENT,ryanguy@gmail.com,2002-05-14,A_NEGATIVE,null
+P001,Ryan Wong,40,MALE,PATIENT,RyanGuy@gmail.com,2002-05-14,A_NEGATIVE
 P002,Ryan Wong,21,MALE,PATIENT,ryanguy.rw@gmail.com,2003-03-26,A_POSITIVE
 P003,Jiji,21,FEMALE,PATIENT,yongxinchiong1001@gmail.com,2003-10-01,O_POSITIVE
 P004,a,20,MALE,PATIENT,g@gmail.com,2003-12-12,A_POSITIVE

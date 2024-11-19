@@ -22,7 +22,7 @@ public class UserMainPageFactory {
     public static UserMainPage getHomePage(IUser user, ApplicationContext applicationContext) {
         switch (user.getDomain()) {
             case PATIENT:
-                return new PatientMainPage(new PatientController((Patient) user, applicationContext.getAppointmentService()));
+                return new PatientMainPage(new PatientController((Patient) user, applicationContext.getAppointmentService(), applicationContext.getPatientAccountService()));
             case PHARMACIST:
                 return new PharmacistMainPage(new PharmacistController(applicationContext.getMedicalInventoryService(), applicationContext.getAppointmentService(), (Pharmacist) user));
             case DOCTOR:

@@ -46,6 +46,7 @@ public class AppointmentService {
 		AppointmentList.getInstance().getAppointmentList().get(appIndex).setPatName(pat.getName());
 		AppointmentList.getInstance().getAppointmentList().get(appIndex).setPurposeOfApp(pur);
 		AppointmentList.getInstance().getAppointmentList().get(appIndex).setStatusOfApp(Status.Pending);
+		updateAppointmentFile();
     }
 
 	/**
@@ -57,6 +58,7 @@ public class AppointmentService {
 	public void cancelAppointment(int oldID) {
 		AppointmentList.getInstance().getAppointmentList().get(oldID).setStatusOfApp(Status.Cancelled);
 		AppointmentList.getInstance().getAppointmentList().get(oldID).setAvail(true);
+		updateAppointmentFile();
     }
 
 	/**
@@ -70,6 +72,7 @@ public class AppointmentService {
 	public void updateAppointmentStatus(Appointment appointment, int appIndex, Status status) {
 		AppointmentList.getInstance().getAppointmentList().get(appIndex).setStatusOfApp(status);
 		appointmentsRepository.updateRecord(appointment);
+		updateAppointmentFile();
 	}
 
 	/**
@@ -121,6 +124,7 @@ public class AppointmentService {
 			AppointmentList.getInstance().getAppointmentList().get(index).setStatusOfApp(Status.Cancelled);
 			AppointmentList.getInstance().getAppointmentList().get(index).setAvail(true);
 		}
+		updateAppointmentFile();
 	}
 
 	/**
@@ -134,6 +138,7 @@ public class AppointmentService {
 	public void updateApptOutcomeRecords(int index, Status status, String notes) {
 		AppointmentList.getInstance().getAppointmentList().get(index).setStatusOfApp(status);
 		AppointmentList.getInstance().getAppointmentList().get(index).setAppointOutcomeRecord(notes);
+		updateAppointmentFile();
 	}
 
 	/**
@@ -150,6 +155,7 @@ public class AppointmentService {
         appointment.setDosage(dosage);
         appointment.setInstructions(instructions);
         System.out.println("New prescription added successfully.");
+        updateAppointmentFile();
     }
 
 	/**
@@ -165,5 +171,14 @@ public class AppointmentService {
 	            iterator.remove(); // Safely removes the current element
 	        }
 	    }
+	    updateAppointmentFile();
+	}
+	
+	
+	/**
+	 * Calls updateAppointmentFile function from the {@code AppointmentsRepository} class 
+	 */
+	public void updateAppointmentFile() {
+		AppointmentsRepository.updateAppointmentFile(AppointmentList.getInstance().getAppointmentList());
 	}
 }
