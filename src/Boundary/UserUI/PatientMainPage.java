@@ -85,6 +85,7 @@ public class PatientMainPage extends UserMainPage{
                         System.out.println("Enter the time slot that you want to cancel: ");
                         int oldAppIDIndex = getAppIdIndexFromTime(AppointmentList.getInstance().getAppointmentList());
                         patientController.cancelAppointment(oldAppIDIndex);
+                        System.out.println("Your appointment is cancelled successfully");
                         break;
                     case 7:
                     	viewPatientScheduledAppointments(AppointmentList.getInstance().getAppointmentList(), patientController.getPatient());
@@ -193,20 +194,33 @@ public class PatientMainPage extends UserMainPage{
 				+ "-".repeat(columnWidth) + "+"
 				+ "-".repeat(columnWidth) + "+"
 				+ "-".repeat(columnWidth) + "+"
-				+ "-".repeat(40) + "+");
+				+ "-".repeat(40) + "+"
+				+ "-".repeat(50) + "+"
+				+ "-".repeat(columnWidth) + "+"
+				+ "-".repeat(columnWidth) + "+"
+				+ "-".repeat(columnWidth) + "+");
 
 		System.out.println("|" + formatCell("No.", 5)
 				+ "|" + formatCell("Purpose of App", columnWidth)
 				+ "|" + formatCell("Time", columnWidth)
 				+ "|" + formatCell("Doc Name", columnWidth)
-				+ "|" + formatCell("Feedback", 40) + "|");
+				+ "|" + formatCell("Feedback", 40) 
+				+ "|" + formatCell("Medicine", 50) 
+				+ "|" + formatCell("Date Issued", columnWidth) 
+				+ "|" + formatCell("Dosage", columnWidth) 
+				+ "|" + formatCell("Instructions", columnWidth)+ "|");
 
 		System.out.println("+" + "-".repeat(5) + "+"
 				+ "-".repeat(columnWidth) + "+"
 				+ "-".repeat(columnWidth) + "+"
 				+ "-".repeat(columnWidth) + "+"
-				+ "-".repeat(40) + "+");
+				+ "-".repeat(40) + "+"
+				+ "-".repeat(50) + "+"
+				+ "-".repeat(columnWidth) + "+"
+				+ "-".repeat(columnWidth) + "+"
+				+ "-".repeat(columnWidth) + "+");
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/M/yyyy H:mm");
+        DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("d-M-yyyy");
         int i = 1;
         for (Appointment appointments : appointmentList) {
             if (Objects.equals(appointments.getPatID(), pat.getUserID()) && (appointments.getStatusOfApp() == Status.Completed || appointments.getStatusOfApp() == Status.PendingPrescription)) {
@@ -214,12 +228,20 @@ public class PatientMainPage extends UserMainPage{
 						+ "|" + formatCell(appointments.getPurposeOfApp().toString(), columnWidth)
 						+ "|" + formatCell(appointments.getTimeOfApp().format(formatter), columnWidth)
 						+ "|" + formatCell("Dr. " + appointments.getDocName(), columnWidth) 
-						+ "|" + formatCell(appointments.getAppointOutcomeRecord(), 40) + "|");
+						+ "|" + formatCell(appointments.getAppointOutcomeRecord(), 40) 
+						+ "|" + formatCell(appointments.getMedicine(), 50) 
+						+ "|" + formatCell((appointments.getMedicineIssuedDate() != null) ? appointments.getMedicineIssuedDate().format(formatter1): "N/A", columnWidth) 
+						+ "|" + formatCell(appointments.getDosage(), columnWidth) 
+						+ "|" + formatCell(appointments.getInstructions(), columnWidth)+ "|");
 				System.out.println("+" + "-".repeat(5) + "+"
 						+ "-".repeat(columnWidth) + "+"
 						+ "-".repeat(columnWidth) + "+"
 						+ "-".repeat(columnWidth) + "+"
-						+ "-".repeat(40) + "+");
+						+ "-".repeat(40) + "+"
+						+ "-".repeat(50) + "+"
+						+ "-".repeat(columnWidth) + "+"
+						+ "-".repeat(columnWidth) + "+"
+						+ "-".repeat(columnWidth) + "+");
                 i++;
             }
         }
@@ -327,6 +349,7 @@ public class PatientMainPage extends UserMainPage{
 	}
 	
 	public void viewMedicalRecord(Patient pat) {
+		boolean haveRecord = false;
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d-M-yyyy");
         System.out.println("+" + "-".repeat(columnWidth) + "+"
 				+ "-".repeat(columnWidth) + "+"
@@ -394,7 +417,41 @@ public class PatientMainPage extends UserMainPage{
 						+ "-".repeat(columnWidth) + "+"
 						+ "-".repeat(columnWidth) + "+"
 						+ "-".repeat(columnWidth) + "+");
+				haveRecord = true;
 			}
+		}
+		
+		if(!haveRecord) {
+			System.out.println("There is no medical record for you!\n");
+			 System.out.println("+" + "-".repeat(columnWidth) + "+"
+						+ "-".repeat(columnWidth) + "+"
+						+ "-".repeat(columnWidth) + "+"
+						+ "-".repeat(columnWidth) + "+"
+						+ "-".repeat(columnWidth) + "+");
+
+				System.out.println("|" + formatCell("Patient Name", columnWidth)
+						+ "|" + formatCell("Date of Birth", columnWidth)
+						+ "|" + formatCell("Gender", columnWidth)
+						+ "|" + formatCell("Blood Type", columnWidth)
+						+ "|" + formatCell("Email", columnWidth));
+
+				System.out.println("+" + "-".repeat(columnWidth) + "+"
+						+ "-".repeat(columnWidth) + "+"
+						+ "-".repeat(columnWidth) + "+"
+						+ "-".repeat(columnWidth) + "+"
+						+ "-".repeat(columnWidth) + "+");
+			
+			System.out.println("|" + formatCell(pat.getName(), columnWidth)
+			+ "|" + formatCell(pat.getDateOfBirth().format(formatter), columnWidth)
+			+ "|" + formatCell(pat.getGender().toString(), columnWidth)
+			+ "|" + formatCell(pat.getBloodType().toString(), columnWidth)
+			+ "|" + formatCell(pat.getContactInfo(), columnWidth) + "|");
+			
+			System.out.println("+" + "-".repeat(columnWidth) + "+"
+					+ "-".repeat(columnWidth) + "+"
+					+ "-".repeat(columnWidth) + "+"
+					+ "-".repeat(columnWidth) + "+"
+					+ "-".repeat(columnWidth) + "+");
 		}
 	}
 	
@@ -405,6 +462,7 @@ public class PatientMainPage extends UserMainPage{
         String email = InputService.inputEmail();
         this.patientController.updatePersonalInformation(pat.getUserID(), email);
         this.patientController.getPatient().setContactInfo(email);
+        System.out.println("Email is updated successfully!");
 	}
 	
 	private static String formatCell(String value, int width) {
