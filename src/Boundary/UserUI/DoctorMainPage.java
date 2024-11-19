@@ -494,6 +494,7 @@ public class DoctorMainPage extends UserMainPage {
 	    	 	System.out.println(AppointmentList.getInstance().getAppointmentList().get(pendingIndices.get(selection-1)).getAppointOutcomeRecord());
 	     }
 	     String doctorNotes = InputService.inputString().trim();
+	     doctorNotes = doctorNotes.replace(',', '/');
 	     if(!AppointmentList.getInstance().getAppointmentList().get(pendingIndices.get(selection-1)).getAppointOutcomeRecord().equals(" ")) doctorNotes = AppointmentList.getInstance().getAppointmentList().get(pendingIndices.get(selection-1)).getAppointOutcomeRecord() + " " + doctorNotes;
 	     System.out.println("Please select the status of the appointment:\n"
 	     		+ "(1) PrescriptionPending\n"
@@ -532,9 +533,11 @@ public class DoctorMainPage extends UserMainPage {
 
          System.out.print("Enter Dosage: ");
          String dosage = InputService.inputString();
+         dosage = dosage.replace(',', '/');
 
          System.out.print("Enter Instructions: ");
          String instruction = InputService.inputString();
+         instruction = instruction.replace(',', '/');
 
          String dateIssued = String.valueOf(LocalDate.now().format(formatterDate));
          doctorController.addNewPrescription(targetAppointment, dateIssued, medicine, dosage, instruction);

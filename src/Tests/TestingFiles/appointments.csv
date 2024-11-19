@@ -1,7 +1,6 @@
 Availability,AppointmentID,TimeOfAppointment,DoctorID,DoctorName,PatientID,PatientName,PurposeOfAppointment,Department,StatusOfAppointment,Appointment Outcomes,Medicine,Date Issued,Dosage,Instructions
 false,A202411160130D001,16/11/2024 1:30,D001,Min,P001,Ryan Wong,Other,Cardiology,Completed, high fever and cough,Paracetamol/Ibuprofen/Amoxicillin,16/11/2024,200mg for each,Take after meal
-false,A202411160230D001,16/11/2024 2:30,D001,Min,P001,Ryan Wong,Consultation,Cardiology,Pending, , , , , 
-false,A202411170430D001,17/11/2024 4:30,D001,Min,P001,Ryan Wong,Consultation,Cardiology,PendingPrescription,Cough and high fever Sneezing Testing , /Paracetamol/Ibuprofen/Amoxicillin,19/11/2024,500mg a day,take after meal
+false,A202411160230D001,16/11/2024 2:30,D001,Min,P001,Ryan Wong,Consultation,Cardiology,PendingPrescription,Cough/fever/dirrhea, /Paracetamol/Ibuprofen,19/11/2024,100mg/5mg,take with meals
 true,A202411192130D001,19/11/2024 21:30,D001,Min,P001,Ryan Wong,CheckUp,Cardiology,Cancelled, , , , , 
 true,A202411200000D001,20/11/2024 0:00,D001,Min, , , ,Cardiology, , , , , , 
 true,A202411200030D001,20/11/2024 0:30,D001,Min, , , ,Cardiology, , , , , , 
