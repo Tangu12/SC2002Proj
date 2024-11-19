@@ -533,9 +533,14 @@ public class PharmacistMainPage extends UserMainPage{
     // Use a specific amount of medicine
     public void dispenseMedicine() {
     		viewAvailableMed();
-        System.out.print("Select the index of medicine to use: ");
-        int choice = InputService.inputInteger();
-        Medicine medicine = pharmacistController.findMedicineByName(MedicationInventory.getInventory().get(choice-1).getNameOfMedicine());
+		int choice;
+		do {
+			System.out.print("Select the index of medicine to use: ");
+			choice = InputService.inputInteger();
+			if (choice > MedicationInventory.getInventory().size() || choice < 0) System.out.println("Please enter the available choices!");
+		} while(choice > MedicationInventory.getInventory().size() || choice < 0);
+
+		Medicine medicine = pharmacistController.findMedicineByName(MedicationInventory.getInventory().get(choice-1).getNameOfMedicine());
         if (medicine == null) {
             System.out.println("Medicine not found.");
             return;
