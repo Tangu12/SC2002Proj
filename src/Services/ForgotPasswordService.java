@@ -8,7 +8,7 @@ public class ForgotPasswordService {
 
     /**
      * Constructor for {@code ForgotPasswordService}
-     * @param credentialsService
+     * @param credentialsService instance of CredentialsService
      */
     public ForgotPasswordService(CredentialsService credentialsService) {
         this.credentialsService = credentialsService;
@@ -16,8 +16,8 @@ public class ForgotPasswordService {
 
     /**
      * Asks the User their security question based on their {@code HospitalID}
-     * @param userID
-     * @return
+     * @param userID User's HospitalID
+     * @return True if the User's answer to the security qnd is corrtcly i wa
      */
     public boolean verifySecurityQuestion(String userID){
         System.out.println("Please answer the security question : ");
@@ -28,7 +28,7 @@ public class ForgotPasswordService {
 
     /**
      * Resets a User's password based on the User's {@code HospitalID}
-     * @param userID
+     * @param userID User's HospitalID
      */
     public void resetPassword(String userID){
         System.out.println("Please answer the reset password : ");
@@ -38,7 +38,7 @@ public class ForgotPasswordService {
 
     /**
      * The getter method of a User's security question
-     * @param userID
+     * @param userID User's HospitalID
      * @return The User's security question
      */
     public String getSecurityQuestion(String userID) {

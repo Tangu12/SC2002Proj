@@ -15,12 +15,13 @@ public class Credentials {
 
     /**
      * Constructor for {@code Credentials}
-     * @param userID
-     * @param hashedPassword
-     * @param salt
-     * @param securityQuestion
-     * @param hashedSecurityAnswer
-     * @param loginAttempts
+     * Constructor for {@code Credentials}
+     * @param userID The unique identifier for the user. Typically, it could be a username or email address.
+     * @param hashedPassword The hashed version of the user's password for secure storage.
+     * @param salt The salt used to hash the password, adding extra security to the password storage.
+     * @param securityQuestion The security question associated with the user, used for account recovery.
+     * @param hashedSecurityAnswer The hashed version of the user's answer to the security question, stored for secure verification.
+     * @param loginAttempts The number of failed login attempts the user has made. If it reaches the maximum limit, the account can be locked.
      */
     public Credentials(String userID, String hashedPassword, String salt, String securityQuestion, String hashedSecurityAnswer,int loginAttempts) {
         this.userID = userID;
@@ -49,7 +50,7 @@ public class Credentials {
 
     /**
      * The setter method of a {@code Credentials}'s hashed password
-     * @param hashedPassword
+     * @param hashedPassword The new hashed password to set for the user.
      */
     public void setHashedPassword(String hashedPassword) {
         this.hashedPassword = hashedPassword;
@@ -65,7 +66,7 @@ public class Credentials {
 
     /**
      * The setter method of a {@code Credentials}'s salt
-     * @param salt
+     * @param salt The new salt to be set for hashing the password.
      */
     public void setSalt(String salt) {
         this.salt = salt;
@@ -81,7 +82,7 @@ public class Credentials {
 
     /**
      * The setter method of a {@code Credentials}'s security question
-     * @param securityQuestion
+     * @param securityQuestion The new security question to be associated with the user's account.
      */
     public void setSecurityQuestion(String securityQuestion) {
         this.securityQuestion = securityQuestion;
@@ -97,7 +98,7 @@ public class Credentials {
 
     /**
      *  The setter method of a {@code Credentials}'s hashed security answer
-     * @param hashedSecurityAnswer
+     * @param hashedSecurityAnswer The new hashed answer to the security question.
      */
     public void setHashedSecurityAnswer(String hashedSecurityAnswer) {
         this.hashedSecurityAnswer = hashedSecurityAnswer;
@@ -113,7 +114,7 @@ public class Credentials {
 
     /**
      * The setter method of a {@code Credentials}'s login attempts
-     * @param loginAttempts
+     * @param loginAttempts The new number of login attempts to be set for the user.
      */
     public void setLoginAttempts(int loginAttempts) {
         this.loginAttempts = loginAttempts;

@@ -14,7 +14,7 @@ public class InputService {
 
     /**
      * Takes in the User input of an integer value and handles its exceptions
-     * @return
+     * @return The integer value input by the user.
      */
     public static int inputInteger(){
         try {
@@ -27,7 +27,7 @@ public class InputService {
 
     /**
      * Takes in the User input of a String and handles its exceptions
-     * @return
+     * @return The trimmed string input by the user.
      */
     public static String inputString(){
         return new Scanner(System.in).nextLine().trim();
@@ -36,9 +36,9 @@ public class InputService {
     /**
      * Takes in the User to input of a valid value for a specified enum type and displays all available enum constants,
      * and returns the corresponding enum constant entered
-     * @param enumType
-     * @return
-     * @param <T>
+     * @param enumType The {@code Class} object of the enum type that the user should input a value for.
+     * @return The enum constant corresponding to the user's input.
+     * @param <T> The type of the enum.
      */
     public static <T extends Enum<T>> T inputEnum(Class<T> enumType) {
         System.out.println("Available options for " + enumType.getSimpleName() + ":");
@@ -79,9 +79,9 @@ public class InputService {
 
     /**
      * Uses Email RegEx to check email input, and returns if email format is correct
-     * @param email
-     * @return
-     */
+     * @param email The email string to be validated.
+     *      * @return {@code true} if the email format is valid, {@code false} otherwise.
+     *      */
     public static boolean isValidEmail(String email) {
         String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
         Pattern pattern = Pattern.compile(emailRegex);
@@ -91,8 +91,8 @@ public class InputService {
     }
 
     /**
-     * Method to input a valid email
-     * @return
+     * Method to input a valid emai
+     * @return The valid email input by the user.
      */
     public static String inputEmail() {
         while (true) {

@@ -18,11 +18,11 @@ public class Administrator extends HospitalStaff{
 
     /**
      * Constructor for a {@code Administrator}
-     * @param UserID
-     * @param name
-     * @param age
-     * @param gender
-     * @param medicationInventory
+     * @param UserID The unique identifier for the {@code Administrator}. This is typically used to identify the user in the system.
+     * @param name The name of the {@code Administrator}. This is a string that represents the full name of the administrator.
+     * @param age The age of the {@code Administrator}. This integer represents the age in years.
+     * @param gender The gender of the {@code Administrator}. This is an enum value from the {@code Gender} enum, which can be used to specify the gender (e.g., MALE, FEMALE).
+     * @param medicationInventory The {@code MedicationInventory} instance associated with the {@code Administrator}. This is used to manage the medication inventory that the administrator has control over.
      */
     public Administrator(String UserID,String name,int age,Gender gender,MedicationInventory medicationInventory) {
         super(UserID,name,age,gender,Domain.ADMINISTRATOR);
@@ -31,10 +31,10 @@ public class Administrator extends HospitalStaff{
 
     /**
      * Constructor for a {@code Administrator}
-     * @param UserID
-     * @param name
-     * @param age
-     * @param gender
+     * @param UserID The unique identifier for the {@code Administrator}. This is typically used to identify the user in the system.
+     * @param name The name of the {@code Administrator}. This is a string that represents the full name of the administrator.
+     * @param age The age of the {@code Administrator}. This integer represents the age in years.
+     * @param gender The gender of the {@code Administrator}. This is an enum value from the {@code Gender} enum, which can be used to specify the gender (e.g., MALE, FEMALE).
      */
     public Administrator(String UserID,String name,int age,Gender gender) {
         super(UserID,name,age,gender,Domain.ADMINISTRATOR);
@@ -68,8 +68,8 @@ public class Administrator extends HospitalStaff{
 
     /**
      * Null function
-     * @param newRole
-     * @param dept
+     * @param newRole The new role to be assigned to the {@code Administrator}. This is a {@code Domain} enum value that defines the role (e.g., ADMINISTRATOR, DOCTOR).
+     * @param dept The department to be assigned. This is a {@code Department} enum value that specifies the department (e.g., PHARMACY, EMERGENCY).
      */
     @Override
     public void updateDepartment(Domain newRole, Department dept) {

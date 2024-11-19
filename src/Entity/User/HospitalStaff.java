@@ -16,11 +16,11 @@ public abstract class HospitalStaff implements IUser {
 
     /**
      * Constructor for {@code HospitalStaff}
-     * @param userID
-     * @param name
-     * @param age
-     * @param gender
-     * @param domain
+     * @param userID The unique identifier for the {@code HospitalStaff}. This could be an employee ID, username, or another unique identifier used to track hospital staff.
+     * @param name The name of the {@code HospitalStaff}. This is a string representing the full name of the staff member.
+     * @param age The age of the {@code HospitalStaff}. This is an integer representing the staff member's age in years.
+     * @param gender The gender of the {@code HospitalStaff}. This is an enum value from the {@code Gender} enum (e.g., MALE, FEMALE) representing the staff member's gender.
+     * @param domain The domain or role of the {@code HospitalStaff}. This is an enum value from the {@code Domain} enum, such as DOCTOR, NURSE, ADMINISTRATOR, etc.
      */
     public HospitalStaff (String userID, String name, int age, Gender gender, Domain domain) {
     	this.userID = userID;
@@ -32,8 +32,8 @@ public abstract class HospitalStaff implements IUser {
 
     /**
      * Updates the department of a {@code HospitalStaff}
-     * @param newRole
-     * @param dept
+     * @param newRole The new role of the {@code HospitalStaff}. This is a {@code Domain} enum value that represents the new role (e.g., DOCTOR, NURSE, etc.).
+     * @param dept The department to assign to the {@code HospitalStaff}. This is a {@code Department} enum value representing the department the staff member should be in (e.g., CARDIOLOGY, EMERGENCY, etc.).
      */
     public abstract void updateDepartment(Domain newRole, Department dept);
 
@@ -47,7 +47,7 @@ public abstract class HospitalStaff implements IUser {
 
     /**
      * The setter method of a {@code HospitalStaff}'s {@code HospitalID}
-     * @param userID
+     * @param userID The unique identifier to set for the {@code HospitalStaff}.
      */
     public void setUserID(String userID) {
         this.userID = userID;
@@ -63,7 +63,7 @@ public abstract class HospitalStaff implements IUser {
 
     /**
      * The setter method of a {@code HospitalStaff}'s name
-     * @param name
+     * @param name The name to set for the {@code HospitalStaff}.
      */
     public void setName(String name) {
         this.name = name;
@@ -79,7 +79,7 @@ public abstract class HospitalStaff implements IUser {
 
     /**
      * The setter method of a {@code HospitalStaff}'s age
-     * @param age
+     * @param age The age to set for the {@code HospitalStaff}.
      */
     public void setAge(int age) {
         this.age = age;
@@ -95,7 +95,7 @@ public abstract class HospitalStaff implements IUser {
 
     /**
      * The setter method of a {@code HospitalStaff}'s gender
-     * @param gender
+     * @param gender The gender to set for the {@code HospitalStaff}. This is an enum value from the {@code Gender} enum (e.g., MALE, FEMALE).
      */
     public void setGender(Gender gender) {
         this.gender = gender;
@@ -111,7 +111,7 @@ public abstract class HospitalStaff implements IUser {
 
     /**
      * The setter method of a {@code HospitalStaff}'s domain
-     * @param domain
+     * @param domain The domain/role to set for the {@code HospitalStaff}. This is an enum value from the {@code Domain} enum (e.g., DOCTOR, NURSE, ADMINISTRATOR).
      */
     public void setDomain(Domain domain) {
         this.domain = domain;

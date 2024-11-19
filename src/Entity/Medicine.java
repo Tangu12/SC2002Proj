@@ -11,9 +11,9 @@ public class Medicine {
 
     /**
      * Constructor for a {@code Medicine}
-     * @param nameOfMedicine
-     * @param currentStock
-     * @param lowStockLevelAlert
+     * @param nameOfMedicine The name of the medicine.
+     * @param currentStock The current stock of the medicine.
+     * @param lowStockLevelAlert The threshold level for low stock alert, which triggers a notification when stock is lower than this value.
      */
     public Medicine(String nameOfMedicine, int currentStock, int lowStockLevelAlert) {
         this.nameOfMedicine = nameOfMedicine;
@@ -24,10 +24,10 @@ public class Medicine {
 
     /**
      * Constructor for a {@code Medicine}
-     * @param nameOfMedicine
-     * @param currentStock
-     * @param lowStockLevelAlert
-     * @param requestAmount
+     * @param nameOfMedicine The name of the medicine.
+     * @param currentStock The current stock of the medicine.
+     * @param lowStockLevelAlert The threshold level for low stock alert, which triggers a notification when stock is lower than this value.
+     * @param requestAmount The amount of medicine requested for procurement or restocking.
      */
     public Medicine(String nameOfMedicine, int currentStock, int lowStockLevelAlert,int requestAmount) {
         this.nameOfMedicine = nameOfMedicine;
@@ -46,7 +46,7 @@ public class Medicine {
 
     /**
      * The getter method for the current stock of a {@code Medicine}
-     * @return
+     * @return The current stock of the medicine.
      */
     public int getCurrentStock() {
         return currentStock;
@@ -54,7 +54,7 @@ public class Medicine {
 
     /**
      * The getter method for the low stock level alert of a {@code Medicine}
-     * @return
+     * @return The low stock level alert of the medicine, which is the threshold below which stock is considered low.
      */
     public int getLowStockLevelAlert() {
         return lowStockLevelAlert;
@@ -62,7 +62,7 @@ public class Medicine {
 
     /**
      * The getter method for request of a {@code Medicine}
-     * @return
+     * @return The amount of medicine requested for procurement or restocking.
      */
     public int getRequestAmount() {
         return requestAmount;
@@ -70,8 +70,8 @@ public class Medicine {
 
     /**
      * The setter method for the current stock of a {@code Medicine}
-     * @param newStock
-     * @return
+     * @param newStock The new value to set for the current stock of the medicine. It cannot be negative.
+     * @return True if the current stock was successfully set, otherwise false.
      */
     public boolean setCurrentStock(int newStock) {
         if (newStock >= 0) {
@@ -85,8 +85,8 @@ public class Medicine {
 
     /**
      * The setter method for the low stock level alert of a {@code Medicine}
-     * @param newAlertLevel
-     * @return
+     * @param newAlertLevel The new value for the low stock level alert. It cannot be negative.
+     * @return True if the low stock level alert was successfully set, otherwise false.
      */
     public boolean setLowStockLevelAlert(int newAlertLevel) {
         if (newAlertLevel >= 0) {
@@ -100,8 +100,8 @@ public class Medicine {
 
     /**
      * The setter method for the request amount of a {@code Medicine}
-     * @param requestAmount
-     * @return
+     * @param requestAmount The new value for the request amount of the medicine. It cannot be negative.
+     * @return True if the request amount was successfully set, otherwise false.
      */
     public boolean setRequestAmount(int requestAmount) {
         if (requestAmount >= 0) {
@@ -112,10 +112,9 @@ public class Medicine {
             return false;
         }
     }
-
     /**
      * Increments the stock of a {@code Medicine} by the input amount
-     * @param amount
+     * @param amount The amount to increase the current stock by. Must be a positive integer.
      */
     public void incrementStock(int amount){
         currentStock += amount;
@@ -123,8 +122,8 @@ public class Medicine {
 
     /**
      * Decrements the stock of a {@code Medicine} by the input amount
-     * @param amount
-     * @return
+     * @param amount The amount to decrease the current stock by. Must be a positive integer and cannot exceed the current stock.
+     * @return True if the stock was successfully decremented, otherwise false.
      */
     public boolean decrementStock(int amount) {
         if (amount <= currentStock && amount > 0) {

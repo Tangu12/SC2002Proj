@@ -34,10 +34,10 @@ public class AdministratorController implements ILockAccount, IManageStaff, IAdm
 
     /**
      * Constructor for {@code AdministratorController}
-     * @param admin
-     * @param staffManagementService
-     * @param medicalInventoryService
-     * @param accountManager
+     * @param admin the instance of the Administrator
+     * @param staffManagementService the instance of the StaffManagementService
+     * @param medicalInventoryService the instance of the MedicalInventoryService
+     * @param accountManager the instance of the AccountManager
      */
 	public AdministratorController(Administrator admin, StaffManagementService staffManagementService,
                                    MedicalInventoryService medicalInventoryService, AccountManager accountManager) {
@@ -69,7 +69,7 @@ public class AdministratorController implements ILockAccount, IManageStaff, IAdm
 
     /**
      * Searches for a hospital staff member by their unique hospital ID across different staff types if they exist
-     * @param hospitalId
+     * @param hospitalId the User's HospitalID
      * @return The {@code HospitalStaff} object if they exist, or an empty {@link Optional} if no staff member with the given ID exists
      */
     public Optional<HospitalStaff> findStaffById(String hospitalId) {
@@ -80,7 +80,7 @@ public class AdministratorController implements ILockAccount, IManageStaff, IAdm
 
     /**
      * Searches for a hospital staff member by their unique hospital ID across different staff types and removes them if they exist
-     * @param userID
+     * @param userID the User's HospitalID
      */
     public void removeStaffMember(String userID) {
     	Optional<? extends HospitalStaff> staffToRemove = findStaffById(userID);
@@ -104,11 +104,11 @@ public class AdministratorController implements ILockAccount, IManageStaff, IAdm
 
     /**
      * Updates the parameters of {@code HospitalStaff} member if they exist
-     * @param userID
-     * @param newName
-     * @param age
-     * @param gender
-     * @param dep
+     * @param userID the User's HospitalID
+     * @param newName the User's new name
+     * @param age the User's new name age
+     * @param gender the User's new name Gender
+     * @param dep the User's new Department
      */
     public void updateStaffMember(String userID, String newName, int age, Gender gender, Department dep) {
     	Optional<? extends HospitalStaff> staffToUpdate = findStaffById(userID);
@@ -122,7 +122,7 @@ public class AdministratorController implements ILockAccount, IManageStaff, IAdm
 
     /**
      * Gets the list of {@code Appointment}s with a given {@code Appointment} status
-     * @param status
+     * @param status the Status of a appointment
      * @return A array list of {@code Appointment}s with the corresponding input status
      */
     public ArrayList<Appointment> getAppointmentsByStatus(String status) {
@@ -138,7 +138,7 @@ public class AdministratorController implements ILockAccount, IManageStaff, IAdm
 
     /**
      * Returns the {@code Appointment} with the corresponding AppointmentID as the input
-     * @param appID
+     * @param appID the AppointmentID of a appointment
      * @return A {@code Appointment} with the corresponding AppointmentID as the input
      */
     public Appointment getAppointmentByID(String appID) {
@@ -150,7 +150,7 @@ public class AdministratorController implements ILockAccount, IManageStaff, IAdm
 
     /**
      * Gets all the {@code Appointment}s belonging to a {@code Patient} based on their {@code HospitalID}
-     * @param patientID
+     * @param patientID the Patient's HospitalID
      * @return A array list of {@code Appointment}s that belong to the corresponding {@code Patient}
      */
     public ArrayList<Appointment> getAppointmentsByPatientID(String patientID) {
@@ -164,7 +164,7 @@ public class AdministratorController implements ILockAccount, IManageStaff, IAdm
 
     /**
      * Returns the array list of appointments that belong to a doctor based on their hospitalID
-     * @param doctorID
+     * @param doctorID the Doctor's AppointmentID
      * @return
      */
     public ArrayList<Appointment> getAppointmentsByDoctorID(String doctorID) {
@@ -178,7 +178,7 @@ public class AdministratorController implements ILockAccount, IManageStaff, IAdm
 
     /**
      * Checks if a medicine with a certain name exists in the medicine inventory
-     * @param name
+     * @param name Medicine's name
      * @return True or False
      */
     public boolean isMedicineInInventory(String name) {
@@ -187,7 +187,7 @@ public class AdministratorController implements ILockAccount, IManageStaff, IAdm
 
     /**
      * Finds a medicine based on its name
-     * @param name
+     * @param name Medicine's name
      * @return The Medicine object
      */
     // Helper method to find a medicine by its name
@@ -202,8 +202,8 @@ public class AdministratorController implements ILockAccount, IManageStaff, IAdm
 
     /**
      * Increases the number of a specific medicine inside the medicine inventory
-     * @param stock
-     * @param selection
+     * @param stock Current Medicine stock
+     * @param selection Index of Medicine in the Medicine list of the chossen Medicine
      */
     public void increaseCurrentStock(int stock, int selection) {
     	medicalInventoryService.incrementStock(MedicationInventory.getInventory().get(selection-1).getNameOfMedicine(), stock);
@@ -211,9 +211,9 @@ public class AdministratorController implements ILockAccount, IManageStaff, IAdm
 
     /**
      * Adds a new medicine to the medicine inventory with its initial amount and low level alert value
-     * @param name
-     * @param stock
-     * @param alertLevel
+     * @param name Medicine's name
+     * @param stock Medicine's stock
+     * @param alertLevel Medicine's low level alert
      */
     public void addMedicine(String name, int stock, int alertLevel) {
     	Medicine med = new Medicine(name, stock, alertLevel);
@@ -222,7 +222,7 @@ public class AdministratorController implements ILockAccount, IManageStaff, IAdm
 
     /**
      * Removes a medicine from the medicine inventory
-     * @param choice
+     * @param choice User's choice
      */
     public void removeMedicine(int choice) {
         if(choice <= 0 || choice > MedicationInventory.getInventory().size()) { //user input unavailable choice
@@ -241,9 +241,9 @@ public class AdministratorController implements ILockAccount, IManageStaff, IAdm
 
     /**
      *
-     * @param med
-     * @param newStock
-     * @param newAlertLevel
+     * @param med Medicine's name
+     * @param newStock Medicine's new stock
+     * @param newAlertLevel Medicine's new low level alert
      */
     public void updateMedicine(Medicine med, int newStock, int newAlertLevel) {
     	med.setCurrentStock(newStock);
@@ -254,8 +254,8 @@ public class AdministratorController implements ILockAccount, IManageStaff, IAdm
 
     /**
      * Decreases the amount of  a specific medicine inside the medicine inventory
-     * @param med
-     * @param usedAmount
+     * @param med Medicine's name
+     * @param usedAmount Medicine's used amount
      */
     public void decrementStock(Medicine med, int usedAmount) {
     	medicalInventoryService.decrementStock(med.getNameOfMedicine(), usedAmount);
@@ -287,7 +287,7 @@ public class AdministratorController implements ILockAccount, IManageStaff, IAdm
 
     /**
      * Locks the account of a user
-     * @param userID
+     * @param userID User's HospitalID
      */
     public void lockAccount(String userID) {
         accountManager.lockAccount(userID);
@@ -295,7 +295,7 @@ public class AdministratorController implements ILockAccount, IManageStaff, IAdm
 
     /**
      * Unlocks the account of a user
-     * @param userID
+     * @param userID User's HospitalID
      */
     public void unlockAccount(String userID){
         accountManager.unlockAccount(userID);
@@ -303,8 +303,8 @@ public class AdministratorController implements ILockAccount, IManageStaff, IAdm
 
     /**
      * Handles the replenishment request made by the pharmacist
-     * @param selection
-     * @param amount
+     * @param selection User's selection
+     * @param amount Amount of stock of a certain Medicine that's replenished
      */
     public void processReplenishmentRequests(int selection, int amount) {
     		medicalInventoryService.processReplenishmentRequests(selection, amount);

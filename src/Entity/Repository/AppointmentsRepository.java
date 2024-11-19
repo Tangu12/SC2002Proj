@@ -29,7 +29,7 @@ public class AppointmentsRepository implements IRepository <String,String,Appoin
 
 	/**
 	 * Constructor for the {@code AppointmentRepository} which initialises the path of which the {@code AppointmentRepository} reads from
-	 * @param path
+	 * @param path path the file path to be used for accessing appointment data
 	 */
     public AppointmentsRepository(String path) {
     	AppointmentsRepository.FILE_NAME = path;
@@ -105,7 +105,7 @@ public class AppointmentsRepository implements IRepository <String,String,Appoin
 
 	/**
 	 * Updates the appointment file based on the current status of the appointments in the list of Appointments
-	 * @param appointmentList
+	 * @param appointmentList appointment list holding all the current appointments
 	 */
 	public static void updateAppointmentFile(ArrayList<Appointment> appointmentList) {
         List<String[]> data = new ArrayList<>();
@@ -154,7 +154,7 @@ public class AppointmentsRepository implements IRepository <String,String,Appoin
 
 	/**
 	 * Updates the CSV file
-	 * @param data
+	 * @param data All the data of the current appointments
 	 */
 	private static void overwriteCSV(List<String[]> data) {
 		try {
@@ -169,7 +169,7 @@ public class AppointmentsRepository implements IRepository <String,String,Appoin
 
 	/**
 	 * Creates a new appointment inside the appointment file
-	 * @param attributes
+	 * @param attributes parameters of an appointment
 	 */
 	@Override
 	public void createRecord(Object... attributes) {
@@ -204,7 +204,7 @@ public class AppointmentsRepository implements IRepository <String,String,Appoin
 
 	/**
 	 * Finds an appointment inside the appointment file
-	 * @param identifier
+	 * @param identifier appointmnent ID of a odler
 	 * @return The Appointment with the same appointmentID as the identifier
 	 */
 	@Override
@@ -228,7 +228,7 @@ public class AppointmentsRepository implements IRepository <String,String,Appoin
 
 	/**
 	 * Updates a change made in an appointment in the appointment file
-	 * @param record
+	 * @param record appointment object to be updated
 	 */
 	@Override
 	public void updateRecord(Appointment record) {
@@ -261,7 +261,7 @@ public class AppointmentsRepository implements IRepository <String,String,Appoin
 
 	/**
 	 * Deletes a appointment inside the appointment file
-	 * @param record
+	 * @param record appointmentID of the appointment to be deleted
 	 */
 	@Override
 	public void deleteRecord(String record) {
@@ -294,7 +294,7 @@ public class AppointmentsRepository implements IRepository <String,String,Appoin
 
 	/**
 	 * Finds the appointments of a Patient
-	 * @param patientId
+	 * @param patientId Patient's HospitalID
 	 * @return Array list of Appointments based on the hospitalID of the patient
 	 */
 	public ArrayList<Appointment> findAppointmentsByPatientId(String patientId) {
@@ -317,7 +317,7 @@ public class AppointmentsRepository implements IRepository <String,String,Appoin
 
 	/**
 	 * Finds a specific appointment
-	 * @param appointmentID
+	 * @param appointmentID AppointmentID of the desired appointment
 	 * @return The Appointment with the same Appointment ID as appointmentID
 	 */
 	public Appointment findAppointmentsByAppointmentId(String appointmentID) {
@@ -340,8 +340,8 @@ public class AppointmentsRepository implements IRepository <String,String,Appoin
 
 	/**
 	 * Converts an Appointment object to array of String storing its parameters
-	 * @param appointment
-	 * @return A array of String with its entries being the parameters of appointment
+	 * @param appointment appointment object to be converted to array of String
+	 * @return An array of String with its entries being the parameters of appointment
 	 */
 	private String[] convertAppointmentToArray(Appointment appointment) {
 	    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/M/yyyy H:mm");
@@ -368,7 +368,7 @@ public class AppointmentsRepository implements IRepository <String,String,Appoin
 
 	/**
 	 * Converts an array of Strings to an Appointment object with its entries being the parameters of the Appointment
-	 * @param row
+	 * @param row string of parameters for the new appointment object
 	 * @return Appointment object with its parameters being the entries of the array
 	 */
 	private Appointment convertArrayToAppointment(String[] row) {
@@ -399,7 +399,7 @@ public class AppointmentsRepository implements IRepository <String,String,Appoin
 
 	/**
 	 * Creates and updates the Appointment file with a new Appointment object
-	 * @param newSlot
+	 * @param newSlot new row for the new appointment to get inserted inside the file
 	 */
 	public void createAppointments(String newSlot) {
 		try {

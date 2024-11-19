@@ -13,7 +13,8 @@ public class AppointmentList {
 
     /**
      * Singleton, makes sure that there is only one instance in the whole program
-     * @return
+     * @return The singleton instance of the {@code AppointmentList}.
+     *         If no instance exists, it creates a new one; otherwise, it returns the existing instance.
      */
     public static AppointmentList getInstance() {
         if (instance == null) {
@@ -24,7 +25,7 @@ public class AppointmentList {
 
     /**
      * The getter method of the {@code AppointmentList} which returns the array list of {@code Appointment}
-     * @return
+     * @return The {@code ArrayList} containing all the {@code Appointment} objects in the list.
      */
     public ArrayList<Appointment> getAppointmentList() {
         return appointmentList;

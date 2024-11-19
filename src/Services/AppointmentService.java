@@ -23,7 +23,7 @@ public class AppointmentService {
 
 	/**
 	 * Constructor for {@code AppointmentService}
-	 * @param appointmentsRepository
+	 * @param appointmentsRepository appointmentsRepository
 	 */
 	public AppointmentService(AppointmentsRepository appointmentsRepository) {
 		this.appointmentsRepository = appointmentsRepository;
@@ -31,14 +31,16 @@ public class AppointmentService {
 
 	/**
 	 * Schedules a {@code Appointment} for a {@code Patient} by:
-	 *<li> Setting the availability of the {@code Appointment} to False</li>
-	 *<li> Attaching the {@code Patient}'s {@code HospitalID} and {@code Patient}'s name to the {@code Appointment} </li>
-	 *<li> Setting the purpose of the {@code Appointment} to whichever purpose chosen by the {@code Patient} </li>
-	 *<li> Setting the status of the {@code Appointment} to {@code Pending} </li>
+	 * <ul>
+	 *     <li> Setting the availability of the {@code Appointment} to False</li>
+	 *     <li> Attaching the {@code Patient}'s {@code HospitalID} and {@code Patient}'s name to the {@code Appointment} </li>
+	 *     <li> Setting the purpose of the {@code Appointment} to whichever purpose chosen by the {@code Patient} </li>
+	 *     <li> Setting the status of the {@code Appointment} to {@code Pending} </li>
+	 * </ul>
 	 *
-	 * @param pat
-	 * @param appIndex
-	 * @param pur
+	 * @param pat patient name
+	 * @param appIndex appoointment index in array list
+	 * @param pur purpose of appointment
 	 */
 	public void scheduleAppointment(Patient pat, int appIndex, Purpose pur) {
 		AppointmentList.getInstance().getAppointmentList().get(appIndex).setAvail(false);
@@ -51,9 +53,11 @@ public class AppointmentService {
 
 	/**
 	 * Cancelling a {@code Appointment} by:
-	 * <li> Setting the availability of the {@code Appointment} to True </li>
-	 * <li> Setting the status of the {@code Appointment} to {@code Cancelled} </li>
-	 * @param oldID
+	 * <ul>
+	 *     <li> Setting the availability of the {@code Appointment} to True </li>
+	 *     <li> Setting the status of the {@code Appointment} to {@code Cancelled} </li>
+	 * </ul>
+	 * @param oldID appointmentID of the old appointment
 	 */
 	public void cancelAppointment(int oldID) {
 		AppointmentList.getInstance().getAppointmentList().get(oldID).setStatusOfApp(Status.Cancelled);
@@ -63,11 +67,13 @@ public class AppointmentService {
 
 	/**
 	 * Updates the {@code Appointment} in the {@code Appointment} file by:
-	 * <li> Updating its status in the {@code Appointment} list </li>
-	 * <li> Updating it in the {@code Appointment} file </li>
-	 * @param appointment
-	 * @param appIndex
-	 * @param status
+	 * <ul>
+	 *      <li> Updating its status in the {@code Appointment} list </li>
+	 *      <li> Updating it in the {@code Appointment} file </li>
+	 * </ul>
+	 * @param appointment appointment to be Updated
+	 * @param appIndex index of the appointment in the appointment list
+	 * @param status new status of the appointment
 	 */
 	public void updateAppointmentStatus(Appointment appointment, int appIndex, Status status) {
 		AppointmentList.getInstance().getAppointmentList().get(appIndex).setStatusOfApp(status);
@@ -76,13 +82,13 @@ public class AppointmentService {
 	}
 
 	/**
-	 * Creates {@code Appointment} slots in the appointment list from the {@Appointment} file
-	 * @param docID
-	 * @param docName
-	 * @param plusDays
-	 * @param dep
-	 * @param startTime
-	 * @param endTime
+	 * Creates {@code Appointment} slots in the appointment list from the {@code Appointment} file
+	 * @param docID the doctor's ID
+	 * @param docName the doctor's name
+	 * @param plusDays the number of days ahead of the appointment
+	 * @param dep the department of the doctor
+	 * @param startTime the starting time of the appointment
+	 * @param endTime the ending time of the appointment
 	 */
 	public void createAppointmentSlot(String docID, String docName, int plusDays, Department dep, int startTime, int endTime) {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/M/yyyy H:mm");
@@ -128,9 +134,11 @@ public class AppointmentService {
 	}
 
 	/**
-	 * Updates the Appointment Outcome Record of a {@code Appointment} by:
-	 * <li> Updating its status </li>
-	 * <li> Updating the Doctor's Notes of the {@code Appointment} </li>
+	 * Updates the Appointment Outcome Record of an {@code Appointment} by:
+	 * <ul>
+	 *     <li> Updating its status </li>
+	 *     <li> Updating the Doctor's Notes of the {@code Appointment} </li>
+	 * </ul>
 	 * @param index
 	 * @param status
 	 * @param notes

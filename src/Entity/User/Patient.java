@@ -30,14 +30,14 @@ public class Patient implements IUser{
 
     /**
      * Constructor for {@code Patient}
-     * @param userID
-     * @param name
-     * @param age
-     * @param gender
-     * @param domain
-     * @param contactInfo
-     * @param dateOfBirth
-     * @param bloodType
+     * @param userID The unique identifier for the {@code Patient}. This could be an ID assigned to the patient in the hospital system (e.g., "P12345").
+     * @param name The name of the {@code Patient}. This is a string representing the patient's full name (e.g., "John Doe").
+     * @param age The age of the {@code Patient}. This is an integer representing the patient's age in years (e.g., 30).
+     * @param gender The gender of the {@code Patient}. This is a value from the {@code Gender} enum, such as `MALE`, `FEMALE`, `OTHER`.
+     * @param domain The domain or role of the {@code Patient}. This is a value from the {@code Domain} enum, which will always be `PATIENT` for this class.
+     * @param contactInfo The contact information for the {@code Patient}. This is typically a phone number or email address (e.g., "123-456-7890").
+     * @param dateOfBirth The date of birth of the {@code Patient}. This is a {@code LocalDate} representing the patient's birth date (e.g., `1994-08-15`).
+     * @param bloodType The blood type of the {@code Patient}. This is a value from the {@code BloodType} enum, such as `A_POSITIVE`, `O_NEGATIVE`, etc.
      */
     public Patient(String userID, String name, int age, Gender gender, Domain domain, String contactInfo, LocalDate dateOfBirth, BloodType bloodType) {
         this.userID = userID;
@@ -52,7 +52,7 @@ public class Patient implements IUser{
 
     /**
      * The getter method of a {@code Patient}'s {@code HospitalID}
-     * @return
+     * @return The unique identifier of the {@code Patient}.
      */
     @Override
     public String getUserID() {
@@ -61,7 +61,7 @@ public class Patient implements IUser{
 
     /**
      * The getter method of a {@code Patient}'s name
-     * @return
+     * @return The name of the {@code Patient}.
      */
     @Override
     public String getName() {
@@ -70,7 +70,7 @@ public class Patient implements IUser{
 
     /**
      * The getter method of a {@code Patient}'s age
-     * @return
+     * @return The age of the {@code Patient}.
      */
     @Override
     public int getAge() {
@@ -79,7 +79,7 @@ public class Patient implements IUser{
 
     /**
      * The getter method of a {@code Patient}'s gender
-     * @return
+     * @return The gender of the {@code Patient}.
      */
     @Override
     public Gender getGender() {
@@ -88,7 +88,7 @@ public class Patient implements IUser{
 
     /**
      * The getter method of a {@code Patient}'s domain
-     * @return
+     * @return The domain/role of the {@code Patient}, which is always `PATIENT` for this class.
      */
     @Override
     public Domain getDomain() {
@@ -97,7 +97,7 @@ public class Patient implements IUser{
 
     /**
      * The getter method of a {@code Patient}'s contact information
-     * @return
+     * @return The contact information of the {@code Patient}, such as phone number or email.
      */
     public String getContactInfo() {
         return contactInfo;
@@ -105,7 +105,7 @@ public class Patient implements IUser{
 
     /**
      * The getter method of a {@code Patient}'s date of birth
-     * @return
+     * @return The date of birth of the {@code Patient}.
      */
     public LocalDate getDateOfBirth() {
         return dateOfBirth;
@@ -113,7 +113,7 @@ public class Patient implements IUser{
 
     /**
      * The getter method of a {@code Patient}'s blood type
-     * @return
+     * @return The blood type of the {@code Patient}.
      */
     public BloodType getBloodType() {
         return bloodType;
@@ -121,7 +121,7 @@ public class Patient implements IUser{
 
     /**
      * The setter method of a {@code Patient}'s {@code HospitalID}
-     * @param userId
+     * @param userId The unique identifier to set for the {@code Patient}. This ID is used to track the patient in the hospital system.
      */
     @Override
     public void setUserID(String userId) {
@@ -130,7 +130,7 @@ public class Patient implements IUser{
 
     /**
      * The setter method of a {@code Patient}'s name
-     * @param name
+     * @param name The name to set for the {@code Patient}.
      */
     @Override
     public void setName(String name) {
@@ -139,7 +139,7 @@ public class Patient implements IUser{
 
     /**
      * The setter method of a {@code Patient}'s age
-     * @param age
+     * @param age The age to set for the {@code Patient}.
      */
     @Override
     public void setAge(int age) {
@@ -148,7 +148,7 @@ public class Patient implements IUser{
 
     /**
      * The setter method of a {@code Patient}'s gender
-     * @param gender
+     * @param gender The gender to set for the {@code Patient}. This is a value from the {@code Gender} enum.
      */
     @Override
     public void setGender(Gender gender) {
@@ -157,7 +157,7 @@ public class Patient implements IUser{
 
     /**
      * The setter method of a {@code Patient}'s domain
-     * @param domain
+     * @param domain The domain to set for the {@code Patient}. This will always be `PATIENT` for this class.
      */
     @Override
     public void setDomain(Domain domain) {
@@ -166,7 +166,7 @@ public class Patient implements IUser{
 
     /**
      * The setter method of a {@code Patient}'s contact information
-     * @param contactInfo
+     * @param contactInfo The contact information to set for the {@code Patient}.
      */
     public void setContactInfo(String contactInfo) {
         this.contactInfo = contactInfo;
@@ -182,7 +182,7 @@ public class Patient implements IUser{
 
     /**
      * The setter method of a {@code Patient}'s date of birth
-     * @param dateOfBirth
+     * @param dateOfBirth The date of birth to set for the {@code Patient}.
      */
     public void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
@@ -190,7 +190,7 @@ public class Patient implements IUser{
 
     /**
      * The setter method of a {@code Patient}'s blood type
-     * @param bloodType
+     * @param bloodType The blood type to set for the {@code Patient}. This is a value from the {@code BloodType} enum.
      */
     public void setBloodType(BloodType bloodType) {
         this.bloodType = bloodType;

@@ -20,8 +20,8 @@ public class PatientRegistrationController {
 
     /**
      * Constructor of {@code PatientRegistrationController}
-     * @param credentialsRepository
-     * @param patientAccountService
+     * @param credentialsRepository the {@code CredentialsRepository} instance to handle storage and retrieval of credentials
+     * @param patientAccountService the {@code PatientAccountService} instance to manage patient account-related operations
      */
     public PatientRegistrationController(CredentialsRepository credentialsRepository, PatientAccountService patientAccountService) {
         this.credentialsRepository = credentialsRepository;
@@ -30,10 +30,10 @@ public class PatientRegistrationController {
 
     /**
      * Calls createUserAccount function from the {@code PatientAccountService} class
-     * @param patient
-     * @param plainTextPassword
-     * @param securityQuestion
-     * @param plainTextSecurityAnswer
+     * @param patient the {@code Patient} instance representing the new patient
+     * @param plainTextPassword the plain text password chosen by the patient
+     * @param securityQuestion the security question chosen by the patient
+     * @param plainTextSecurityAnswer the plain text answer to the chosen security question
      */
     public void registerUser(Patient patient, String plainTextPassword, String securityQuestion, String plainTextSecurityAnswer) {
         patientAccountService.createUserAccount(patient, plainTextPassword, securityQuestion, plainTextSecurityAnswer);
@@ -41,7 +41,7 @@ public class PatientRegistrationController {
 
     /**
      * Looks through the file to find the number of users and creates a username based on the latest user.(eg if last user in file is P002, function returns P003)
-     * @return
+     * @return The generated username string, or {@code null} if the maximum number of patients is reached
      */
     public String getUserName(){
         int patientCount = credentialsRepository.countUsersByType(Domain.PATIENT);
@@ -55,8 +55,9 @@ public class PatientRegistrationController {
     }
 
     /**
-     * Helper method
-     * @return
+     * Helper method to generate the format for user ID based on the maximum number of Users
+     *
+     * @return A formatted string specifying the pattern for the user ID (e.g., "%s%04d" for four-digit IDs)
      */
     private String getIdFormat() {
         int digits = String.valueOf(IUser.MAX_USERS).length();
@@ -65,13 +66,11 @@ public class PatientRegistrationController {
 
     /**
      * Calculates the age of a User, taking the difference between their date of birth(input date) and the current date
-     * @param dob
-     * @return The age of the User
+     * @param dob the {@code LocalDate} instance representing the user's date of birth
+     * @return The age of the user in years
      */
     public int calculateAge(LocalDate dob) {
         LocalDate currentDate = LocalDate.now();
         return Period.between(dob, currentDate).getYears();
     }
-
-
 }

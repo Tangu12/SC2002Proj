@@ -16,11 +16,11 @@ public class AccountManager {
 
     /**
      * Constructor for {@code AccountManager}
-     * @param patientAccountService
-     * @param doctorAccountService
-     * @param pharmacistAccountService
-     * @param administratorAccountService
-     * @param credentialsService
+     * @param patientAccountService Service responsible for handling {@code Patient} accounts.
+     * @param doctorAccountService Service responsible for handling {@code Doctor} accounts.
+     * @param pharmacistAccountService Service responsible for handling {@code Pharmacist} accounts.
+     * @param administratorAccountService Service responsible for handling {@code Administrator} accounts.
+     * @param credentialsService Service responsible for handling user credentials and authentication.
      */
     public AccountManager(IUserAccountService<Patient> patientAccountService, IUserAccountService<Doctor> doctorAccountService, IUserAccountService<Pharmacist> pharmacistAccountService, IUserAccountService<Administrator> administratorAccountService, CredentialsService credentialsService) {
         this.patientAccountService = patientAccountService;
@@ -32,10 +32,10 @@ public class AccountManager {
 
     /**
      * Adds a new User to the Hospital based on the domain of the new User
-     * @param user
-     * @param plainTextPassword
-     * @param securityQuestion
-     * @param plainTextSecurityAnswer
+     * @param user The user object (could be of type {@code Patient}, {@code Doctor}, {@code Pharmacist}, or {@code Administrator}).
+     * @param plainTextPassword The user's password as plain text.
+     * @param securityQuestion The security question for the user to answer during recovery or verification.
+     * @param plainTextSecurityAnswer The answer to the security question in plain text.
      */
     public void addUser(Object user, String plainTextPassword, String securityQuestion, String plainTextSecurityAnswer) {
         if (user instanceof Patient) {
@@ -53,8 +53,8 @@ public class AccountManager {
 
     /**
      * Reads and returns the domain of a User based on their {@code HospitalID}
-     * @param userID
-     * @return The domain of a User
+     * @param userID The unique identifier for the user, typically in the format that indicates the user's role (e.g., 'P' for Patient, 'D' for Doctor).
+     * @return The user object corresponding to the given {@code userID}, or {@code null} if no user is found.
      */
     public IUser readUser(String userID) {
         String role = String.valueOf(userID.charAt(0));
@@ -79,7 +79,7 @@ public class AccountManager {
 
     /**
      * Updates a User's information based on their domain
-     * @param user
+     * @param user The user object to update (could be of type {@code Patient}, {@code Doctor}, {@code Pharmacist}, or {@code Administrator}).
      */
     public void updateUserInfo(Object user) {
         if (user instanceof Patient) {
@@ -151,7 +151,7 @@ public class AccountManager {
 
     /**
      * Locks the account of a User by setting the number log in of attempts to -1
-     * @param userID
+     * @param userID The unique identifier of the user whose account is to be locked.
      */
     public void lockAccount(String userID) {
         credentialsService.lockAccount(userID);
@@ -159,7 +159,7 @@ public class AccountManager {
 
     /**
      * Unlocks the account of a User by setting the number log in of attempts to 0
-     * @param userID
+     * @param userID The unique identifier of the user whose account is to be unlocked.
      */
     public void unlockAccount(String userID){
         credentialsService.unlockAccount(userID);

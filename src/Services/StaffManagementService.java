@@ -23,10 +23,10 @@ public class StaffManagementService {
 
 	/**
 	 * Constructor for {@code StaffManagementService}
-	 * @param doctorAccountService
-	 * @param administratorAccountService
-	 * @param pharmacistAccountService
-	 * @param hospitalStaffRegistrationService
+	 * @param doctorAccountService The service responsible for managing Doctor accounts.
+	 * @param administratorAccountService The service responsible for managing Administrator accounts.
+	 * @param pharmacistAccountService The service responsible for managing Pharmacist accounts.
+	 * @param hospitalStaffRegistrationService The service responsible for registering hospital staff accounts.
 	 */
 	public StaffManagementService(DoctorAccountService doctorAccountService,AdministratorAccountService administratorAccountService,
 								  PharmacistAccountService pharmacistAccountService, HospitalStaffRegistrationService hospitalStaffRegistrationService) {
@@ -38,10 +38,10 @@ public class StaffManagementService {
 
 	/**
 	 * Adds a new {@code HospitalStaff}
-	 * @param staff
-	 * @param plainTextPassword
-	 * @param securityQuestion
-	 * @param plainTextSecurityAnswer
+	 * @param staff The hospital staff object representing the staff member to be added.
+	 * @param plainTextPassword The password for the new account, in plain text.
+	 * @param securityQuestion The security question associated with the new account.
+	 * @param plainTextSecurityAnswer The answer to the security question, in plain text.
 	 */
 	public void addStaffMember(HospitalStaff staff, String plainTextPassword,String securityQuestion,String plainTextSecurityAnswer) {
 		switch (staff.getDomain()) {
@@ -87,7 +87,7 @@ public class StaffManagementService {
 
 	/**
 	 * Removes a {@code HospitalStaff}
-	 * @param staff
+	 * @param staff The hospital staff object representing the staff member to be removed.
 	 */
 	public void removeStaffMember(HospitalStaff staff) {
 		switch(staff.getDomain()) {
@@ -111,12 +111,12 @@ public class StaffManagementService {
 
 	/**
 	 * Updates the parameters of a {@code HospitalStaff}
-	 * @param staff
-	 * @param newName
-	 * @param age
-	 * @param gender
-	 * @param newRole
-	 * @param dept
+	 * @param staff The hospital staff object whose information is to be updated.
+	 * @param newName The new name for the staff member.
+	 * @param age The new age for the staff member.
+	 * @param gender The gender of the staff member.
+	 * @param newRole The new role of the staff member (e.g., DOCTOR, PHARMACIST, ADMINISTRATOR).
+	 * @param dept The department in which the staff member works.
 	 */
 	public void updateStaffMember(HospitalStaff staff, String newName, int age, Gender gender, Domain newRole, Department dept) {
 		staff.setName(newName);
@@ -133,9 +133,10 @@ public class StaffManagementService {
 	}
 
 	/**
+	 * Retrieves the username of a staff member based on their domain.
 	 *
-	 * @param domain
-	 * @return
+	 * @param domain The domain (role) of the staff member (e.g., DOCTOR, PHARMACIST, ADMINISTRATOR).
+	 * @return The username associated with the given domain.
 	 */
 	public String getUserName(Domain domain){
 		return hospitalStaffRegistrationService.getUserName(domain);
@@ -143,7 +144,7 @@ public class StaffManagementService {
 
 	/**
 	 * Removes a {@code Doctor} account by the {@code Doctor}'s {@code HospitalID}
-	 * @param userID
+	 * @param userID The unique user ID (Hospital ID) of the Doctor whose account is to be removed.
 	 */
 	public void removeDoctorAccount(String userID){
 		doctorAccountService.deleteUserAccount(userID);
@@ -151,7 +152,7 @@ public class StaffManagementService {
 
 	/**
 	 * Removes a {@code Pharmacist} account by the {@code Pharmacist}'s {@code HospitalID}
-	 * @param userID
+	 * @param userID The unique user ID (Hospital ID) of the Pharmacist whose account is to be removed.
 	 */
 	public void removePharmacistAccount(String userID){
 		pharmacistAccountService.deleteUserAccount(userID);
@@ -159,7 +160,7 @@ public class StaffManagementService {
 
 	/**
 	 * Removes a {@code Administrator} account by the {@code Administrator}'s {@code HospitalID}
-	 * @param userID
+	 * @param userID The unique user ID (Hospital ID) of the Administrator whose account is to be removed.
 	 */
 	public void removeAdministratorAccount(String userID){
 		administratorAccountService.deleteUserAccount(userID);

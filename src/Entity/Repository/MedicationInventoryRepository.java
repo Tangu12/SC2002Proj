@@ -16,7 +16,7 @@ public class MedicationInventoryRepository implements IRepository<String,String,
      * Constructor for the  /**
      *      * Constructor for the {@code MedicalInventoryRepository} which initialises the path of which the {@code MedicalInventoryRepository} reads from
      *      * @param path
-     * @param path
+     * @param path The file path of the MedicationInventory data file. This path will be used to read from and write to the file.
      */
     public MedicationInventoryRepository(String path) {
         this.path = path;
@@ -24,7 +24,8 @@ public class MedicationInventoryRepository implements IRepository<String,String,
 
     /**
      * Creates a new {@code Medicine} in the {@code MedicineInventory} file
-     * @param attributes
+     * @param attributes An array of attributes to create a new {@code Medicine} object. It should contain exactly one element: a {@code Medicine} instance.
+     *                   The provided {@code Medicine} object is validated and added to the file.
      */
     @Override
     public void createRecord(Object... attributes) {
@@ -60,8 +61,9 @@ public class MedicationInventoryRepository implements IRepository<String,String,
 
     /**
      * Looks through the {@code MedicineInventory} file to find the {@code Medicine} matching the input, and returns the {@code Medicine}.
-     * @param identifier
-     * @return
+     * @param identifier The name of the medicine (the unique identifier) to search for in the file.
+     *                   This value is compared with the medicine names in the inventory file.
+     * @return The {@code Medicine} object that matches the identifier, or {@code null} if no matching record is found.
      */
     @Override
     public Medicine readRecord(String identifier){
@@ -95,7 +97,7 @@ public class MedicationInventoryRepository implements IRepository<String,String,
 
     /**
      * Updates the data of a {@code Medicine} inside the {@code MedicineInventory} file
-     * @param record
+     * @param record The {@code Medicine} object containing the updated data. The record is updated in the inventory file.
      */
     @Override
     public void updateRecord(Medicine record) {
@@ -153,7 +155,8 @@ public class MedicationInventoryRepository implements IRepository<String,String,
 
     /**
      * Deletes a {@code Medicine} from the {@code MedicineInventory} file
-     * @param medicineName
+     * @param medicineName The name of the {@code Medicine} to delete from the inventory file.
+     *                     The method searches for the medicine by name and removes the matching record.
      */
     @Override
     public void deleteRecord(String medicineName){
@@ -212,7 +215,8 @@ public class MedicationInventoryRepository implements IRepository<String,String,
 
     /**
      * Returns all {@code Medicine} in the file in an ArrayList
-     * @return
+     * @return An {@code ArrayList} containing all {@code Medicine} objects from the inventory file.
+     *         The list is read from the file and returned.
      */
     public ArrayList<Medicine> getAllMedicine(){
         ArrayList<Medicine> inventory = new ArrayList<>();;
@@ -245,7 +249,8 @@ public class MedicationInventoryRepository implements IRepository<String,String,
 
     /**
      * Overwrites the file and stores the inventory List
-     * @param inventory
+     * @param inventory The {@code ArrayList} of {@code Medicine} objects to be saved to the inventory file.
+     *                  The entire file is overwritten with the updated inventory.
      */
     public void saveInventoryToFile(ArrayList<Medicine> inventory){
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(path))) {

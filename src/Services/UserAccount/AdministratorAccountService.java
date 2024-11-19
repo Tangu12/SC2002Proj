@@ -15,8 +15,8 @@ public class AdministratorAccountService implements IUserAccountService<Administ
 
     /**
      * Constructor for {@code AdministratorAccountService} with Dependency Injection of the {@code CredentialsService} and the {@code HospitalStaffRepository}
-     * @param credentialsService
-     * @param hospitalStaffRepository
+     * @param credentialsService The service responsible for handling user credentials and authentication.
+     * @param hospitalStaffRepository The repository responsible for storing and accessing hospital staff data.
      */
     public AdministratorAccountService(CredentialsService credentialsService,HospitalStaffRepository hospitalStaffRepository) {
         this.credentialsService = credentialsService;
@@ -25,10 +25,10 @@ public class AdministratorAccountService implements IUserAccountService<Administ
 
     /**
      * Creates a new {@code Administrator} in the {@code HospitalStaff} and {@code Credentials} file
-     * @param administrator
-     * @param plainTextPassword
-     * @param securityQuestion
-     * @param plainTextSecurityAnswer
+     * @param administrator The {@code Administrator} object containing the administrator's information to be added.
+     * @param plainTextPassword The plain text password for the {@code Administrator}.
+     * @param securityQuestion The security question for the administrator to be used for account recovery or verification.
+     * @param plainTextSecurityAnswer The plain text answer to the security question.
      */
     @Override
     public void createUserAccount(Administrator administrator, String plainTextPassword, String securityQuestion, String plainTextSecurityAnswer) {
@@ -39,9 +39,9 @@ public class AdministratorAccountService implements IUserAccountService<Administ
 
     /**
      * Reads and return {@code Administrator} with matching {@code HospitalID}
-     * @param userID
-     * @return The {@code Administrator} with matching {@code HospitalID}
-     * */
+     * @param userID The unique identifier (hospital ID) for the {@code Administrator} to be fetched.
+     * @return The {@code Administrator} with the matching {@code HospitalID}.
+     */
     public Administrator getAccount(String userID) {
         String[] administratorParameters = hospitalStaffRepository.readRecord(userID);
         Administrator administrator = new Administrator(administratorParameters[0], administratorParameters[1], Integer.valueOf(administratorParameters[4]), Gender.valueOf(administratorParameters[3]));
@@ -59,7 +59,7 @@ public class AdministratorAccountService implements IUserAccountService<Administ
 
     /**
      * Updates a {@code Doctor}'s parameters
-     * @param administrator
+     * @param administrator The {@code Administrator} object with updated information to be saved.
      */
     @Override
     public void updateUserData(Administrator administrator) {
@@ -76,20 +76,20 @@ public class AdministratorAccountService implements IUserAccountService<Administ
 
     /**
      * Verifies a User has entered their correct password
-     * @param UserID
-     * @param plainTextPassword
-     * @return True if the answer given is correct, False otherwise
+     * @param userID The unique identifier (hospital ID) of the user whose password is being verified.
+     * @param plainTextPassword The plain text password entered by the user.
+     * @return {@code true} if the entered password matches the one stored for the user, {@code false} otherwise.
      */
     @Override
-    public boolean verifyPassword(String UserID, String plainTextPassword) {
-        return credentialsService.checkPassword(UserID,plainTextPassword);
+    public boolean verifyPassword(String userID, String plainTextPassword) {
+        return credentialsService.checkPassword(userID,plainTextPassword);
     }
 
     /**
      * Verifies if the User has correctly answered their security question
-     * @param userID
-     * @param plainTextSecurityAnswer
-     * @return True if the answer given is correct, False otherwise
+     * @param userID The unique identifier (hospital ID) of the user whose security question answer is being verified.
+     * @param plainTextSecurityAnswer The plain text answer to the security question entered by the user.
+     * @return {@code true} if the entered answer is correct, {@code false} otherwise.
      */
     public boolean verifySecurityQuestion(String userID, String plainTextSecurityAnswer){
         return credentialsService.verifySecurityQuestion(userID,plainTextSecurityAnswer);
@@ -97,8 +97,8 @@ public class AdministratorAccountService implements IUserAccountService<Administ
 
     /**
      * Returns the remaining logins that the User has before the User is locked out
-     * @param userID
-     * @return Returns the remaining logins attempts of a User
+     * @param userID The unique identifier (hospital ID) of the user whose remaining login attempts are being queried.
+     * @return The number of login attempts left for the user before they are locked out.
      */
     public int getNumberOfTriesLeft(String userID){
         return credentialsService.getNumberOfTriesLeft(userID);
@@ -106,8 +106,8 @@ public class AdministratorAccountService implements IUserAccountService<Administ
 
     /**
      * Changes the password of {@code Doctor} in the {@code Credentials} file
-     * @param userID
-     * @param newPassword
+     * @param userID The unique identifier (hospital ID) of the user whose password is being changed.
+     * @param newPassword The new password to be set for the user.
      */
     public void changePassword(String userID, String newPassword){
         credentialsService.changePassword(userID,newPassword);
@@ -115,7 +115,7 @@ public class AdministratorAccountService implements IUserAccountService<Administ
 
     /**
      * Increment the number of login attempts of a User based on their {@code HospitalID}
-     * @param userID
+     * @param userID The unique identifier (hospital ID) of the user whose login attempts are being incremented.
      */
     public void incrementNumberOfTries(String userID){
         if(credentialsService.isAccountLocked(userID)){
@@ -126,7 +126,7 @@ public class AdministratorAccountService implements IUserAccountService<Administ
 
     /**
      * Unlocks the account of a User, only to be done by the {@code Administrator}
-     * @param userID
+     * @param userID The unique identifier (hospital ID) of the user whose account is being unlocked.
      */
     public void unlockAccount(String userID){
         credentialsService.unlockAccount(userID);

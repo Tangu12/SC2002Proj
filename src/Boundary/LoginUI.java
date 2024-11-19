@@ -25,16 +25,16 @@ import Application.ApplicationContext;
  */
 public class LoginUI {
 
-
     private LoginController loginController;
     private AccountManager accountManager;
     private CredentialsService credentialsService;
 
     /**
      * Constructor for {@code LoginUI}
-     * @param loginController
-     * @param accountManager
-     * @param credentialsService
+     *
+     * @param loginController The {@code LoginController} responsible for managing login operations.
+     * @param accountManager The {@code AccountManager} that handles user account management.
+     * @param credentialsService The {@code CredentialsService} that manages credentials validation and other related operations.
      */
     public LoginUI(LoginController loginController, AccountManager accountManager, CredentialsService credentialsService) {
         this.loginController = loginController;
@@ -44,15 +44,16 @@ public class LoginUI {
 
     /**
      * Login function which takes in the Users {@code HospitalID} and password and compares it with the corresponding {@code HospitalID} and password in {@code Credentials}.
-     * </p>
      * If the login is successful, the home page of the User's domain would be displayed
-     * @param applicationContext
-     * @throws Exception
+     *
+     * @param applicationContext The {@code ApplicationContext} that contains the context of the application, including repositories and services.
+     * @throws Exception If an error occurs during login or while displaying the user’s home page.
      */
     public void loginUI(ApplicationContext applicationContext) throws Exception {
         String inputID;
         boolean validUserID = false;
         boolean validPassword = false;
+
         do {
             System.out.print("Please enter your unique Hospital ID : ");
             inputID = InputService.inputString();
@@ -75,36 +76,5 @@ public class LoginUI {
             UserMainPage userMainPage = UserMainPageFactory.getHomePage(user, applicationContext);
             userMainPage.homePage();
         }
-
-        //user.homePage();
-
-        /*
-        switch(user.getDomain()) {
-	        case PATIENT:
-	        		PatientController patientController = new PatientController((Patient) user, applicationContext.getAppointmentService());
-	        		PatientMainPage patientMainPage = new PatientMainPage(patientController);
-	        		patientMainPage.mainpage();
-	        		break;
-	        case PHARMACIST:
-	        		PharmacistController pharmacistController = new PharmacistController(applicationContext.getMedicalInventoryService(), applicationContext.getAppointmentService(), (Pharmacist) user);
-	        		PharmacistMainPage pharmacistMainPage = new PharmacistMainPage(pharmacistController);
-	        		pharmacistMainPage.homePage();
-	        		break;
-	        case DOCTOR:
-	        		DoctorController doctorController = new DoctorController((Doctor) user, applicationContext.getAppointmentService());
-	        		DoctorMainPage doctorMainPage = new DoctorMainPage(doctorController);
-	        		doctorMainPage.homePage();
-	        		break;
-	        case ADMINISTRATOR:
-	        		AdministratorController administratorController = new AdministratorController((Administrator) user, applicationContext.getStaffManagementService(), applicationContext.getMedicalInventoryService(), applicationContext.getAccountManager());
-	        		AdministratorMainPage administratorMainPage = new AdministratorMainPage(administratorController,applicationContext.getHospitalStaffRegistrationService());
-	        		administratorMainPage.homePage();
-	        		break;
-	        	default:
-	        		System.out.println("Not Available Domain!");
-	        		break;
-        }
-         */
     }
 }
-

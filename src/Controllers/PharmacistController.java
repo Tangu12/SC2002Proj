@@ -23,9 +23,9 @@ public class PharmacistController implements IPharmacistAppointment, IPharmacist
 
     /**
      * Constructor for {@code PharmacistController}
-     * @param medicalInventoryService
-     * @param appointmentService
-     * @param pharmacist
+     * @param medicalInventoryService the service responsible for managing the medical inventory
+     * @param appointmentService the service responsible for handling appointments
+     * @param pharmacist the {@code Pharmacist} instance representing the pharmacist
      */
     public PharmacistController(MedicalInventoryService medicalInventoryService,AppointmentService appointmentService, Pharmacist pharmacist) {
         this.medicalInventoryService = medicalInventoryService;
@@ -42,10 +42,10 @@ public class PharmacistController implements IPharmacistAppointment, IPharmacist
     }
 
     /**
-     * Calls updatePrescriptionStatus function from the {@code AppointmentService}
-     * @param appointment
-     * @param appIndex
-     * @param status
+     * Updates the prescription status of an {@code Appointment}
+     * @param appointment the {@code Appointment} instance whose status needs to be updated
+     * @param appIndex the index of the appointment in the list
+     * @param status the new {@code Status} to set for the appointment
      */
     public void updatePrescriptionStatus(Appointment appointment,  int appIndex, Status status){
         appointmentService.updateAppointmentStatus(appointment,appIndex,status);
@@ -53,7 +53,7 @@ public class PharmacistController implements IPharmacistAppointment, IPharmacist
 
     /**
      * Uses MedicalInventoryService to return an arrayList of medicines currently in the inventory
-     * @return
+     * @return An {@code ArrayList} of {@code Medicine} objects in the inventory
      */
     public ArrayList<Medicine> getMedicationInventory(){
         return medicalInventoryService.viewInventory();
@@ -61,8 +61,8 @@ public class PharmacistController implements IPharmacistAppointment, IPharmacist
 
     /**
      * Calls the submitReplenishmentRequest from the {@code MedicalInventoryService} class
-     * @param medicineName
-     * @param requestAmount
+     * @param medicineName the name of the medicine to replenish
+     * @param requestAmount the amount of medicine to request
      */
     public void submitReplenishmentRequest(String medicineName,int requestAmount){
         medicalInventoryService.submitReplenishmentRequest(medicineName,requestAmount);
@@ -70,7 +70,7 @@ public class PharmacistController implements IPharmacistAppointment, IPharmacist
 
     /**
      * Gets the {@code Appointment} with the corresponding input AppointmentID
-     * @param appID
+     * @param appID the ID of the {@code Appointment} to find
      * @return The {@code Appointment} with the corresponding input AppointmentID if it exists, null otherwise
      */
     public Appointment getAppointmentByID(String appID) {
@@ -82,11 +82,11 @@ public class PharmacistController implements IPharmacistAppointment, IPharmacist
 
     /**
      * Calls the addNewPrescription function of the {@code AppointmentService} class
-     * @param appointment
-     * @param dateIssued
-     * @param medicine
-     * @param dosage
-     * @param instructions
+     * @param appointment the {@code Appointment} instance to add the prescription to
+     * @param dateIssued the date the prescription was issued
+     * @param medicine the name of the prescribed medicine
+     * @param dosage the dosage instructions for the medicine
+     * @param instructions additional instructions for the patient
      */
     public void addNewPrescription(Appointment appointment, String dateIssued, String medicine, String dosage, String instructions) {
     	appointmentService.addNewPrescription(appointment, dateIssued, medicine, dosage, instructions);
@@ -94,7 +94,7 @@ public class PharmacistController implements IPharmacistAppointment, IPharmacist
 
     /**
      * Sets the status of the input {@code Appointment} to {@code Completed}
-     * @param appointment
+     * @param appointment the {@code Appointment} instance whose status needs to be updated
      */
     public void updatePrescriptionStatus(Appointment appointment) {
         appointment.setStatusOfApp(Status.Completed);
@@ -102,8 +102,8 @@ public class PharmacistController implements IPharmacistAppointment, IPharmacist
 
     /**
      * Calls the decrementStock of the {@code MedicalInventoryService} class
-     * @param med
-     * @param usedAmount
+     * @param med the {@code Medicine} instance whose stock needs to be decremented
+     * @param usedAmount the amount of medicine to decrement
      */
     public void decrementStock(Medicine med, int usedAmount) {
     		medicalInventoryService.decrementStock(med.getNameOfMedicine(), usedAmount);
@@ -111,7 +111,7 @@ public class PharmacistController implements IPharmacistAppointment, IPharmacist
 
     /**
      * Finds a {@code Medicine} with the corresponding input name if it exists
-     * @param name
+     * @param name the name of the {@code Medicine} to find
      * @return The {@code Medicine} with the corresponding input name if it exists, null otherwise
      */
     public Medicine findMedicineByName(String name) {

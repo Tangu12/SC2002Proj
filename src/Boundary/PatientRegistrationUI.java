@@ -18,7 +18,7 @@ public class PatientRegistrationUI {
 
     /**
      * Constructor for {@code patientRegistrationController}
-     * @param patientRegistrationController
+     * @param patientRegistrationController the instance of PatientRegistrationController
      */
     public PatientRegistrationUI(PatientRegistrationController patientRegistrationController) {
         this.patientRegistrationController = patientRegistrationController;

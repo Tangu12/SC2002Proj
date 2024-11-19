@@ -19,7 +19,7 @@ public class HospitalStaffRepository implements IRepository<String,String,String
 
     /**
      * Constructor for the {@code HospitalStaffRepository} which initialises the path of which the {@code HospitalStaffRepository} reads from
-     * @param path
+     * @param path the file path to the database containing {@code HospitalStaff} records.
      */
     public HospitalStaffRepository(String path) {
     	HospitalStaffRepository.path = path;
@@ -27,9 +27,9 @@ public class HospitalStaffRepository implements IRepository<String,String,String
 
     /**
      * Updates the {@code HospitalStaff} file with the latest information of all the {@code HospitalStaff} by their roles
-     * @param admList
-     * @param docList
-     * @param phList
+     * @param admList the list of {@code Administrator} objects to be added to the file.
+     * @param docList the list of {@code Doctor} objects to be added to the file.
+     * @param phList  the list of {@code Pharmacist} objects to be added to the file.
      */
     public static void updateHospitalStaffFile(List<Administrator> admList, List<Doctor> docList, List<Pharmacist> phList) {
         List<String[]> data = new ArrayList<>();
@@ -76,7 +76,7 @@ public class HospitalStaffRepository implements IRepository<String,String,String
 
     /**
      * Updates the {@code HospitalStaff} file with the latest data from the {@code HospitalStaff}
-     * @param data
+     * @param data a list of {@code String[]} where each element represents a row of the file to be written.
      */
     private static void updateFile(List<String[]> data) {
 		try {
@@ -186,7 +186,14 @@ public class HospitalStaffRepository implements IRepository<String,String,String
 
     /**
      * Creates a record and takes in (Staff ID,Name,Role,Gender,Age)
-     * @param attributes
+     * @param attributes an array of objects representing the attributes of the hospital staff:
+     *                   <ul>
+     *                     <li>{@code attributes[0]} - the staff ID ({@code String}).</li>
+     *                     <li>{@code attributes[1]} - the name ({@code String}).</li>
+     *                     <li>{@code attributes[2]} - the role or department ({@code Department} or {@code Domain}).</li>
+     *                     <li>{@code attributes[3]} - the gender ({@code Gender}).</li>
+     *                     <li>{@code attributes[4]} - the age ({@code int}).</li>
+     *                   </ul>
      */
     @Override
     public void createRecord(Object... attributes) {
@@ -226,8 +233,8 @@ public class HospitalStaffRepository implements IRepository<String,String,String
 
     /**
      * Returns a record based on StaffID String[]
-     * @param staffID
-     * @return
+     * @param staffID the unique identifier of the staff member whose record is being searched.
+     * @return a {@code String[]} containing the record data, or {@code null} if the record is not found.
      */
     @Override
     public String[] readRecord(String staffID) {
@@ -250,7 +257,14 @@ public class HospitalStaffRepository implements IRepository<String,String,String
 
     /**
      * Updates a record based on input (Staff ID,Name,Role,Gender,Age)
-     * @param record
+     * @param record a {@code String[]} representing the updated record:
+     *               <ul>
+     *                 <li>{@code record[0]} - the staff ID ({@code String}).</li>
+     *                 <li>{@code record[1]} - the name ({@code String}).</li>
+     *                 <li>{@code record[2]} - the role or department ({@code String}).</li>
+     *                 <li>{@code record[3]} - the gender ({@code String}).</li>
+     *                 <li>{@code record[4]} - the age ({@code String}).</li>
+     *               </ul>
      */
     @Override
     public void updateRecord(String[] record) {
@@ -297,7 +311,7 @@ public class HospitalStaffRepository implements IRepository<String,String,String
 
     /**
      * Deletes a record based on input StaffID
-     * @param staffID
+     * @param staffID the unique identifier of the staff member whose record is to be deleted.
      */
     @Override
     public void deleteRecord(String staffID) {

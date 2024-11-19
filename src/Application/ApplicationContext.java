@@ -7,83 +7,84 @@ import Services.UserAccount.*;
 
 public class ApplicationContext {
 
-    private String appointmentsRepositoryPath;
-    private String credentialsRepositoryPath;
-    private String hospitalStaffRepositoryPath;
-    private String medicalRecordRepositoryPath;
-    private String medicationInventoryRepositoryPath;
-    private String patientDataRepositoryPath;
-    
-    private AppointmentsRepository appointmentsRepository;
-    private CredentialsRepository credentialsRepository;
-    private HospitalStaffRepository hospitalStaffRepository;
-    private MedicationInventoryRepository medicationInventoryRepository;
-    private PatientDataRepository patientDataRepository;
-    
-    private AppointmentService appointmentService;
-    private CredentialsService credentialsService;
-    private ForgotPasswordService forgotPasswordService;
-    private MedicalInventoryService medicalInventoryService;
-    //private MedicalRecordService medicalRecordService;
-    
-    private PatientAccountService patientAccountService;
-    private DoctorAccountService doctorAccountService;
-    private PharmacistAccountService pharmacistAccountService;
-    private AdministratorAccountService administratorAccountService;
-    
-    private HospitalStaffRegistrationService hospitalStaffRegistrationService;
+	private String appointmentsRepositoryPath;
+	private String credentialsRepositoryPath;
+	private String hospitalStaffRepositoryPath;
+	private String medicalRecordRepositoryPath;
+	private String medicationInventoryRepositoryPath;
+	private String patientDataRepositoryPath;
 
-    private AccountManager accountManager;
-    private StaffManagementService staffManagementService;
+	private AppointmentsRepository appointmentsRepository;
+	private CredentialsRepository credentialsRepository;
+	private HospitalStaffRepository hospitalStaffRepository;
+	private MedicationInventoryRepository medicationInventoryRepository;
+	private PatientDataRepository patientDataRepository;
+
+	private AppointmentService appointmentService;
+	private CredentialsService credentialsService;
+	private ForgotPasswordService forgotPasswordService;
+	private MedicalInventoryService medicalInventoryService;
+	//private MedicalRecordService medicalRecordService;
+
+	private PatientAccountService patientAccountService;
+	private DoctorAccountService doctorAccountService;
+	private PharmacistAccountService pharmacistAccountService;
+	private AdministratorAccountService administratorAccountService;
+
+	private HospitalStaffRegistrationService hospitalStaffRegistrationService;
+
+	private AccountManager accountManager;
+	private StaffManagementService staffManagementService;
 
 	/**
 	 * Constructor for {@code ApplicationContext}
-	 * @param appointmentsRepositoryPath
-	 * @param credentialsRepositoryPath
-	 * @param hospitalStaffRepositoryPath
-	 * @param medicationInventoryRepositoryPath
-	 * @param patientDataRepositoryPath
+	 *
+	 * @param appointmentsRepositoryPath The file path for the appointments repository.
+	 * @param credentialsRepositoryPath The file path for the credentials repository.
+	 * @param hospitalStaffRepositoryPath The file path for the hospital staff repository.
+	 * @param medicationInventoryRepositoryPath The file path for the medication inventory repository.
+	 * @param patientDataRepositoryPath The file path for the patient data repository.
 	 */
-    public ApplicationContext(String appointmentsRepositoryPath,String credentialsRepositoryPath
-            ,String hospitalStaffRepositoryPath,String medicationInventoryRepositoryPath
-            ,String patientDataRepositoryPath) {
+	public ApplicationContext(String appointmentsRepositoryPath, String credentialsRepositoryPath,
+							  String hospitalStaffRepositoryPath, String medicationInventoryRepositoryPath,
+							  String patientDataRepositoryPath) {
 
-        this.appointmentsRepositoryPath = appointmentsRepositoryPath;
-        this.credentialsRepositoryPath = credentialsRepositoryPath;
-        this.hospitalStaffRepositoryPath = hospitalStaffRepositoryPath;
-        this.medicationInventoryRepositoryPath = medicationInventoryRepositoryPath;
-        this.patientDataRepositoryPath = patientDataRepositoryPath;
+		this.appointmentsRepositoryPath = appointmentsRepositoryPath;
+		this.credentialsRepositoryPath = credentialsRepositoryPath;
+		this.hospitalStaffRepositoryPath = hospitalStaffRepositoryPath;
+		this.medicationInventoryRepositoryPath = medicationInventoryRepositoryPath;
+		this.patientDataRepositoryPath = patientDataRepositoryPath;
 
-        /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        // Create Entities
-        // Create Repository
-        this.appointmentsRepository= new AppointmentsRepository(appointmentsRepositoryPath);
-        this.credentialsRepository= new CredentialsRepository(credentialsRepositoryPath);
-        this.hospitalStaffRepository= new HospitalStaffRepository(hospitalStaffRepositoryPath);
-        this.medicationInventoryRepository = new MedicationInventoryRepository(medicationInventoryRepositoryPath);
-        this.patientDataRepository = new PatientDataRepository(patientDataRepositoryPath);
-        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		// Create Entities
+		// Create Repository
+		this.appointmentsRepository= new AppointmentsRepository(appointmentsRepositoryPath);
+		this.credentialsRepository= new CredentialsRepository(credentialsRepositoryPath);
+		this.hospitalStaffRepository= new HospitalStaffRepository(hospitalStaffRepositoryPath);
+		this.medicationInventoryRepository = new MedicationInventoryRepository(medicationInventoryRepositoryPath);
+		this.patientDataRepository = new PatientDataRepository(patientDataRepositoryPath);
+		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-        // Create Services
-        this.appointmentService = new AppointmentService(appointmentsRepository);
-        this.credentialsService = new CredentialsService(credentialsRepository);
-        this.forgotPasswordService = new ForgotPasswordService(credentialsService);
-        this.medicalInventoryService = new MedicalInventoryService(MedicationInventory.getInstance(),medicationInventoryRepository);
-        //this.medicalRecordService = new MedicalRecordService(appointmentsRepository);
+		// Create Services
+		this.appointmentService = new AppointmentService(appointmentsRepository);
+		this.credentialsService = new CredentialsService(credentialsRepository);
+		this.forgotPasswordService = new ForgotPasswordService(credentialsService);
+		this.medicalInventoryService = new MedicalInventoryService(MedicationInventory.getInstance(),medicationInventoryRepository);
+		//this.medicalRecordService = new MedicalRecordService(appointmentsRepository);
 
-        // User Account Services
-        this.patientAccountService = new PatientAccountService(credentialsService,patientDataRepository);
-        this.doctorAccountService = new DoctorAccountService(credentialsService,hospitalStaffRepository);
-        this.pharmacistAccountService = new PharmacistAccountService(credentialsService,hospitalStaffRepository);
-        this.administratorAccountService = new AdministratorAccountService(credentialsService,hospitalStaffRepository);
+		// User Account Services
+		this.patientAccountService = new PatientAccountService(credentialsService,patientDataRepository);
+		this.doctorAccountService = new DoctorAccountService(credentialsService,hospitalStaffRepository);
+		this.pharmacistAccountService = new PharmacistAccountService(credentialsService,hospitalStaffRepository);
+		this.administratorAccountService = new AdministratorAccountService(credentialsService,hospitalStaffRepository);
 
-        this.hospitalStaffRegistrationService = new HospitalStaffRegistrationService(credentialsRepository,doctorAccountService,pharmacistAccountService,administratorAccountService);
+		this.hospitalStaffRegistrationService = new HospitalStaffRegistrationService(credentialsRepository,doctorAccountService,pharmacistAccountService,administratorAccountService);
 
-        this.accountManager = new AccountManager(patientAccountService,doctorAccountService,pharmacistAccountService,administratorAccountService,credentialsService);
-        this.staffManagementService = new StaffManagementService(doctorAccountService,administratorAccountService,pharmacistAccountService,hospitalStaffRegistrationService);
-        /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		this.accountManager = new AccountManager(patientAccountService,doctorAccountService,pharmacistAccountService,administratorAccountService,credentialsService);
+		this.staffManagementService = new StaffManagementService(doctorAccountService,administratorAccountService,pharmacistAccountService,hospitalStaffRegistrationService);
+		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    }
+	}
 
 	/**
 	 * The getter method of the path of the {@code AppointmentRepository}
@@ -95,7 +96,7 @@ public class ApplicationContext {
 
 	/**
 	 * The setter method of the path of the {@code AppointmentRepository}
-	 * @param appointmentsRepositoryPath
+	 * @param appointmentsRepositoryPath The file path to set for the appointments repository.
 	 */
 	public void setAppointmentsRepositoryPath(String appointmentsRepositoryPath) {
 		this.appointmentsRepositoryPath = appointmentsRepositoryPath;
@@ -111,7 +112,7 @@ public class ApplicationContext {
 
 	/**
 	 * The setter method of the path of the {@code CredentialsRepository}
-	 * @param credentialsRepositoryPath
+	 * @param credentialsRepositoryPath The file path to set for the credentials repository.
 	 */
 	public void setCredentialsRepositoryPath(String credentialsRepositoryPath) {
 		this.credentialsRepositoryPath = credentialsRepositoryPath;
@@ -127,7 +128,7 @@ public class ApplicationContext {
 
 	/**
 	 * The setter method of the path of the {@code HospitalStaffRepository}
-	 * @param hospitalStaffRepositoryPath
+	 * @param hospitalStaffRepositoryPath The file path to set for the hospital staff repository.
 	 */
 	public void setHospitalStaffRepositoryPath(String hospitalStaffRepositoryPath) {
 		this.hospitalStaffRepositoryPath = hospitalStaffRepositoryPath;
@@ -143,7 +144,7 @@ public class ApplicationContext {
 
 	/**
 	 * The setter method of the path of the {@code MedicalRecordRepository}
-	 * @param medicalRecordRepositoryPath
+	 * @param medicalRecordRepositoryPath The file path to set for the medical record repository.
 	 */
 	public void setMedicalRecordRepositoryPath(String medicalRecordRepositoryPath) {
 		this.medicalRecordRepositoryPath = medicalRecordRepositoryPath;
@@ -159,7 +160,7 @@ public class ApplicationContext {
 
 	/**
 	 * The setter method of the path of the {@code MedicationInventoryRepository}
-	 * @param medicationInventoryRepositoryPath
+	 * @param medicationInventoryRepositoryPath The file path to set for the medication inventory repository.
 	 */
 	public void setMedicationInventoryRepositoryPath(String medicationInventoryRepositoryPath) {
 		this.medicationInventoryRepositoryPath = medicationInventoryRepositoryPath;
@@ -175,7 +176,7 @@ public class ApplicationContext {
 
 	/**
 	 * The setter method of the path of the {@code PatientDataRepository}
-	 * @param patientDataRepositoryPath
+	 * @param patientDataRepositoryPath The file path to set for the patient data repository.
 	 */
 	public void setPatientDataRepositoryPath(String patientDataRepositoryPath) {
 		this.patientDataRepositoryPath = patientDataRepositoryPath;
@@ -191,7 +192,7 @@ public class ApplicationContext {
 
 	/**
 	 * Sets the {@code AppointmentRepository} instance
-	 * @param appointmentsRepository
+	 * @param appointmentsRepository The instance to set for the appointments repository.
 	 */
 	public void setAppointmentsRepository(AppointmentsRepository appointmentsRepository) {
 		this.appointmentsRepository = appointmentsRepository;
@@ -207,7 +208,7 @@ public class ApplicationContext {
 
 	/**
 	 * Sets the {@code CredentialsService} instance
-	 * @param credentialsRepository
+	 * @param credentialsRepository The instance to set for the credentials repository.
 	 */
 	public void setCredentialsRepository(CredentialsRepository credentialsRepository) {
 		this.credentialsRepository = credentialsRepository;
@@ -223,7 +224,7 @@ public class ApplicationContext {
 
 	/**
 	 * Sets the {@code HospitalStaffRepository} instance
-	 * @param hospitalStaffRepository
+	 * @param hospitalStaffRepository The instance to set for the hospital staff repository.
 	 */
 	public void setHospitalStaffRepository(HospitalStaffRepository hospitalStaffRepository) {
 		this.hospitalStaffRepository = hospitalStaffRepository;
@@ -239,7 +240,7 @@ public class ApplicationContext {
 
 	/**
 	 * Sets the {@code MedicationInventoryRepository} instance
-	 * @param medicationInventoryRepository
+	 * @param medicationInventoryRepository The instance to set for the medication inventory repository.
 	 */
 	public void setMedicationInventoryRepository(MedicationInventoryRepository medicationInventoryRepository) {
 		this.medicationInventoryRepository = medicationInventoryRepository;
@@ -255,7 +256,7 @@ public class ApplicationContext {
 
 	/**
 	 * Sets the {@code PatientDataRepository} instance
-	 * @param patientDataRepository
+	 * @param patientDataRepository The instance to set for the patient data repository.
 	 */
 	public void setPatientDataRepository(PatientDataRepository patientDataRepository) {
 		this.patientDataRepository = patientDataRepository;
@@ -270,8 +271,12 @@ public class ApplicationContext {
 	}
 
 	/**
+	 * Sets the {@code AppointmentService
+
+
+	/**
 	 * Sets the {@code AppointmentService} instance
-	 * @param appointmentService
+	 * @param appointmentService the {@code AppointmentService} instance
 	 */
 	public void setAppointmentService(AppointmentService appointmentService) {
 		this.appointmentService = appointmentService;
@@ -304,7 +309,7 @@ public class ApplicationContext {
 
 	/**
 	 * Sets the {@code ForgotPasswordService} instance
-	 * @param forgotPasswordService
+	 * @param forgotPasswordService the ForgotPasswordService instance
 	 */
 	public void setForgotPasswordService(ForgotPasswordService forgotPasswordService) {
 		this.forgotPasswordService = forgotPasswordService;
@@ -312,7 +317,7 @@ public class ApplicationContext {
 
 	/**
 	 * Gets the {@code MedicalInventoryService} instance
-	 * @return
+	 * @return the {@code MedicalInventoryService} instance
 	 */
 	public MedicalInventoryService getMedicalInventoryService() {
 		return medicalInventoryService;
@@ -320,7 +325,7 @@ public class ApplicationContext {
 
 	/**
 	 * Sets the {@code MedicalInventoryService} instance
-	 * @param medicalInventoryService
+	 * @param medicalInventoryService the MedicalInventoryService instance
 	 */
 	public void setMedicalInventoryService(MedicalInventoryService medicalInventoryService) {
 		this.medicalInventoryService = medicalInventoryService;
@@ -328,7 +333,7 @@ public class ApplicationContext {
 
 	/**
 	 * Gets the {@code PatientAccountService} instance
-	 * @return
+	 * @return the PatientAccountService instance
 	 */
 	public PatientAccountService getPatientAccountService() {
 		return patientAccountService;
@@ -336,7 +341,7 @@ public class ApplicationContext {
 
 	/**
 	 * Sets the {@code PatientAccountService} instance
-	 * @param patientAccountService
+	 * @param patientAccountService the {@code PatientAccountService} instance
 	 */
 	public void setPatientAccountService(PatientAccountService patientAccountService) {
 		this.patientAccountService = patientAccountService;
@@ -344,7 +349,7 @@ public class ApplicationContext {
 
 	/**
 	 * Gets the {@code DoctorAccountService} instance
-	 * @return
+	 * @return the instance of DoctorAccountService
 	 */
 	public DoctorAccountService getDoctorAccountService() {
 		return doctorAccountService;
@@ -352,7 +357,7 @@ public class ApplicationContext {
 
 	/**
 	 * Sets the {@code DoctorAccountService} instance
-	 * @param doctorAccountService
+	 * @param doctorAccountService the instance of DoctorAccountService
 	 */
 	public void setDoctorAccountService(DoctorAccountService doctorAccountService) {
 		this.doctorAccountService = doctorAccountService;
@@ -360,7 +365,7 @@ public class ApplicationContext {
 
 	/**
 	 * Gets the {@code PharmacistAccountService} instance
-	 * @return
+	 * @return the {@code PharmacistAccountService} instance
 	 */
 	public PharmacistAccountService getPharmacistAccountService() {
 		return pharmacistAccountService;
@@ -368,7 +373,7 @@ public class ApplicationContext {
 
 	/**
 	 * Sets the {@code PharmacistAccountService} instance
-	 * @param pharmacistAccountService
+	 * @param pharmacistAccountService the instance of PharmacistAccountService
 	 */
 	public void setPharmacistAccountService(PharmacistAccountService pharmacistAccountService) {
 		this.pharmacistAccountService = pharmacistAccountService;
@@ -376,7 +381,7 @@ public class ApplicationContext {
 
 	/**
 	 * Gets the {@code AdministratorAccountService} instance
-	 * @return
+	 * @return the instance of AdministratorAccountService
 	 */
 	public AdministratorAccountService getAdministratorAccountService() {
 		return administratorAccountService;
@@ -384,7 +389,7 @@ public class ApplicationContext {
 
 	/**
 	 * Sets the {@code AdministratorAccountService} instance
-	 * @param administratorAccountService
+	 * @param administratorAccountService the instance of AdministratorAccountService
 	 */
 	public void setAdministratorAccountService(AdministratorAccountService administratorAccountService) {
 		this.administratorAccountService = administratorAccountService;
@@ -392,7 +397,7 @@ public class ApplicationContext {
 
 	/**
 	 * Gets the {@code HospitalStaffRegistrationService} instance
-	 * @return
+	 * @return the instance of HospitalStaffRegistrationService
 	 */
 	public HospitalStaffRegistrationService getHospitalStaffRegistrationService() {
 		return hospitalStaffRegistrationService;
@@ -400,7 +405,7 @@ public class ApplicationContext {
 
 	/**
 	 * Sets the {@code HospitalStaffRegistrationService} instance
-	 * @param hospitalStaffRegistrationService
+	 * @param hospitalStaffRegistrationService the instance of HospitalStaffRegistrationService
 	 */
 	public void setHospitalStaffRegistrationService(HospitalStaffRegistrationService hospitalStaffRegistrationService) {
 		this.hospitalStaffRegistrationService = hospitalStaffRegistrationService;
@@ -408,7 +413,7 @@ public class ApplicationContext {
 
 	/**
 	 * Gets the {@code AccountManager} instance
-	 * @return
+	 * @return the instance of AccountManager
 	 */
 	public AccountManager getAccountManager() {
 		return accountManager;
@@ -416,7 +421,7 @@ public class ApplicationContext {
 
 	/**
 	 * Sets the {@code AccountManager} instance
-	 * @param accountManager
+	 * @param accountManager the instance of AccountManager
 	 */
 	public void setAccountManager(AccountManager accountManager) {
 		this.accountManager = accountManager;
@@ -424,7 +429,7 @@ public class ApplicationContext {
 
 	/**
 	 * Gets the {@code StaffManagementService} instance
-	 * @return
+	 * @return the instance of AccountManager StaffManagementService
 	 */
 	public StaffManagementService getStaffManagementService() {
 		return staffManagementService;
@@ -432,7 +437,7 @@ public class ApplicationContext {
 
 	/**
 	 * Sets the {@code DoctorAccountService} instance
-	 * @param staffManagementService
+	 * @param staffManagementService the instance of AccountManager StaffManagementService
 	 */
 	public void setStaffManagementService(StaffManagementService staffManagementService) {
 		this.staffManagementService = staffManagementService;

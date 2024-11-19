@@ -18,7 +18,7 @@ public class PatientDataRepository implements IRepository <String,String,Patient
 
     /**
      * Constructor for the {@code PatientDataRepository} which initialises the path of which the {@code PatientDataRepository} reads from
-     * @param path
+     * @param path The path to the file where the {@code Patient} data is stored.
      */
     public PatientDataRepository(String path) {
     	PatientDataRepository.path = path;
@@ -26,7 +26,8 @@ public class PatientDataRepository implements IRepository <String,String,Patient
 
     /**
      * Creates a new {@code Patient} in the {@code Patient} file
-     * @param attributes
+     * @param attributes The attributes for creating the new {@code Patient}.
+     *                  It expects a single object of type {@link Patient}.
      */
     @Override
     public void createRecord(Object... attributes) {
@@ -69,8 +70,9 @@ public class PatientDataRepository implements IRepository <String,String,Patient
 
     /**
      * Looks through the {@code Patient} file to find the {@code Patient} matching the input, and returns the {@code Patient}.
-     * @param targetID
-     * @return
+     * @param targetID The unique identifier (ID) of the {@code Patient} to be found.
+     *                 This is the ID used to search for the corresponding {@code Patient} record in the file.
+     * @return The {@code Patient} record corresponding to the provided {@code targetID}, or {@code null} if no record is found.
      */
     @Override
     public Patient readRecord(String targetID) { // why cant i change this to String?
@@ -108,7 +110,8 @@ public class PatientDataRepository implements IRepository <String,String,Patient
 
     /**
      * Updates the data of a {@code Patient} inside the {@code Patient} file
-     * @param updatedPatient
+     * @param updatedPatient The updated {@code Patient} object that contains the new data for the existing {@code Patient} record.
+     *                       This record will replace the old one with the same ID.
      */
     @Override
     public void updateRecord(Patient updatedPatient) {
@@ -171,7 +174,8 @@ public class PatientDataRepository implements IRepository <String,String,Patient
 
     /**
      * Deletes a {@code Patient} inside the {@code Patient} file
-     * @param deletePatientID
+     * @param deletePatientID The unique identifier (ID) of the {@code Patient} to be deleted from the file.
+     *                        If the ID matches an existing {@code Patient}, their record will be removed.
      */
     @Override
     public void deleteRecord(String deletePatientID) {

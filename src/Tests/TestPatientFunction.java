@@ -67,7 +67,7 @@ public class TestPatientFunction {
 		
 		AppointmentService appointmentService = new AppointmentService(appRepo);
 
-		PatientController patientController = new PatientController(Patient.getPatientList().get(0), appointmentService);
+		//PatientController patientController = new PatientController(Patient.getPatientList().get(0), appointmentService);
 
 		AccountManager accountManager = new AccountManager(patientService,doctorService,pharmacistService,administratorService,credentialsService);
 
@@ -76,7 +76,7 @@ public class TestPatientFunction {
 
 		// Create Boundary
 		DoctorMainPage mainPage = new DoctorMainPage(docController);
-		PatientMainPage mainPage1 = new PatientMainPage(patientController);
+		//PatientMainPage mainPage1 = new PatientMainPage(patientController);
 
 		//mainPage1.mainpage();
 

@@ -17,7 +17,7 @@ public class CredentialsRepository implements IRepository <String,String, Creden
 
     /**
      * Constructor for the {@code CredentialsRepository} which initialises the path of which the {@code CredentialsRepository} reads from
-     * @param path
+     * @param path the file path to the database containing {@code Credentials} records.
      */
     public CredentialsRepository(String path) {
         this.path = path;
@@ -25,8 +25,8 @@ public class CredentialsRepository implements IRepository <String,String, Creden
 
     /**
      * Searches database for a specific {@code Credentials}
-     * @param userID
-     * @return The {@code Credentials} corresponding to the UserID given
+     * @param userID the unique identifier of the user whose {@code Credentials} are being searched.
+     * @return The {@code Credentials} corresponding to the given {@code userID}, or {@code null} if not found.
      */
     @Override
     public Credentials readRecord(String userID) {
@@ -58,7 +58,7 @@ public class CredentialsRepository implements IRepository <String,String, Creden
 
     /**
      * Looks through the {@code Credentials} file and deletes the row corresponding to the UserID given.
-     * @param userID
+     * @param userID the unique identifier of the user whose {@code Credentials} should be deleted.
      */
     @Override
     public void deleteRecord(String userID) {
@@ -117,7 +117,8 @@ public class CredentialsRepository implements IRepository <String,String, Creden
 
     /**
      * Adds a new {@code Credentials} to the bottom of the {@code Credentials}s file. Does not check if {@code Credentials} already exists
-     * @param attributes
+     * @param attributes the {@code Credentials} object to be added. The first element of the array should be an instance of {@code Credentials}.
+     *                   If the provided data is invalid or not of type {@code Credentials}, the operation will fail.
      */
     @Override
     public void createRecord(Object... attributes) {
@@ -148,7 +149,7 @@ public class CredentialsRepository implements IRepository <String,String, Creden
 
     /**
      * Updates the row with the corresponding {@code UserID} with the attributes given
-     * @param record
+     * @param record the {@code Credentials} object containing the updated data. The {@code userID} is used to locate the record to update.
      */
     @Override
     public void updateRecord(Credentials record) {
@@ -205,9 +206,9 @@ public class CredentialsRepository implements IRepository <String,String, Creden
 
     /**
      * More specific update operation than updateRecord, which updates all. This only updates the hashedPassword and Salt
-     * @param userID
-     * @param hashedPassword
-     * @param salt
+     * @param userID User's HospitalID
+     * @param hashedPassword User's hashed password
+     * @param salt Salt for encrypting the password
      */
     public void updateHashedPassword(String userID, String hashedPassword, String salt) {
         List<Credentials> credentialsDatabase = new ArrayList<>();

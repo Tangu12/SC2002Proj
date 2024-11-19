@@ -29,8 +29,8 @@ public class HospitalStaffRegistrationService {
 
     /**
      * Looks through the file to find the number of users and creates a {@code HospitalID} based on the latest User.(eg if last user in file is P002, function returns P003)
-     * @param domain
-     * @return
+     * @param domain The domain type representing the type of user to register (e.g., DOCTOR, PATIENT, PHARMACIST, ADMINISTRATOR).
+     * @return A formatted user ID based on the domain and current user count, or {@code null} if the maximum number of users for that domain has been reached.
      */
     public String getUserName(Domain domain){
         int userCount = credentialsRepository.countUsersByType(domain);
@@ -64,7 +64,7 @@ public class HospitalStaffRegistrationService {
 
     /**
      * Helper method
-     * @return
+     * @return The format string for user ID, like "%s%04d" for 9999 users.
      */
     private String getIdFormat() {
         int digits = String.valueOf(IUser.MAX_USERS).length();
@@ -73,10 +73,10 @@ public class HospitalStaffRegistrationService {
 
     /**
      * Creates an account for a new {@code Doctor} using the {@code DoctorAccountService} class
-     * @param doctor
-     * @param plainTextPassword
-     * @param securityQuestion
-     * @param plainTextSecurityAnswer
+     * @param doctor The {@code Doctor} object representing the doctor to register.
+     * @param plainTextPassword The plain text password to be used for the doctor's account.
+     * @param securityQuestion The security question for account recovery.
+     * @param plainTextSecurityAnswer The plain text answer to the security question.
      */
     public void registerDoctorAccount(Doctor doctor,String plainTextPassword, String securityQuestion, String plainTextSecurityAnswer){
         doctorAccountService.createUserAccount(doctor,plainTextPassword,securityQuestion,plainTextSecurityAnswer);
@@ -85,21 +85,22 @@ public class HospitalStaffRegistrationService {
 
     /**
      * Create an account for a new {@code Pharmacist} using the {@code PharmacistAccountService} class
-     * @param pharmacist
-     * @param plainTextPassword
-     * @param securityQuestion
-     * @param plainTextSecurityAnswer
+     * @param pharmacist The {@code Pharmacist} object representing the pharmacist to register.
+     * @param plainTextPassword The plain text password to be used for the pharmacist's account.
+     * @param securityQuestion The security question for account recovery.
+     * @param plainTextSecurityAnswer The plain text answer to the security question.
      */
+
     public void registerPharmacistAccount(Pharmacist pharmacist,String plainTextPassword, String securityQuestion, String plainTextSecurityAnswer){
         pharmacistAccountService.createUserAccount(pharmacist, plainTextPassword,securityQuestion,plainTextSecurityAnswer);
     }
 
     /**
      * Create an account for a new {@code Administrator} using the {@code AdministratorAccountService} class
-     * @param administrator
-     * @param plainTextPassword
-     * @param securityQuestion
-     * @param plainTextSecurityAnswer
+     @param administrator The {@code Administrator} object representing the administrator to register.
+      * @param plainTextPassword The plain text password to be used for the administrator's account.
+     * @param securityQuestion The security question for account recovery.
+     * @param plainTextSecurityAnswer The plain text answer to the security question.
      */
     public void registerAdministratorAccount(Administrator administrator,String plainTextPassword, String securityQuestion, String plainTextSecurityAnswer){
         administratorAccountService.createUserAccount(administrator, plainTextPassword,securityQuestion,plainTextSecurityAnswer);
