@@ -15,8 +15,8 @@ public class PharmacistAccountService implements IUserAccountService<Pharmacist>
 
     /**
      * Constructor for PharmacistAccountService with Dependency Injection of the {@code CredentialsService} and the {@code HospitalStaffRepository}
-     * @param credentialsService
-     * @param hospitalStaffRepository
+     * @param credentialsService The service responsible for managing user credentials such as passwords and security questions.
+     * @param hospitalStaffRepository The repository used for managing pharmacist data in the hospital staff records.
      */
     public PharmacistAccountService(CredentialsService credentialsService,HospitalStaffRepository hospitalStaffRepository) {
         this.credentialsService = credentialsService;
@@ -25,10 +25,10 @@ public class PharmacistAccountService implements IUserAccountService<Pharmacist>
 
     /**
      * Creates a new {@code Pharmacist} in the {@code HospitalStaff} and {@code Credentials} file
-     * @param pharmacist
-     * @param plainTextPassword
-     * @param securityQuestion
-     * @param plainTextSecurityAnswer
+     * @param pharmacist The {@code Pharmacist} object containing the pharmacist's information to be added to the system.
+     * @param plainTextPassword The plain text password for the pharmacist to be stored in the credentials system.
+     * @param securityQuestion The security question set for the pharmacist account for recovery purposes.
+     * @param plainTextSecurityAnswer The plain text answer to the security question provided by the pharmacist.
      */
     @Override
     public void createUserAccount(Pharmacist pharmacist, String plainTextPassword, String securityQuestion, String plainTextSecurityAnswer) {
@@ -39,8 +39,8 @@ public class PharmacistAccountService implements IUserAccountService<Pharmacist>
 
     /**
      * Reads and return {@code Pharmacist} with matching {@code HospitalID}
-     * @param userID
-     * @return The {@code Pharmacist} with matching {@code HospitalID}
+     * @param userID The unique identifier (Hospital ID) of the pharmacist whose account information is being retrieved.
+     * @return The {@code Pharmacist} object corresponding to the specified {@code userID}.
      */
     public Pharmacist getAccount(String userID) {
         String[] pharmacistParameters = hospitalStaffRepository.readRecord(userID);
@@ -60,7 +60,7 @@ public class PharmacistAccountService implements IUserAccountService<Pharmacist>
 
     /**
      * Updates a {@code Pharmacist}'s parameters
-     * @param pharmacist
+     * @param pharmacist The {@code Pharmacist} object with updated information to be saved to the system.
      */
     @Override
     public void updateUserData(Pharmacist pharmacist) {
@@ -77,20 +77,20 @@ public class PharmacistAccountService implements IUserAccountService<Pharmacist>
 
     /**
      * Verifies a User has entered their correct password
-     * @param UserID
-     * @param plainTextPassword
-     * @return True if the answer given is correct, False otherwise
+     * @param userID The unique identifier (Hospital ID) of the pharmacist whose password is being verified.
+     * @param plainTextPassword The plain text password entered by the pharmacist.
+     * @return {@code true} if the entered password matches the one stored for the specified {@code userID}, {@code false} otherwise.
      */
     @Override
-    public boolean verifyPassword(String UserID, String plainTextPassword) {
-        return credentialsService.checkPassword(UserID,plainTextPassword);
+    public boolean verifyPassword(String userID, String plainTextPassword) {
+        return credentialsService.checkPassword(userID,plainTextPassword);
     }
 
     /**
      * Verifies if the User has correctly answered their security question
-     * @param userID
-     * @param plainTextSecurityAnswer
-     * @return True if the answer given is correct, False otherwise
+     * @param userID The unique identifier (Hospital ID) of the pharmacist whose security question answer is being verified.
+     * @param plainTextSecurityAnswer The plain text answer provided by the pharmacist to the security question.
+     * @return {@code true} if the answer matches the one stored in the system, {@code false} otherwise.
      */
     public boolean verifySecurityQuestion(String userID, String plainTextSecurityAnswer){
         return credentialsService.verifySecurityQuestion(userID,plainTextSecurityAnswer);
@@ -98,8 +98,8 @@ public class PharmacistAccountService implements IUserAccountService<Pharmacist>
 
     /**
      * Returns the remaining logins that the User has before the User is locked out
-     * @param userID
-     * @return Returns the remaining logins attempts of a User
+     * @param userID The unique identifier (Hospital ID) of the pharmacist whose remaining login attempts are being queried.
+     * @return The number of login attempts left for the specified user before they are locked out.
      */
     public int getNumberOfTriesLeft(String userID){
         return credentialsService.getNumberOfTriesLeft(userID);
@@ -107,8 +107,8 @@ public class PharmacistAccountService implements IUserAccountService<Pharmacist>
 
     /**
      * Changes the password of {@code Pharmacist} in the {@code Credentials} file
-     * @param userID
-     * @param newPassword
+     * @param userID The unique identifier (Hospital ID) of the pharmacist whose password is being changed.
+     * @param newPassword The new password to be set for the pharmacist.
      */
     public void changePassword(String userID, String newPassword){
         credentialsService.changePassword(userID,newPassword);
@@ -116,7 +116,7 @@ public class PharmacistAccountService implements IUserAccountService<Pharmacist>
 
     /**
      * Increment the number of login attempts of a User based on their {@code HospitalID}
-     * @param userID
+     * @param userID The unique identifier (Hospital ID) of the pharmacist whose login attempts are to be incremented.
      */
     public void incrementNumberOfTries(String userID){
         if(credentialsService.isAccountLocked(userID)){
@@ -127,7 +127,7 @@ public class PharmacistAccountService implements IUserAccountService<Pharmacist>
 
     /**
      * Unlocks the account of a User, only to be done by the {@code Administrator}
-     * @param userID
+     * @param userID The unique identifier (Hospital ID) of the pharmacist whose account is being unlocked.
      */
     public void unlockAccount(String userID){
         credentialsService.unlockAccount(userID);
