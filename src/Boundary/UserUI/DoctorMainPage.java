@@ -354,7 +354,7 @@ public class DoctorMainPage extends UserMainPage {
 
 	/**
 	 * Displays a list of scheduled appointments for the currently logged-in doctor in a table with the {@code Appointment}'s details and gathers the
-	 * indices of the {@code Appointment}s with a {@code Confirmed} or {@code PendingPrescription} status
+	 * indices of the {@code Appointment}s with a {@code Confirmed} or {@code PendingPrescription} status or {@code Cancelled}
 	 * @return A list of integers representing the indices of appointments that are in {@code Confirmed} or {@code PendingPrescription}status
 	 * @see Appointment
 	 * @see Status
@@ -362,16 +362,68 @@ public class DoctorMainPage extends UserMainPage {
 	public List<Integer> viewDoctorScheduledAppointments() {
 	        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/M/yyyy H:mm");
 	        System.out.println("+" + "-".repeat(3) + "+"
+	        			+ "-".repeat(columnWidth) + "+"
 					+ "-".repeat(columnWidth) + "+"
 					+ "-".repeat(columnWidth) + "+"
 					+ "-".repeat(columnWidth) + "+");
 
 			System.out.println("|" + formatCell("No.", 3)
+					+ "|" + formatCell("Status", columnWidth)
 					+ "|" + formatCell("App Date and Time", columnWidth)
 					+ "|" + formatCell("Purpose", columnWidth)
 					+ "|" + formatCell("Pat Name", columnWidth) + "|");
 
 			System.out.println("+" + "-".repeat(3) + "+"
+					+ "-".repeat(columnWidth) + "+"
+					+ "-".repeat(columnWidth) + "+"
+					+ "-".repeat(columnWidth) + "+"
+					+ "-".repeat(columnWidth) + "+");
+	        int i = 1;
+	        int index = 0;
+	        List<Integer> pendingIndices = new ArrayList<>();
+	        for (Appointment appointments : AppointmentList.getInstance().getAppointmentList()) {
+	            if (Objects.equals(appointments.getDocID(), doctorController.getDoctor().getUserID()) && (appointments.getStatusOfApp() == Status.Confirmed || appointments.getStatusOfApp() == Status.PendingPrescription || appointments.getStatusOfApp() == Status.Cancelled)) {
+	                System.out.println("|" + formatCell(String.valueOf(i), 3)
+	                			+ "|" + formatCell(appointments.getStatusOfApp().toString(), columnWidth)
+							+ "|" + formatCell(appointments.getTimeOfApp().format(formatter), columnWidth)
+							+ "|" + formatCell(appointments.getPurposeOfApp().toString(), columnWidth)
+							+ "|" + formatCell(appointments.getPatName(), columnWidth) + "|");
+					System.out.println("+" + "-".repeat(3) + "+"
+							+ "-".repeat(columnWidth) + "+"
+							+ "-".repeat(columnWidth) + "+"
+							+ "-".repeat(columnWidth) + "+"
+							+ "-".repeat(columnWidth) + "+");
+					i++;
+					pendingIndices.add(index);
+	            }
+	            index++;
+	        }
+	        return pendingIndices;
+	    }
+	
+	/**
+	 * Displays a list of scheduled appointments for the currently logged-in doctor in a table with the {@code Appointment}'s details and gathers the
+	 * indices of the {@code Appointment}s with a {@code Confirmed} or {@code PendingPrescription} status
+	 * @return A list of integers representing the indices of appointments that are in {@code Confirmed} or {@code PendingPrescription}status
+	 * @see Appointment
+	 * @see Status
+	 */
+	public List<Integer> viewDoctorNoCancelledScheduledAppointments() {
+	        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/M/yyyy H:mm");
+	        System.out.println("+" + "-".repeat(3) + "+"
+	        			+ "-".repeat(columnWidth) + "+"
+					+ "-".repeat(columnWidth) + "+"
+					+ "-".repeat(columnWidth) + "+"
+					+ "-".repeat(columnWidth) + "+");
+
+			System.out.println("|" + formatCell("No.", 3)
+					+ "|" + formatCell("Status", columnWidth)
+					+ "|" + formatCell("App Date and Time", columnWidth)
+					+ "|" + formatCell("Purpose", columnWidth)
+					+ "|" + formatCell("Pat Name", columnWidth) + "|");
+
+			System.out.println("+" + "-".repeat(3) + "+"
+					+ "-".repeat(columnWidth) + "+"
 					+ "-".repeat(columnWidth) + "+"
 					+ "-".repeat(columnWidth) + "+"
 					+ "-".repeat(columnWidth) + "+");
@@ -381,10 +433,12 @@ public class DoctorMainPage extends UserMainPage {
 	        for (Appointment appointments : AppointmentList.getInstance().getAppointmentList()) {
 	            if (Objects.equals(appointments.getDocID(), doctorController.getDoctor().getUserID()) && (appointments.getStatusOfApp() == Status.Confirmed || appointments.getStatusOfApp() == Status.PendingPrescription)) {
 	                System.out.println("|" + formatCell(String.valueOf(i), 3)
+	                			+ "|" + formatCell(appointments.getStatusOfApp().toString(), columnWidth)
 							+ "|" + formatCell(appointments.getTimeOfApp().format(formatter), columnWidth)
 							+ "|" + formatCell(appointments.getPurposeOfApp().toString(), columnWidth)
 							+ "|" + formatCell(appointments.getPatName(), columnWidth) + "|");
 					System.out.println("+" + "-".repeat(3) + "+"
+							+ "-".repeat(columnWidth) + "+"
 							+ "-".repeat(columnWidth) + "+"
 							+ "-".repeat(columnWidth) + "+"
 							+ "-".repeat(columnWidth) + "+");
@@ -400,7 +454,7 @@ public class DoctorMainPage extends UserMainPage {
 	 * Function that allows a {@code Doctors} to update the Appointment Outcome Record of one of their {@code Appointments}
 	 */
 	public void updateApptOutcomeRecords() {
- 		 List<Integer> pendingIndices = viewDoctorScheduledAppointments();
+ 		 List<Integer> pendingIndices = viewDoctorNoCancelledScheduledAppointments();
  		 if (pendingIndices.isEmpty()) {
  			 System.out.println("There is no scheduled appointment for you.");
  			 return;
@@ -409,33 +463,24 @@ public class DoctorMainPage extends UserMainPage {
 	     int selection = InputService.inputInteger();
 	     if(selection-1 >= pendingIndices.size()) {System.out.println("Please only enter the available records:"); return;}
 	     System.out.println("Please enter your notes (Doctor's notes):");
+	     if(AppointmentList.getInstance().getAppointmentList().get(pendingIndices.get(selection-1)).getAppointOutcomeRecord().equals(" ")) {
+	    	 	System.out.println("There is no previous note:");
+	     }
+	     else {
+	    	 	System.out.println(AppointmentList.getInstance().getAppointmentList().get(pendingIndices.get(selection-1)).getAppointOutcomeRecord());
+	     }
 	     String doctorNotes = InputService.inputString().trim();
+	     if(!AppointmentList.getInstance().getAppointmentList().get(pendingIndices.get(selection-1)).getAppointOutcomeRecord().equals(" ")) doctorNotes = AppointmentList.getInstance().getAppointmentList().get(pendingIndices.get(selection-1)).getAppointOutcomeRecord() + " " + doctorNotes;
 	     System.out.println("Please select the status of the appointment:\n"
-	     		+ "(1) Confirmed\n"
-	     		+ "(2) Cancelled\n"
-	     		+ "(3) Completed\n"
-	     		+ "(4) Pending\n"
-	     		+ "(5) Unavailable\n"
-	     		+ "(6) PrescriptionPending");
+	     		+ "(1) PrescriptionPending\n"
+	     		+ "(2) Completed");
 	     int choice = InputService.inputInteger();
 	     switch(choice) {
 		        case 1:
-		        		doctorController.updateApptOutcomeRecords(pendingIndices.get(selection-1), Status.Confirmed, doctorNotes);
+		        		doctorController.updateApptOutcomeRecords(pendingIndices.get(selection-1), Status.PendingPrescription, doctorNotes);
 		        		break;
 		        case 2:
-		        		doctorController.updateApptOutcomeRecords(pendingIndices.get(selection-1), Status.Cancelled, doctorNotes);
-		        		break;
-		        case 3:
 		        		doctorController.updateApptOutcomeRecords(pendingIndices.get(selection-1), Status.Completed, doctorNotes);
-		        		break;
-		        case 4:
-		        		doctorController.updateApptOutcomeRecords(pendingIndices.get(selection-1), Status.Pending, doctorNotes);
-		        		break;
-		        case 5:
-		        		doctorController.updateApptOutcomeRecords(pendingIndices.get(selection-1), Status.Unavailable, doctorNotes);
-		        		break;
-		        case 6:
-		        		doctorController.updateApptOutcomeRecords(pendingIndices.get(selection-1), Status.PendingPrescription, doctorNotes);
 		        		break;
 	        	default:
 		        		System.out.println("Please only select the available status.");
@@ -449,6 +494,7 @@ public class DoctorMainPage extends UserMainPage {
 	public void viewMedicalRecord() {
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d-M-yyyy");
 	        System.out.println("+" + "-".repeat(columnWidth) + "+"
+	        			+ "-".repeat(columnWidth) + "+"
 					+ "-".repeat(columnWidth) + "+"
 					+ "-".repeat(columnWidth) + "+"
 					+ "-".repeat(columnWidth) + "+"
@@ -462,6 +508,7 @@ public class DoctorMainPage extends UserMainPage {
 					+ "-".repeat(columnWidth) + "+");
 
 			System.out.println("|" + formatCell("Appointment ID", columnWidth)
+					+ "|" + formatCell("App Status", columnWidth)
 					+ "|" + formatCell("Patient Name", columnWidth)
 					+ "|" + formatCell("Date of Birth", columnWidth)
 					+ "|" + formatCell("Gender", columnWidth)
@@ -481,6 +528,7 @@ public class DoctorMainPage extends UserMainPage {
 					+ "-".repeat(columnWidth) + "+"
 					+ "-".repeat(columnWidth) + "+"
 					+ "-".repeat(columnWidth) + "+"
+					+ "-".repeat(columnWidth) + "+"
 					+ "-".repeat(50) + "+"
 					+ "-".repeat(50) + "+"
 					+ "-".repeat(columnWidth) + "+"
@@ -491,6 +539,7 @@ public class DoctorMainPage extends UserMainPage {
 				for(Appointment appointments : AppointmentList.getInstance().getAppointmentList()) {
 					if(appointments.getPatID().equals(pat.getUserID()) && (appointments.getStatusOfApp() == Status.Completed || appointments.getStatusOfApp() == Status.PendingPrescription)) {
 						System.out.println("|" + formatCell(appointments.getAppID(), columnWidth)
+						+ "|" + formatCell(appointments.getStatusOfApp().toString(), columnWidth)
 						+ "|" + formatCell(pat.getName(), columnWidth)
 						+ "|" + formatCell(pat.getDateOfBirth().format(formatter), columnWidth)
 						+ "|" + formatCell(pat.getGender().toString(), columnWidth)
@@ -504,6 +553,7 @@ public class DoctorMainPage extends UserMainPage {
 						+ "|" + formatCell(appointments.getInstructions(), columnWidth)+ "|");
 						
 						System.out.println("+" + "-".repeat(columnWidth) + "+"
+								+ "-".repeat(columnWidth) + "+"
 								+ "-".repeat(columnWidth) + "+"
 								+ "-".repeat(columnWidth) + "+"
 								+ "-".repeat(columnWidth) + "+"

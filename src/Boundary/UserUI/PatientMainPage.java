@@ -148,14 +148,17 @@ public class PatientMainPage extends UserMainPage{
     	System.out.println("+" + "-".repeat(5) + "+"
 				+ "-".repeat(columnWidth) + "+"
 				+ "-".repeat(columnWidth) + "+"
+				+ "-".repeat(columnWidth) + "+"
 				+ "-".repeat(40) + "+");
 
 		System.out.println("|" + formatCell("No.", 5)
+				+ "|" + formatCell("Status of App", columnWidth)
 				+ "|" + formatCell("Purpose of App", columnWidth)
 				+ "|" + formatCell("Time", columnWidth)
 				+ "|" + formatCell("Note", 40) + "|");
 
 		System.out.println("+" + "-".repeat(5) + "+"
+				+ "-".repeat(columnWidth) + "+"
 				+ "-".repeat(columnWidth) + "+"
 				+ "-".repeat(columnWidth) + "+"
 				+ "-".repeat(40) + "+");
@@ -164,10 +167,12 @@ public class PatientMainPage extends UserMainPage{
         for (Appointment appointments : appointmentList) {
             if (appointments.getPatID().equals(pat.getUserID()) && appointments.getStatusOfApp() == Status.Confirmed && (!appointments.getTimeOfApp().toLocalDate().isBefore(LocalDate.now()))) {
             	System.out.println("|" + formatCell(String.valueOf(i), 5)
+            				+ "|" + formatCell(appointments.getStatusOfApp().toString(), columnWidth)
 						+ "|" + formatCell(appointments.getPurposeOfApp().toString(), columnWidth)
 						+ "|" + formatCell(appointments.getTimeOfApp().format(formatter), columnWidth)
 						+ "|" + formatCell("With Dr. " + appointments.getDocName(), 40) + "|");
 				System.out.println("+" + "-".repeat(5) + "+"
+						+ "-".repeat(columnWidth) + "+"
 						+ "-".repeat(columnWidth) + "+"
 						+ "-".repeat(columnWidth) + "+"
 						+ "-".repeat(40) + "+");
@@ -175,22 +180,25 @@ public class PatientMainPage extends UserMainPage{
             }
             if (appointments.getPatID().equals(pat.getUserID()) && appointments.getStatusOfApp() == Status.Pending && (!appointments.getTimeOfApp().toLocalDate().isBefore(LocalDate.now()))) {
             	System.out.println("|" + formatCell(String.valueOf(i), 5)
+            				+ "|" + formatCell(appointments.getStatusOfApp().toString(), columnWidth)
 						+ "|" + formatCell(appointments.getPurposeOfApp().toString(), columnWidth)
 						+ "|" + formatCell(appointments.getTimeOfApp().format(formatter), columnWidth)
 						+ "|" + formatCell("Waiting for Dr. " + appointments.getDocName() + "'s Approval", 40) + "|");
 				System.out.println("+" + "-".repeat(5) + "+"
 						+ "-".repeat(columnWidth) + "+"
 						+ "-".repeat(columnWidth) + "+"
+						+ "-".repeat(columnWidth) + "+"
 						+ "-".repeat(40) + "+");
 				i++;
             }
         }
-        
         if(i==1) System.out.println("There is no scheduled appointment.");
+        System.out.println("If the appointment is cancelled, you will not be able to see it anymore.");
     }
 	
 	public void viewPatientPastAppointmentOutcomeRecord(ArrayList<Appointment> appointmentList, Patient pat) {
     	System.out.println("+" + "-".repeat(5) + "+"
+    				+ "-".repeat(columnWidth) + "+"
 				+ "-".repeat(columnWidth) + "+"
 				+ "-".repeat(columnWidth) + "+"
 				+ "-".repeat(columnWidth) + "+"
@@ -201,6 +209,7 @@ public class PatientMainPage extends UserMainPage{
 				+ "-".repeat(columnWidth) + "+");
 
 		System.out.println("|" + formatCell("No.", 5)
+				+ "|" + formatCell("Status of App", columnWidth)
 				+ "|" + formatCell("Purpose of App", columnWidth)
 				+ "|" + formatCell("Time", columnWidth)
 				+ "|" + formatCell("Doc Name", columnWidth)
@@ -211,6 +220,7 @@ public class PatientMainPage extends UserMainPage{
 				+ "|" + formatCell("Instructions", columnWidth)+ "|");
 
 		System.out.println("+" + "-".repeat(5) + "+"
+				+ "-".repeat(columnWidth) + "+"
 				+ "-".repeat(columnWidth) + "+"
 				+ "-".repeat(columnWidth) + "+"
 				+ "-".repeat(columnWidth) + "+"
@@ -225,6 +235,7 @@ public class PatientMainPage extends UserMainPage{
         for (Appointment appointments : appointmentList) {
             if (Objects.equals(appointments.getPatID(), pat.getUserID()) && (appointments.getStatusOfApp() == Status.Completed || appointments.getStatusOfApp() == Status.PendingPrescription)) {
             	System.out.println("|" + formatCell(String.valueOf(i), 5)
+            				+ "|" + formatCell(appointments.getStatusOfApp().toString(), columnWidth)
 						+ "|" + formatCell(appointments.getPurposeOfApp().toString(), columnWidth)
 						+ "|" + formatCell(appointments.getTimeOfApp().format(formatter), columnWidth)
 						+ "|" + formatCell("Dr. " + appointments.getDocName(), columnWidth) 
@@ -234,6 +245,7 @@ public class PatientMainPage extends UserMainPage{
 						+ "|" + formatCell(appointments.getDosage(), columnWidth) 
 						+ "|" + formatCell(appointments.getInstructions(), columnWidth)+ "|");
 				System.out.println("+" + "-".repeat(5) + "+"
+						+ "-".repeat(columnWidth) + "+"
 						+ "-".repeat(columnWidth) + "+"
 						+ "-".repeat(columnWidth) + "+"
 						+ "-".repeat(columnWidth) + "+"

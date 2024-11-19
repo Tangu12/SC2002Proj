@@ -153,7 +153,7 @@ public class PharmacistMainPage extends UserMainPage{
                     	viewAvailableMed();
                     	System.out.print("Select the Medicine (-1 to end): ");
                     	medSelection = InputService.inputInteger();
-                    	if(medSelection == -1) break;
+                    	if(medSelection == -1) return;
                     	else if(medSelection <= 0 || medSelection > MedicationInventory.getInventory().size()) System.out.println("Not available medicine.");
                     	else {
                     		if(medicine == " ") medicine = MedicationInventory.getInventory().get(medSelection - 1).getNameOfMedicine();
