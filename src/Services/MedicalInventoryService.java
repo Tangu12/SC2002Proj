@@ -64,6 +64,7 @@ public class MedicalInventoryService {
     public void removeMedicineFromInventory(String medicineName){
         medicationInventory.deleteMedicine(medicineName);
         medicationInventoryRepository.deleteRecord(medicineName);
+        
     }
 
     /**

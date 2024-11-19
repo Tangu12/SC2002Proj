@@ -1,6 +1,6 @@
 Medicine Name,Current Stock,Low Stock Alert,Request Amount
-Paracetamol,50,3,0
+Paracetamol,60,3,0
 Ibuprofen,30,10,0
 Amoxicillin,119,15,100
 Loratadine,60,20,0
-Diphenhydramine,20,40,60
+Diphenhydramine,110,70,10

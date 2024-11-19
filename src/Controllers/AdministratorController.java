@@ -231,8 +231,9 @@ public class AdministratorController implements ILockAccount, IManageStaff, IAdm
         }
         Medicine medicine = findMedicineByName(MedicationInventory.getInventory().get(choice-1).getNameOfMedicine());
         if(medicine != null) {
-        	medicalInventoryService.removeMedicineFromInventory(medicine.getNameOfMedicine());
         	System.out.println("Medicine removed: " + MedicationInventory.getInventory().get(choice-1).getNameOfMedicine());
+        	medicalInventoryService.removeMedicineFromInventory(medicine.getNameOfMedicine());
+        	medicalInventoryService.saveInventoryToFile();
         } else {
             System.out.println("Medicine not found.");
         }
@@ -245,7 +246,10 @@ public class AdministratorController implements ILockAccount, IManageStaff, IAdm
      * @param newAlertLevel
      */
     public void updateMedicine(Medicine med, int newStock, int newAlertLevel) {
+    	med.setCurrentStock(newStock);
+    	med.setLowStockLevelAlert(newAlertLevel);
     	medicalInventoryService.updateMedicine(med);
+    	medicalInventoryService.saveInventoryToFile();
     }
 
     /**
@@ -304,5 +308,6 @@ public class AdministratorController implements ILockAccount, IManageStaff, IAdm
      */
     public void processReplenishmentRequests(int selection, int amount) {
     		medicalInventoryService.processReplenishmentRequests(selection, amount);
+    		medicalInventoryService.saveInventoryToFile();
     }
 }
