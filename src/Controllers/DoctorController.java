@@ -1,13 +1,7 @@
 package Controllers;
 
-import java.util.ArrayList;
-import java.util.InputMismatchException;
-import java.util.List;
-import java.util.Scanner;
-
-import Entity.Appointment;
+import Controllers.IController.IAppointment.IDoctorAppointment;
 import Entity.Enums.Department;
-import Entity.Enums.Purpose;
 import Entity.Enums.Status;
 import Entity.User.Doctor;
 import Services.AppointmentService;
@@ -15,7 +9,7 @@ import Services.AppointmentService;
 /**
  * {@code DoctorController} handles all the logic a Doctor's Functions
  */
-public class DoctorController {
+public class DoctorController implements IDoctorAppointment {
 	
 	private Doctor doctor;
 	private AppointmentService appointmentService;

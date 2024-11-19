@@ -3,12 +3,15 @@ package Controllers;
 import java.util.ArrayList;
 import java.util.Optional;
 
+import Controllers.IController.IAppointment.IAdministratorGetAppointment;
+import Controllers.IController.IAccountManagement.ILockAccount;
+import Controllers.IController.IAccountManagement.IManageStaff;
+import Controllers.IController.IMedicine.IAdministratorMedicine;
 import Entity.Appointment;
 import Entity.AppointmentList;
 import Entity.MedicationInventory;
 import Entity.Medicine;
 import Entity.Enums.Department;
-import Entity.Enums.Domain;
 import Entity.Enums.Gender;
 import Entity.User.Administrator;
 import Entity.User.Doctor;
@@ -21,7 +24,7 @@ import Services.UserAccount.AccountManager;
 /**
  * {@code AdministratorController} handles all the logic a Administrator's Functions
  */
-public class AdministratorController {
+public class AdministratorController implements ILockAccount, IManageStaff, IAdministratorGetAppointment, IAdministratorMedicine {
     //public static void operation(){}
     
 	private Administrator admin;
