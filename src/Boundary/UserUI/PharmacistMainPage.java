@@ -145,7 +145,7 @@ public class PharmacistMainPage extends UserMainPage{
                 		if(pendingPresciptionAppointmentsIndices1.isEmpty()) break;
                     System.out.print("Select the Appointment ID you want to update: ");
                     int appSelection1 = InputService.inputInteger();
-                    if(appSelection1-1 >= pendingPresciptionAppointmentsIndices1.size()) {System.out.println("Please only enter the available options"); return;}
+                    if(appSelection1-1 >= pendingPresciptionAppointmentsIndices1.size() || appSelection1 <= 0) {System.out.println("Please only enter the available options"); return;}
                     System.out.println("Changing prescription status to 'Completed' (Y/N): ");
                     String changeStatus = InputService.inputString();
                     if(changeStatus.equals("Y")) {
@@ -499,12 +499,12 @@ public class PharmacistMainPage extends UserMainPage{
     // Use a specific amount of medicine
     public void dispenseMedicine() {
     		viewAvailableMed();
-		int choice;
-		do {
 			System.out.print("Select the index of medicine to use: ");
-			choice = InputService.inputInteger();
-			if (choice > MedicationInventory.getInventory().size() || choice < 0) System.out.println("Please enter the available choices!");
-		} while(choice > MedicationInventory.getInventory().size() || choice < 0);
+			int choice = InputService.inputInteger();
+			if (choice > MedicationInventory.getInventory().size() || choice <= 0) {
+				System.out.println("Please enter the available choices!");
+				return;
+			}
 
 		Medicine medicine = pharmacistController.findMedicineByName(MedicationInventory.getInventory().get(choice-1).getNameOfMedicine());
         if (medicine == null) {
