@@ -468,13 +468,13 @@ public class PatientMainPage extends UserMainPage{
 	}
 	
 	public void updatePersonalInformation(Patient pat) {
-		System.out.println("Updating email address: ");
+		System.out.println("Updating email address and contact: ");
         //System.out.println("1. Phone Number");
         //System.out.println("2. Email Address");
         String email = InputService.inputEmail();
         this.patientController.updatePersonalInformation(pat.getUserID(), email);
         this.patientController.getPatient().setContactInfo(email);
-        System.out.println("Email is updated successfully!");
+        System.out.println("Email and contact are updated successfully!");
 	}
 	
 	private static String formatCell(String value, int width) {
