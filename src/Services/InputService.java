@@ -91,7 +91,7 @@ public class InputService {
     }
 
     /**
-     * Method to input a valid emai
+     * Method to input a valid email
      * @return The valid email input by the user.
      */
     public static String inputEmail() {
