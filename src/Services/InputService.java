@@ -83,8 +83,8 @@ public class InputService {
      *      * @return {@code true} if the email format is valid, {@code false} otherwise.
      *      */
     public static boolean isValidEmail(String email) {
-        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
-        Pattern pattern = Pattern.compile(emailRegex);
+        String emailAndContactRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}/\\d{8}$";
+        Pattern pattern = Pattern.compile(emailAndContactRegex);
         Matcher matcher = pattern.matcher(email);
 
         return matcher.matches();
@@ -96,13 +96,13 @@ public class InputService {
      */
     public static String inputEmail() {
         while (true) {
-            System.out.println("Please enter your email: ");
+            System.out.println("Please enter your email and contact in this format user@email.com/94662242: ");
             String email = inputString();
 
             if (isValidEmail(email)) {
                 return email;
             } else {
-                System.out.println("Please enter a valid email");
+                System.out.println("Please enter a valid email and contact according to the format.");
             }
         }
     }
